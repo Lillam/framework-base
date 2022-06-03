@@ -1,0 +1,46 @@
+#!/usr/bin/env php
+<?php
+
+define('VYUI_START', microtime(true));
+
+use App\Console\Kernel;
+use Vyui\Foundation\Console\Input;
+
+/*
+|-----------------------------------------------------------------------------------------------------------------------
+| Fire up the Autoloader.
+|-----------------------------------------------------------------------------------------------------------------------
+| Register the autoloader that composer provides, conveniently which automatically generates a class loader for this
+| Application. All we need to do from here on out is just simply require the autoloader, and never need to manually
+| register classes.
+|
+*/
+
+require __DIR__ . '/vendor/autoload.php';
+
+/*
+|-----------------------------------------------------------------------------------------------------------------------
+| Fire up the Application.
+|-----------------------------------------------------------------------------------------------------------------------
+| Bootstrap and return the application to the main script, this will render everything that the application needs in
+| order to fully function and operate as an application.
+|
+*/
+
+$application = require_once __DIR__ . '/bootstrap/application.php';
+
+/*
+|-----------------------------------------------------------------------------------------------------------------------
+| Run The Console Application
+|-----------------------------------------------------------------------------------------------------------------------
+|
+| When we run the console application, the current CLI command will be
+| executed in this console and the response sent back to a terminal
+| or another output device for the developers. Here goes nothing!
+|
+*/
+
+/** @var Kernel $kernel */
+$kernel = $application->make(Kernel::class);
+
+$kernel->handle($input = new Input);

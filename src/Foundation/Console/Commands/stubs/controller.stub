@@ -1,0 +1,19 @@
+<?php
+
+namespace App\Http\Controllers{{ namespace }};
+
+use Vyui\Foundation\Http\Request;
+use Vyui\Foundation\Http\Response;
+use Vyui\Services\Routing\Controller;
+
+class {{ class }} extends Controller
+{
+    /**
+     * @param Request $request
+     * @return Response
+     */
+    public function index(Request $request): Response
+    {
+        return view('home');
+    }
+}

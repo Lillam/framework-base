@@ -1,0 +1,25 @@
+{
+    "name": "vyui/framework",
+    "description": "framework",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Vyui\\": "src/",
+            "App\\": "app/"
+        },
+        "files": [
+            "src/helpers.php"
+        ]
+    },
+    "authors": [
+        {
+            "name": "Liam Taylor",
+            "email": "liam.taylor@outlook.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "php": "^8.1.1",
+        "ext-pdo": "*"
+    }
+}

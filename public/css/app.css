@@ -1,0 +1,251 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400,700');
+
+:root {
+    --bg: #ffffff;
+    --navigation-bg: #f1f1f1;
+}
+
+* {
+    box-sizing: border-box;
+    font-family: 'Roboto Condensed', sans-serif;
+}
+
+html,
+html body {
+    padding: 0;
+    margin: 0;
+    background-color: #ffffff;
+}
+
+.flex {
+    display: flex;
+}
+
+.align-items-center {
+    align-items: center;
+}
+
+.justify-content-center {
+    justify-content: center;
+}
+
+.block {
+    display: block;
+}
+
+.grid {
+    display: grid;
+}
+
+.grid {
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.grid div {
+    padding: 10px;
+}
+
+.h-screen {
+    height: 100vh;
+}
+
+.navigation {
+    background-color: var(--navigation-bg);
+    border-radius: 0.5rem;
+    position: relative;
+    height: 70px;
+    padding: 0 35px;
+}
+
+.navigation ul {
+    list-style-type: none;
+    width: 350px;
+    margin: 0;
+    padding: 0;
+}
+
+.navigation ul li:not(.indicator) {
+    position: relative;
+    width: 70px;
+    height: 70px;
+    z-index: 1;
+}
+
+.navigation ul li a {
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    text-decoration: none;
+    color: #444444;
+    cursor: pointer;
+}
+
+.navigation ul li a i {
+    display: block;
+    line-height: 70px;
+    font-size: 1.2em;
+    position: relative;
+    text-align: center;
+    transition: 0.5s;
+}
+
+.navigation ul li a span {
+    display: block;
+    position: absolute;
+    color: #444444;
+    opacity: 0;
+    font-size: 0.75em;
+    letter-spacing: 0.05em;
+    transform: translateY(20px);
+}
+
+.navigation-horizontal ul li.active a i {
+    transform: translateY(-40px);
+    color: #ffffff;
+}
+
+.navigation ul li.active a span {
+    opacity: 1;
+    transform: translateY(10px);
+}
+
+.navigation ul li.indicator {
+    position: absolute;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background-color: #ffa500;
+    top: -40px;
+    border: solid 6px var(--bg);
+    transition: 0.5s;
+}
+
+.navigation-horizontal ul li:nth-child(1).active ~ .indicator {
+    transform: translateX(calc(70px * 0));
+}
+
+.navigation-horizontal ul li:nth-child(2).active ~ .indicator {
+    transform: translateX(calc(70px * 1));
+}
+
+.navigation-horizontal ul li:nth-child(3).active ~ .indicator {
+    transform: translateX(calc(70px * 2));
+}
+
+.navigation-horizontal ul li:nth-child(4).active ~ .indicator {
+    transform: translateX(calc(70px * 3));
+}
+
+.navigation-horizontal ul li:nth-child(5).active ~ .indicator {
+    transform: translateX(calc(70px * 4));
+}
+
+.navigation-vertical {
+    width: 70px;
+    padding: 35px 0;
+    height: auto;
+}
+
+.navigation-vertical ul {
+    flex-wrap: wrap;
+    height: 350px;
+}
+
+.navigation-vertical ul li {
+    flex-direction: row;
+}
+
+.navigation-vertical ul li a span {
+    transform: rotate(90deg) !important;
+    display: block;
+    margin-left: -15px;
+}
+
+.navigation-vertical ul li.indicator {
+    top: auto;
+    right: -44px;
+}
+
+.navigation-vertical ul li.active a i {
+    transform: translateX(44px);
+    color: #ffffff;
+}
+
+.navigation-vertical ul li:nth-child(1).active ~ .indicator {
+    transform: translateY(calc(70px * 0));
+}
+
+.navigation-vertical ul li:nth-child(2).active ~ .indicator {
+    transform: translateY(calc(70px * 1));
+}
+
+.navigation-vertical ul li:nth-child(3).active ~ .indicator {
+    transform: translateY(calc(70px * 2));
+}
+
+.navigation-vertical ul li:nth-child(4).active ~ .indicator {
+    transform: translateY(calc(70px * 3));
+}
+
+.navigation-vertical ul li:nth-child(5).active ~ .indicator {
+    transform: translateY(calc(70px * 4));
+}
+
+.box {
+    width: 300px;
+    height: 200px;
+    background-color: #f1f1f1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+    position: relative;
+    overflow: hidden;
+    margin: 10px 0;
+    flex-wrap: wrap;
+}
+
+.box::before {
+    content: '';
+    position: absolute;
+    width: 120%;
+    height: 50%;
+    background: linear-gradient(90deg, #ffa500 25%, #181818 75%);
+    animation: rotationAnimation 4s linear infinite;
+    z-index: 0;
+}
+
+.box::after {
+    content: '';
+    position: absolute;
+    inset: 4px;
+    background-color: #ffffff;
+    border-radius: 16px;
+}
+
+@keyframes rotationAnimation {
+    0% {
+        transform: rotate(0deg);
+    }
+    /*50% {*/
+    /*    transform: rotate(180deg);*/
+    /*}*/
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.box h2 {
+    font-size: 4em;
+    color: #181818;
+    z-index: 2;
+}
+
+.box p {
+    font-size: 1.5em;
+    color: #444444;
+    z-index: 2;
+}
