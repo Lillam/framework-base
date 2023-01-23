@@ -249,3 +249,31 @@ html body {
     color: #444444;
     z-index: 2;
 }
+
+.graph {
+    background-color: #f1f1f1;
+    border-radius: 4px;
+    display: flex;
+    height: 500px;
+    width: 500px;
+    align-items: flex-end;
+}
+
+.graph div {
+    background-color: black;
+    color: #ffffff;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.graph *+div {
+    margin-left: 5px;
+}
+
+.graph div span {
+    transform: rotate(90deg);
+    white-space: nowrap;
+}

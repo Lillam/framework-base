@@ -14,17 +14,26 @@ class RouteUriRegex
 	 */
 	public function __construct(Route $route)
 	{
-		$this->regex = preg_replace_callback(
-			'#{([^}]+)}#',
-			function (array $matches) use ($route) {
-				$route->addParameter(rtrim($matches[1], '?'));
-				return str_ends_with($matches[1], '?')
-					? '([^/]*)(?:/?)'
-					: '([^/]+)';
-			},
-			$route->getNormalisedUri()
-		);
+		$this->setRegex($route);
 	}
+
+    /**
+     * @param Route $route
+     * @return void
+     */
+    public function setRegex(Route $route): void
+    {
+        $this->regex = preg_replace_callback(
+            '#{([^}]+)}#',
+            function (array $matches) use ($route) {
+                $route->addParameter($matches[1]);
+                return str_ends_with($matches[1], '?')
+                    ? '([^/]*)(?:/?)'
+                    : '([^/]+)';
+            },
+            $route->getNormalisedUri()
+        );
+    }
 
 	/**
 	 * @return string

@@ -6,6 +6,11 @@ use Vyui\Services\Service;
 
 class RoutingService extends Service
 {
+    /**
+     * Register the service into the application.
+     *
+     * @return void
+     */
     public function register(): void
     {
         $this->registerRouter();

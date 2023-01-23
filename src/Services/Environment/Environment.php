@@ -83,6 +83,12 @@ class Environment implements EnvironmentContract
      */
     public function set(string $key, mixed $value): void
     {
+        // if the key starts with a hash, aka a comment, then we are going to simply ignore this particular set and
+        // move on from it as we will no longer want to do anything in particular with it.
+        if ($key[0] === '#') {
+            return;
+        }
+
         $this->variables[$key] = ! empty($value) ? $value : null;
     }
 
@@ -122,7 +128,11 @@ class Environment implements EnvironmentContract
         $fileContents = trim(file_get_contents($this->getPath($this->getFile())), "\n");
 
         if (! empty($fileContents)) {
-            $environmentEntities = explode("\n", preg_replace("/\n+/", "\n", $fileContents));
+            $environmentEntities = explode(
+                "\n",
+                preg_replace("/\n+/", "\n", $fileContents)
+            );
+
             foreach ($environmentEntities as $environmentEntity) {
                 $this->set(...explode('=', $environmentEntity));
             }

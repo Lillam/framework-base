@@ -2,8 +2,8 @@
 
 namespace Vyui\Support\Facades;
 
-use Vyui\Contracts\Database\ConnectionManagerInterface;
 use Vyui\Services\Facades\Facade;
+use Vyui\Contracts\Database\ConnectionManager;
 
 class DB extends Facade
 {
@@ -12,6 +12,6 @@ class DB extends Facade
 	 */
 	protected static function getFacadeAccessor(): string
 	{
-		return ConnectionManagerInterface::class;
+		return ConnectionManager::class;
 	}
 }

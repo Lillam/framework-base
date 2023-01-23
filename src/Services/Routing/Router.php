@@ -3,6 +3,7 @@
 namespace Vyui\Services\Routing;
 
 use Closure;
+use Exception;
 use Vyui\Foundation\Application;
 use Vyui\Foundation\Http\Request;
 use Vyui\Foundation\Http\Response;
@@ -184,14 +185,12 @@ class Router
 	 *
 	 * @param Request $request
 	 * @return Response
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	public function dispatch(Request $request): Response
 	{
-		$route = $this->findRoute($request);
-
-		if (! $route) {
-			throw new RouteNotFoundException;
+		if (! $route = $this->findRoute($request)) {
+			throw new RouteNotFoundException("The route was not found");
 		}
 
 		return $route->dispatch($this->application, $request);

@@ -1,9 +1,10 @@
 <?php
 
-define("FRAMEWORK_START", microtime(true));
-
 use Vyui\Contracts\Http\Kernel;
+use Vyui\Foundation\Application;
 use Vyui\Foundation\Http\Request;
+
+define("FRAMEWORK_START", microtime(true));
 
 /*
 |-----------------------------------------------------------------------------------------------------------------------
@@ -26,7 +27,7 @@ require '../vendor/autoload.php';
 |
 */
 
-/** @var \Vyui\Foundation\Application $application */
+/** @var Application $application */
 $application = require_once '../bootstrap/application.php';
 
 /*
@@ -41,7 +42,7 @@ $application = require_once '../bootstrap/application.php';
 /** @var \App\Http\Kernel $kernel */
 $kernel = $application->make(Kernel::class);
 
-/*
+/*s
 |-----------------------------------------------------------------------------------------------------------------------
 | Prepare and Ship the Request into a Response.
 |-----------------------------------------------------------------------------------------------------------------------
@@ -50,91 +51,130 @@ $kernel = $application->make(Kernel::class);
 | to show.
 |
 */
+//
+//$array = [
+//    'test' => [
+//        'item' => [
+//            'pog' => 'champ'
+//        ]
+//    ],
+//    'foo' => 'bar',
+//    'user' => [
+//        'username' => 'Lillam',
+//        'email' => [
+//            'address' => 'liam.taylor@outlook.com'
+//        ],
+//        'password' => [
+//            'hash' => [
+//                'key' => 'tester',
+//                'salt' => 'sdsdfsdfsdfdsf'
+//            ],
+//            'sdfsdfsdfdsfsdfdsf'
+//        ]
+//    ]
+//];
+//
+///** @var \Vyui\Services\Filesystem\Filesystem $filesystem */
+//$filesystem = app(\Vyui\Contracts\Filesystem\Filesystem::class);
+//
+//$dictionary = (new \Vyui\Dictionary\Dictionary($filesystem))->load();
+//
+//$dictionary->setAnagram('ceygnur')
+//           ->setAnagramMin(4)
+//           ->setAnagramMax(7);
+//
+//$dictionary->addWords([
+//
+//]);
+//
+//dd($dictionary->findWordsFromAnagram(), $dictionary->getWordsAdded());
+//
+//$dictionary->commitWordsAddedToStorage();
+//$dictionary->convertDictionaryFilesToPHPFiles();
+//
+//dd($dictionary->getWordsAdded(), $dictionary);
+//
+//$arrayable = (new \Vyui\Support\Helpers\Arrayable)
+//    ->set('user', (object) [
+//        'test' => 15,
+//        'email' => 'liam.taylor@outlook.com',
+//        'age' => 29,
+//        'birthday' => '17/06/1993'
+//    ])
+//    ->set('array', $array);
+//
+//dd($arrayable->flatten(true)->toArray());
+//
+//dd($arrayable->get('user')->test);
+//
+//dd((new \Vyui\Support\Helpers\Arrayable($array))->flatten(true)->only(['user.email.address']));
+//$string = (new \Vyui\Support\Helpers\Stringable('test'))->remove('est');
+//dd((string) $string);
+//
+//$str = \Vyui\Support\Helpers\_String::fromString('Testing @ Tests $ $');
+//
+//dd($str->slug([
+//    '@' => 'at',
+//    '$' => 'dollar'
+//])->toString());
+
+/** @var \Vyui\Services\Logger\Logger $logger */
+//$logger = $application->make(\Vyui\Contracts\Logger\Logger::class);
+//
+//dd((new \Vyui\Debugger\Debugger)
+//    ->run(function () use ($logger) {
+//        for ($i = 0; $i < 100; $i ++) {
+//            $logger->log("iteration $i - testing");
+//        }
+//    })
+//    ->run(function () use ($logger) {
+//        for ($i = 0; $i < 100; $i ++) {
+//            $logger->directLog("iteration $i - testing");
+//        }
+//    })
+//    ->compare()
+//);
+
+//echo json_encode([
+//    'content' => (string) (new \Vyui\Support\Helpers\Stringable('test'))
+//        ->concat('testing', 'testing again', 'and another')
+//]);
+//
+//exit;
+//
+//dd(
+//    (new \Vyui\Debugger\Debugger())
+//        ->run(function () {
+//            echo 'here';
+//        })
+//        ->run(function () {
+//            foreach ([1,2,3] as $number) {
+//                echo $number;
+//            }
+//        })
+//        ->getTests()
+//);
+
+
+//$token = (new \Vyui\Contracts\Auth\JWT)->encode([
+//    'id' => 1,
+//    'name' => 'liam taylor',
+//    'exp' => time() + 20,
+//]);
+
+//dD(base64_encode(json_encode([
+//    "id" => 1,
+//    "name" => "liam taylor"
+//])));
+// eyJpZCI6MSwibmFtZSI6ImxpYW0gdGF5bG9yIn0=
+
+// dd(json_decode(base64_decode('eyJpZCI6MSwibmFtZSI6ImxpYW0gdGF5bG9yIn0'), true));
+
+//$parsedToken = (new \Vyui\Contracts\Auth\JWT)->decode($token);
+//
+//dd($token, $parsedToken);
 
 $response = $kernel->handle($request = Request::capture());
-
-//$connection = $application->make(\Vyui\Services\Database\ConnectionManagerInterface::class);
-//dd($connection->connection('mysql')->query()->where(function ($query) {
-//
-//}));
-
-//dd(\App\Models\News::query()->insert([
-//	'test' => 'testing',
-//	'another_test' => 10
-//]));
-
-// \Vyui\Support\Facades\Storage::disk('local');
-//
-//dd(
-//	\App\Models\News::query()
-//		->join('news_category', 'news.category_id', '=', 'news_category.id')
-//		->where('news_category.id', '=', 2)
-//		->all()
-//);
-//
-//dd(
-//	\App\Models\NewsCategory::query()
-//		->select('id', 'url')
-//		->where('id', '>=', 1)
-//		->where(function ($query) {
-//			$query->where('url', '=', 'website-news')
-//				  ->orWhere('url', '=', 'server-news');
-//		})
-//		->orWhere(function ($query) {
-//			$query->where('id', '=', 1)
-//				   ->orWhere('id', '=', 2);
-//		})
-//		->all(),
-//	\App\Models\News::query()
-//		->where('category_id', '=', 2)
-//		->limit(1)
-//		->all()
-//);
-
-//
-//$start = microtime(true);
-//
-
-// /** @var \Vyui\Dictionary\Dictionary $dictionary */
-// $dictionary = $application->make(\Vyui\Dictionary\Dictionary::class);
-
-// dd($dictionary->convertDictionaryFilesToPHPFiles());
-
-//$dictionary->setAnagram(request('word') ?? 'cardiac')
-//	->findWordsFromAnagram(
-//		(int) request('min',3),
-//		(int) request('max', 7)
-//	);
-
-// dd($dictionary);
-
-//
-//$string = <<<EOL
-//# Heading
-//hello there, this is just something that should turn into a p tag?
-//- something
-//- something
-// - something
-//  - something
-//## Sub Heading
-//this is also something that should convert into a p tag?
-//### Sub Heading
-//#### Sub Heading
-//##### Sub Heading
-//###### Sub Heading
-//EOL;
-//
-//dd(
-//	\Vyui\Support\Markdown\Markdown::parse($string),
-//	\Vyui\Support\Markdown\Markdown::convert($string)
-//);
-//
-//dd(
-//    $dictionary,
-//    $time = microtime(true) - $start,
-//    $application->buildTime() < LARAVEL_BUILD_TIME ? 'faster' : 'slower',
-//    $application->buildTime()
-//);
 
 /*
 |-----------------------------------------------------------------------------------------------------------------------

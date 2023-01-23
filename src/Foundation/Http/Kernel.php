@@ -2,10 +2,10 @@
 
 namespace Vyui\Foundation\Http;
 
-use Exception;
-use Vyui\Contracts\Http\Kernel as KernelContract;
+use Throwable;
 use Vyui\Foundation\Application;
 use Vyui\Services\Routing\Router;
+use Vyui\Contracts\Http\Kernel as KernelContract;
 
 class Kernel implements KernelContract
 {
@@ -36,16 +36,18 @@ class Kernel implements KernelContract
     /**
      * @param Request $request
      * @return Response
-     * @throws Exception
      */
     public function handle(Request $request): Response
     {
+        // Attempt to run the request through the router.
         try {
             $response = $this->sendRequestThroughRouter($request);
         }
 
-        catch (Exception $exception) {
-            throw new $exception;
+        // if the router cannot make the request and something has gone wrong through the pipeline then we're going to
+        // error out and then render that exception as a response to the end user.
+        catch (Throwable $exception) {
+            $response = $this->renderException($request, $exception);
         }
 
         return $response;
@@ -54,11 +56,25 @@ class Kernel implements KernelContract
     /**
      * @param Request $request
      * @return Response
+     * @throws Throwable
      */
     public function sendRequestThroughRouter(Request $request): Response
     {
         $this->application->instance(Request::class, $request);
 
 		return $this->router->dispatch($request);
+    }
+
+    /**
+     * When something has gone wrong within the system then we're going to simply render the exception that will have
+     * been hit.
+     *
+     * @param Request $request
+     * @param Throwable $exception
+     * @return Response
+     */
+    private function renderException(Request $request, Throwable $exception): Response
+    {
+        return new Response("{$exception->getMessage()} from the render exception method");
     }
 }

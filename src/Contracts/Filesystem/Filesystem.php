@@ -19,9 +19,10 @@ interface Filesystem
      * Get the files of a directory.
      *
      * @param string $path
+     * @param bool $hydrate
      * @return SplFileObject[]
      */
-    public function files(string $path): array;
+    public function files(string $path, bool $hydrate = false): array;
 
 	/**
 	 * Get the lines of a file.
@@ -40,6 +41,15 @@ interface Filesystem
      * @return int|bool
      */
     public function put(string $path, string $content, bool $lock = false): int|bool;
+
+    /**
+     * Append contents to a file.
+     *
+     * @param string $path
+     * @param string $content
+     * @return int|bool
+     */
+    public function writeLine(string $path, string $content): int|bool;
 
 	/**
 	 * @param string $path

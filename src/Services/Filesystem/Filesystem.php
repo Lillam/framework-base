@@ -9,6 +9,8 @@ use Vyui\Contracts\FileSystem\Filesystem as FilesystemContract;
 
 class Filesystem implements FilesystemContract
 {
+    protected array $ignoredFiles = ['.', '..'];
+
     /**
      * Get the contents of a file.
      *
@@ -36,14 +38,56 @@ class Filesystem implements FilesystemContract
      */
     public function files(string $path, bool $hydrate = true): array
     {
-        if ($this->exists($path)) {
-            return $hydrate ? array_map(function(string $file) use ($path) {
-								return new SplFileObject("$path/$file");
-                			}, array_diff(scandir($path), ['.', '..']))
-                		    : array_diff(scandir($path), ['.', '..']);
+        // if the directory doesn't exist; then there's no point attempting to do anything else here so we're going to
+        // return a DirectoryNotFoundException so we can return early.
+        if (! $this->exists($path)) {
+            throw new DirectoryNotFoundException("Directory not found");
         }
 
-        throw new DirectoryNotFoundException("Directory not found");
+        // if the directory has came back with no results, or an empty array then we're going to want to return early
+        // again as there would be no point continuing to do anything else within this function.
+        if (empty($files = $this->filesRecursively($path))) {
+            return [];
+        }
+
+        // iterate over the files and if we've specified to hydrate then we're going to want to return these particular
+        // items as file items as opposed to the name of the files. We can delay the process of hydration by simply
+        // returning the names of the files instead.
+        foreach ($files as $fileKey => $file) {
+            $files[$fileKey] = $hydrate ? new SplFileObject($file)
+                : $file;
+        }
+
+        return $files;
+    }
+
+    /**
+     * A method to recursively find all the files within a chosen directory; recursively; if it ends up running into
+     * directories then perform the search again diving in and keeping track of the entire name space; this is delayed
+     * process for acquiring file information as this will just be the immediate collection of the files before
+     * modifying to SPLFileObjects.
+     *
+     * @param string $path
+     * @return string[]
+     */
+    public function filesRecursively(string $path): array
+    {
+        $return = [];
+
+        // if the base directory exists;
+        if ($this->exists($path)) {
+            $files = array_diff(scandir($path) ?: [], $this->ignoredFiles);
+            foreach ($files as $file) {
+                if (! str_contains($file, '.php')) {
+                    $return = array_merge($return, $this->filesRecursively("$path/$file"));
+                    continue;
+                }
+
+                $return[] = "$path/$file";
+            }
+        }
+
+        return $return;
     }
 
     /**
@@ -75,6 +119,18 @@ class Filesystem implements FilesystemContract
     public function put(string $path, string $content, bool $lock = false): int|bool
     {
         return file_put_contents($path, $content, $lock ? LOCK_EX : 0);
+    }
+
+    /**
+     * Append contents to a file.
+     *
+     * @param string $path
+     * @param string $content
+     * @return int|bool
+     */
+    public function writeLine(string $path, string $content): int|bool
+    {
+        return file_put_contents($path, "$content\n", LOCK_EX | FILE_APPEND);
     }
 
 	/**

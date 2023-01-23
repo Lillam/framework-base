@@ -62,6 +62,7 @@ class Application extends Container implements ApplicationContract
             \Vyui\Services\Environment\EnvironmentService::class,
             \Vyui\Services\Config\ConfigService::class,
             \Vyui\Services\Filesystem\FilesystemService::class,
+            \Vyui\Services\Logger\LogService::class,
             \Vyui\Services\Translation\TranslatorService::class,
             \Vyui\Services\Facades\FacadeService::class,
             \Vyui\Services\Exceptions\ExceptionService::class,

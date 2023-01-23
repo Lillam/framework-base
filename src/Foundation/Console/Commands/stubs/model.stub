@@ -1,0 +1,10 @@
+<?php
+
+namespace App\Models{{ namespace }}
+
+use Vyui\Services\Database\Model;
+
+class {{ class }} extends Model
+{
+
+}
