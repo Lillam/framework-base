@@ -3,14 +3,17 @@
 namespace Vyui\Tests;
 
 use Vyui\Support\Helpers\_String;
+use Vyui\Tests\Assertions\AssertNull;
 use Vyui\Tests\Assertions\AssertTrue;
 use Vyui\Tests\Assertions\AssertCount;
 use Vyui\Tests\Assertions\AssertEmpty;
 use Vyui\Tests\Assertions\AssertFalse;
 use Vyui\Tests\Assertions\AssertEquals;
+use Vyui\Tests\Assertions\AssertNotNull;
 use Vyui\Tests\Assertions\TestAssertion;
 use Vyui\Tests\Assertions\AssertLessThan;
 use Vyui\Tests\Assertions\AssertNotEmpty;
+use Vyui\Tests\Assertions\AssertInstanceOf;
 use Vyui\Tests\Assertions\AssertGreaterThan;
 use Vyui\Tests\Assertions\AssertLooseEquals;
 
@@ -110,6 +113,8 @@ abstract class TestCase
     }
 
     /**
+     * Assert that an array has the count of the expected pass parameter.
+     *
      * @param int $expected
      * @param array $actual
      * @return void
@@ -120,15 +125,19 @@ abstract class TestCase
     }
 
     /**
+     * Assert that the value us empty
+     *
      * @param array $expected
      * @return void
      */
     public function assertEmpty(array $expected): void
     {
-        $this->processAssertion( new AssertEmpty($expected));
+        $this->processAssertion(new AssertEmpty($expected));
     }
 
     /**
+     * Assert that the value is not empty.
+     *
      * @param array $expected
      * @return void
      */
@@ -138,6 +147,8 @@ abstract class TestCase
     }
 
     /**
+     * Assert that the parameter is true
+     *
      * @param bool $expected
      * @return void
      */
@@ -147,12 +158,48 @@ abstract class TestCase
     }
 
     /**
+     * Assert the expected value is false.
+     *
      * @param bool $expected
      * @return void
      */
     public function assertFalse(bool $expected): void
     {
         $this->processAssertion(new AssertFalse($expected));
+    }
+
+    /**
+     * Assert that the expected value is null
+     *
+     * @param mixed $expected
+     * @return void
+     */
+    public function assertNull(mixed $expected): void
+    {
+        $this->processAssertion(new AssertNull($expected));
+    }
+
+    /**
+     * Assert that the expected value is not null
+     *
+     * @param mixed $expected
+     * @return void
+     */
+    public function assertNotNull(mixed $expected): void
+    {
+        $this->processAssertion(new AssertNotNull($expected));
+    }
+
+    /**
+     * Assert that the expected value is an instanceof actual.
+     *
+     * @param string $expected
+     * @param string $actual
+     * @return void
+     */
+    public function assertInstanceOf(mixed $expected, string $actual): void
+    {
+        $this->processAssertion(new AssertInstanceOf($expected, $actual));
     }
 
     /**
@@ -229,9 +276,7 @@ abstract class TestCase
      */
     private function processAssertion(TestAssertion $assertion): void
     {
-        $this->totalAssertions += 1;
-
-        $this->assertions->add($this->totalAssertions, $assertion);
+        $this->assertions->add($this->totalAssertions += 1, $assertion);
 
         if ($assertion->evaluate()) {
             $this->successfulAssertions += 1;

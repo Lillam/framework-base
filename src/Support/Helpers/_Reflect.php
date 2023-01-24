@@ -2,7 +2,9 @@
 
 namespace Vyui\Support\Helpers;
 
+use Closure;
 use ReflectionClass;
+use ReflectionMethod;
 use ReflectionFunction;
 use ReflectionException;
 use ReflectionNamedType;
@@ -88,6 +90,15 @@ class _Reflect
     public static function getClassMethods(string|object $class): array
     {
         return (new ReflectionClass($class))->getMethods();
+    }
+
+    /**
+     * @param string $contains
+     * @return Closure
+     */
+    public static function filetMethodsWhereContains(string $contains): Closure
+    {
+        return fn (ReflectionMethod $method) => str_contains($method, $contains);
     }
 
     /**

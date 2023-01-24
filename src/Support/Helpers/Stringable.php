@@ -101,10 +101,10 @@ class Stringable
     /**
      * Remove defined from the string content.
      *
-     * @param string $remove
+     * @param string|array $remove
      * @return $this
      */
-    public function remove(string $remove): static
+    public function remove(string|array $remove): static
     {
         $this->string = str_replace($remove, '', $this->string);
 

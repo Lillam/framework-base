@@ -2,6 +2,8 @@
 
 namespace Vyui\Tests\Assertions;
 
+use Vyui\Support\Helpers\_String;
+
 abstract class TestAssertion
 {
     /**
@@ -40,7 +42,7 @@ abstract class TestAssertion
     public function __construct(mixed $expected, mixed $actual = null)
     {
         $this->expected = $expected;
-        $this->actual = $actual;
+        $this->actual   = $actual;
     }
 
     /**
@@ -54,14 +56,15 @@ abstract class TestAssertion
     /**
      * Get the message for the assertion upon eveluation. which will essentially act as an output buffer.
      *
+     * @param bool $withType
      * @return string
      */
-    public function getMessage(): string
+    public function getMessage(bool $withType = false): string
     {
         return preg_replace_callback_array([
             '/\{state\}/'    => fn () => $this->getStateMessage(),
-            '/\{expected\}/' => fn () => $this->getExpectedValue(),
-            '/\{actual\}/'   => fn () => $this->getActualValue(),
+            '/\{expected\}/' => fn () => $this->getExpectedValue($withType),
+            '/\{actual\}/'   => fn () => $this->getActualValue($withType),
         ], $this->message);
     }
 
@@ -74,17 +77,19 @@ abstract class TestAssertion
     }
 
     /**
+     * @param bool $withType
      * @return mixed
      */
-    public function getExpectedValue(): mixed
+    public function getExpectedValue(bool $withType = false): mixed
     {
         return $this->expected;
     }
 
     /**
+     * @param bool $withType
      * @return mixed
      */
-    public function getActualValue(): mixed
+    public function getActualValue(bool $withType = false): mixed
     {
         return $this->actual;
     }

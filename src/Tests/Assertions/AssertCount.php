@@ -4,6 +4,9 @@ namespace Vyui\Tests\Assertions;
 
 class AssertCount extends TestAssertion
 {
+    /**
+     * @var string
+     */
     protected string $message = "{state} asserting array has a count of {expected}";
 
     /**
