@@ -2,8 +2,6 @@
 
 namespace Vyui\Tests\Assertions;
 
-use Vyui\Support\Helpers\_String;
-
 abstract class TestAssertion
 {
     /**
@@ -56,15 +54,16 @@ abstract class TestAssertion
     /**
      * Get the message for the assertion upon eveluation. which will essentially act as an output buffer.
      *
-     * @param bool $withType
      * @return string
      */
-    public function getMessage(bool $withType = false): string
+    public function getMessage(): string
     {
         return preg_replace_callback_array([
-            '/\{state\}/'    => fn () => $this->getStateMessage(),
-            '/\{expected\}/' => fn () => $this->getExpectedValue($withType),
-            '/\{actual\}/'   => fn () => $this->getActualValue($withType),
+            '/\{state\}/'        => fn () => $this->getStateMessage(),
+            '/\{expected\}/'     => fn () => $this->getExpectedValue(),
+            '/\{actual\}/'       => fn () => $this->getActualValue(),
+            '/\{expectedType\}/' => fn () => $this->getExpectedValueType(),
+            '/\{actualType\}/'   => fn () => $this->getActualValueType()
         ], $this->message);
     }
 
@@ -77,21 +76,46 @@ abstract class TestAssertion
     }
 
     /**
-     * @param bool $withType
+     * @param bool $state
+     * @return $this
+     */
+    public function setState(bool $state): static
+    {
+        $this->state = $state;
+
+        return $this;
+    }
+
+    /**
      * @return mixed
      */
-    public function getExpectedValue(bool $withType = false): mixed
+    public function getExpectedValue(): mixed
     {
         return $this->expected;
     }
 
     /**
-     * @param bool $withType
+     * @return string
+     */
+    public function getExpectedValueType(): string
+    {
+        return gettype($this->expected);
+    }
+
+    /**
      * @return mixed
      */
-    public function getActualValue(bool $withType = false): mixed
+    public function getActualValue(): mixed
     {
         return $this->actual;
+    }
+
+    /**
+     * @return string
+     */
+    public function getActualValueType(): string
+    {
+        return gettype($this->actual);
     }
 
     /**

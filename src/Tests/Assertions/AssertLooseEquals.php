@@ -14,6 +14,6 @@ class AssertLooseEquals extends TestAssertion
      */
     public function evaluate(): bool
     {
-        return $this->state = $this->expected == $this->actual;
+        return $this->expected == $this->actual;
     }
 }

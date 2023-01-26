@@ -14,6 +14,6 @@ class AssertInstanceOf extends TestAssertion
      */
     public function evaluate(): bool
     {
-        return $this->state = $this->expected instanceof $this->actual;
+        return $this->expected instanceof $this->actual;
     }
 }

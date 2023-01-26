@@ -14,6 +14,6 @@ class AssertNotNull extends TestAssertion
      */
     public function evaluate(): bool
     {
-        return $this->state = ! is_null($this->expected);
+        return ! is_null($this->expected);
     }
 }

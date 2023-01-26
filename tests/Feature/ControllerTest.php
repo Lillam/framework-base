@@ -11,5 +11,8 @@ class ControllerTest extends TestCase
     {
         $controller = app()->make(UserController::class);
         $this->assertInstanceOf($controller, UserController::class);
+
+        $this->assertArrayHasKey('test', ['test' => true]);
+        $this->assertArrayHasNotKey('test', ['nottest' => false]);
     }
 }

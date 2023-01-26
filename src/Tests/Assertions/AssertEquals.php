@@ -7,13 +7,13 @@ class AssertEquals extends TestAssertion
     /**
      * @var string
      */
-    protected string $message = "{state} asserting that {expected} equals {actual}";
+    protected string $message = "{state} asserting that ({expectedType}) {expected} equals ({actualType}) {actual}";
 
     /**
      * @return bool
      */
     public function evaluate(): bool
     {
-        return $this->state = $this->expected === $this->actual;
+        return $this->expected === $this->actual;
     }
 }

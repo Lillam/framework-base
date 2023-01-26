@@ -3,7 +3,11 @@
 namespace Vyui\Tests;
 
 use Vyui\Support\Helpers\_String;
+use Vyui\Tests\Assertions\AssertArray;
+use Vyui\Tests\Assertions\AssertFloat;
+use Vyui\Tests\Assertions\AssertInt;
 use Vyui\Tests\Assertions\AssertNull;
+use Vyui\Tests\Assertions\AssertString;
 use Vyui\Tests\Assertions\AssertTrue;
 use Vyui\Tests\Assertions\AssertCount;
 use Vyui\Tests\Assertions\AssertEmpty;
@@ -14,8 +18,10 @@ use Vyui\Tests\Assertions\TestAssertion;
 use Vyui\Tests\Assertions\AssertLessThan;
 use Vyui\Tests\Assertions\AssertNotEmpty;
 use Vyui\Tests\Assertions\AssertInstanceOf;
+use Vyui\Tests\Assertions\AssertArrayHasKey;
 use Vyui\Tests\Assertions\AssertGreaterThan;
 use Vyui\Tests\Assertions\AssertLooseEquals;
+use Vyui\Tests\Assertions\AssertArrayNotHasKey;
 
 abstract class TestCase
 {
@@ -203,6 +209,66 @@ abstract class TestCase
     }
 
     /**
+     * Assert that the expected value exists as a key against the actual.
+     *
+     * @param string|int $expected
+     * @param array $actual
+     * @return void
+     */
+    public function assertArrayHasKey(string|int $expected, array $actual): void
+    {
+        $this->processAssertion(new AssertArrayHasKey($expected, $actual));
+    }
+
+    /**
+     * Assert that the expected value does not exist as a key against the actual.
+     *
+     * @param string|int $expected
+     * @param array $actual
+     * @return void
+     */
+    public function assertArrayHasNotKey(string|int $expected, array $actual): void
+    {
+        $this->processAssertion(new AssertArrayNotHasKey($expected, $actual));
+    }
+
+    /**
+     * @param mixed $expected
+     * @return void
+     */
+    public function assertIsInt(mixed $expected): void
+    {
+        $this->processAssertion(new AssertInt($expected));
+    }
+
+    /**
+     * @param mixed $expected
+     * @return void
+     */
+    public function assertIsFloat(mixed $expected): void
+    {
+        $this->processAssertion(new AssertFloat($expected));
+    }
+
+    /**
+     * @param mixed $expected
+     * @return void
+     */
+    public function assertIsString(mixed $expected): void
+    {
+        $this->processAssertion(new AssertString($expected));
+    }
+
+    /**
+     * @param mixed $expected
+     * @return void
+     */
+    public function assertIsArray(mixed $expected): void
+    {
+        $this->processAssertion(new AssertArray($expected));
+    }
+
+    /**
      * @return bool
      */
     public function wasSuccessful(): bool
@@ -278,7 +344,7 @@ abstract class TestCase
     {
         $this->assertions->add($this->totalAssertions += 1, $assertion);
 
-        if ($assertion->evaluate()) {
+        if ($assertion->setState($assertion->evaluate())->getState()) {
             $this->successfulAssertions += 1;
             return;
         }

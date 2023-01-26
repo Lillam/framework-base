@@ -29,6 +29,9 @@ class Test extends Command
     protected string $testsPath = '';
 
     /**
+     * The TestCase collection which will contain all of the test files that the developer is intending on having
+     * tested.
+     *
      * @var TestCollection
      */
     protected TestCollection $tests;
@@ -68,6 +71,9 @@ class Test extends Command
                 $classMethods = _Reflect::fromClass($test)->filterMethodsWhereContains('test')
                                                           ->getMethods();
 
+                // print separator so that we know what we're working with, when talking about each particular test in
+                // question. This is a way of knowing that the previous test assertions had ended and now we're onto
+                // a new set.
                 $this->print("______________________________________________\n");
 
                 foreach ($classMethods as $method) {
@@ -77,19 +83,27 @@ class Test extends Command
                     // it within the $method variable; apply once and then fire the original code that was intended.
                     $test->__call($method->getName());
 
+                    // Let the developer know which test is getting run; this would be the overall class file that's
+                    // being run; so the developer would know which file the test has been run and if an error occurrs
+                    // limits the place where they need to look.
                     $this->printInfo("Starting testing $test");
+
+                    // print to the devleoper that the specific test is being run, which if there happens to be an issue
+                    // around this point then the developer will know exactly where to focus their efforts.
                     $this->print($test->getTestName());
 
                     // iterate over all the assertions and print out what the status of the assertion is, since we have
                     // knowledge of the assertion whether it was successful or not... we can dump out the message here
                     foreach ($test->getAssertions() as $assertion) {
-                        $assertion->getState() ? $this->printSuccess("{$assertion->getMessage()} ✓")
-                                               : $this->printError("{$assertion->getMessage()} ✗");
+                        $assertion->getState() ? $this->printSuccess("✓ {$assertion->getMessage()}")
+                                               : $this->printError("✗ {$assertion->getMessage()}");
                     }
                 }
 
-                $test->wasSuccessful() ? $this->printSuccess("$test was successful ✓")
-                                       : $this->printError("$test was unsuccessful ✗");
+                // print to the user, depending on whether the particular assertion had passed or failed; if it had
+                // failed the developer would know exactly where to look.
+                $test->wasSuccessful() ? $this->printSuccess("✓ $test")
+                                       : $this->printError("✗ $test");
             }
 
             // If for some reason there was an issue in trying to reflect the class that we have (which there shouldn't
@@ -109,7 +123,7 @@ class Test extends Command
      */
     private function loadTests(): void
     {
-        $this->printSuccess('Test file has begun loading...');
+        $this->printInfo('Tests loading...');
 
         // acquire all the test files from the filesystem so that we can begin iterating over them and loading in the
         // classes and apply them into memory to later iterate over and begin running over the tests that reside within
@@ -127,9 +141,12 @@ class Test extends Command
                                               ->ucFirst();
 
             $this->tests->add($key, $this->application->make($test));
-            $this->printSuccess("$test has been loaded");
+
+            // todo attempt to capture the fact that a test file could be failed to be made and we can alert on this
+            //      here to the developer to let them know that something needs fixing.
+            $this->printSuccess("✓ $test");
         }
 
-        $this->printSuccess('Test files have been loaded...');
+        $this->printSuccess('Tests loaded...');
     }
 }

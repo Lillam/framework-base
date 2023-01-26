@@ -14,6 +14,6 @@ class AssertCount extends TestAssertion
      */
     public function evaluate(): bool
     {
-        return $this->state = $this->expected === count($this->actual);
+        return $this->expected === count($this->actual);
     }
 }

@@ -14,6 +14,6 @@ class AssertTrue extends TestAssertion
      */
     public function evaluate(): bool
     {
-        return $this->state = $this->expected === true;
+        return $this->expected === true;
     }
 }

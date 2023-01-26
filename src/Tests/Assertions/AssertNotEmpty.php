@@ -14,6 +14,6 @@ class AssertNotEmpty extends TestAssertion
      */
     public function evaluate(): bool
     {
-        return $this->state = ! empty($this->expected);
+        return ! empty($this->expected);
     }
 }
