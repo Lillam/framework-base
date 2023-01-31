@@ -1,8 +1,9 @@
 .env
 
 vendor/
+
 .DS_Store
 
-.idea
+.idea/
 
-storage
+storage/
