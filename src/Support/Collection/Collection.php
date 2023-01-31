@@ -11,6 +11,14 @@ class Collection implements ArrayAccess
 	 */
 	protected array $items = [];
 
+    /**
+     * @param array $items
+     */
+    public function __construct(array $items)
+    {
+        $this->items = $items;
+    }
+
 	/**
 	 * @param int|string $key
 	 * @return mixed
@@ -29,4 +37,14 @@ class Collection implements ArrayAccess
 	{
 		$this->items[$key] = $value;
 	}
+
+    /**
+     * Transform the object collection into an iterable array that's possible to foreach over.
+     *
+     * @return array
+     */
+    public function __toArray(): array
+    {
+        return $this->items;
+    }
 }

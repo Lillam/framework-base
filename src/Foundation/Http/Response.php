@@ -13,12 +13,30 @@ class Response implements ResponseContract
      */
     protected string $content;
 
-	/**
-	 * @param string $content
-	 */
-    public function __construct(string $content)
+    /**
+     * The status of the request that had been made.
+     *
+     * @var int
+     */
+    protected int $status;
+
+    /**
+     * The headers of the request hat had been made.
+     *
+     * @var array
+     */
+    protected array $headers;
+
+    /**
+     * @param string $content
+     * @param int $status
+     * @param array $headers
+     */
+    public function __construct(string $content, int $status = 200, array $headers = [])
     {
 		$this->content = $content;
+        $this->status = $status;
+        $this->headers = $headers;
     }
 
     /**
@@ -50,15 +68,32 @@ class Response implements ResponseContract
 		return $this;
     }
 
+    /**
+     * Send the headers of the request had been made.
+     *
+     * @return $this
+     */
     public function sendHeaders(): self
     {
-		if (headers_sent()) {
-			return $this;
+		if (! headers_sent()) {
+            header('Access-Control-Allow-Origin: *');
+            array_map(fn ($header) => header($header), $this->headers);
 		}
 
-		header('Access-Control-Allow-Origin: *');
-
 		return $this;
+    }
+
+    /**
+     * Return the response as a json response.
+     *
+     * @param array $data
+     * @return $this
+     */
+    public function json(array $data): self
+    {
+        $this->content = json_encode($data);
+
+        return $this;
     }
 
 	/**

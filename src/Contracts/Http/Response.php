@@ -14,9 +14,14 @@ interface Response
     /**
      * Send the content (basically echoing the content to the frontend client)
      *
-     * @return self
+     * @return $this
      */
     public function sendContent(): self;
 
+    /**
+     * Send the headers of the content, alerting the requester know of the status code.
+     *
+     * @return $this
+     */
     public function sendHeaders(): self;
 }

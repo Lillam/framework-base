@@ -14,6 +14,15 @@ class Markdown
 	 */
 	private string $content;
 
+    /**
+     * @var array|string[]
+     */
+    private array $parses = [
+        'headers',
+        'paragraphs',
+        'lists'
+    ];
+
 	/**
 	 * @param string $content
 	 */
@@ -42,14 +51,15 @@ class Markdown
 	}
 
 	/**
+     * Convert and cast to string which will automatically invoke the objects __toString() method; in essence which will
+     * simply be returning the object's content at the point in which will all be converted markdown.
+     *
 	 * @param string $content
 	 * @return string
 	 */
 	public static function convert(string $content): string
 	{
-		return (new static($content))
-			->convertHeaders()
-			->__toString();
+		return (string) (new self($content))->convertAll();
 	}
 
 	/**
@@ -58,7 +68,7 @@ class Markdown
 	 */
 	public static function parse(string $content): string
 	{
-		return (new static($content))
+		return (new self($content))
 			->parseHeaders()
 			->__toString();
 	}

@@ -29,7 +29,7 @@ class RouteCollection
 	 */
 	public function get(string $method): array
 	{
-		return $this->routes[$method] ?? [];
+		return $this->routes[strtoupper($method)] ?? [];
 	}
 
 	/**

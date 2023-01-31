@@ -9,12 +9,12 @@
 | the other is The router itself which is inside the application.
 |
 | $router = Vyui\Foundation\Container\Container::getInstance()->make(Vyui\Routing\Routing::class);
-| $router->get('/', 'Controller@method');
+| $router->get('/', 'WebController@method');
 |
 */
 
 use Vyui\Support\Facades\Route;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Web\WebController;
 
 //Route::get('/yascreem/{test}', function (): \Vyui\Foundation\Http\Response {
 //	return view('home2');
@@ -22,8 +22,9 @@ use App\Http\Controllers\Controller;
 
 Route::get('/yascreem/{test?}', fn ($test) => view('home2', ['test' => $test]));
 
-Route::get('/', [Controller::class, 'index']);
-Route::get('/tests/{test}/{testing}', [\App\Http\Controllers\Controller::class, 'test']);
-Route::get('/tasks/{task?}', [\App\Http\Controllers\Controller::class, 'index']);
+Route::get('/', [WebController::class, 'index']);
+Route::get('/tests/{test}/{testing}', [\App\Http\Controllers\Web\WebController::class, 'test']);
+Route::get('/tasks/{task?}', [\App\Http\Controllers\Web\WebController::class, 'index']);
 
-// dd(Route::allRoutes());
+Route::get('/api/users', [\App\Http\Controllers\Api\UserController::class, 'index']);
+Route::post('/api/login', [\App\Http\Controllers\Api\UserController::class, 'login']);

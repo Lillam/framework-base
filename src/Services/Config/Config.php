@@ -2,6 +2,7 @@
 
 namespace Vyui\Services\Config;
 
+use Vyui\Support\Helpers\Arrayable;
 use Vyui\Contracts\Config\Config as ConfigContract;
 
 class Config implements ConfigContract
@@ -132,37 +133,17 @@ class Config implements ConfigContract
         // iterate over all the config files. so that we can begin placing them into storage of the application. this
         // will provide a later ease of access to the necessary configurations without having to keep re-opening files
         foreach ($files as $file) {
-            $configKey = str_replace('.php', '', $file);
-            $configs = require_once $this->getPath($file);
+            $this->set(
+                str_replace('.php', '', $file),
+                require_once $this->getPath($file)
+            );
+        }
 
-            if ($this->isFlattened) {
-                $this->flatten($configKey, $configs);
-                continue;
-            }
-
-            $this->set($configKey, $configs);
+        if ($this->isFlattened) {
+            $this->configs = (new Arrayable($this->configs))->flatten(true)
+                                                            ->toArray();
         }
 
         return $this;
-    }
-
-    /**
-     * Flatten the configs into a single strand array, rather than it being multidimensional. this will be for ease of
-     * access in writing getter configs such as "database.driver.connection" etc.
-     *
-     * @param $key
-     * @param $configs
-     * @return void
-     */
-    private function flatten($key, $configs): void
-    {
-        foreach ($configs as $configKey => $config) {
-            if (is_array($config)) {
-                $this->flatten("$key.$configKey", $config);
-                continue;
-            }
-
-            $this->set("$key.$configKey", $config);
-        }
     }
 }

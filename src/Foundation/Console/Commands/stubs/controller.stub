@@ -8,6 +8,11 @@ use Vyui\Services\Routing\Controller;
 
 class {{ class }} extends Controller
 {
+    public function __construct()
+    {
+
+    }
+
     /**
      * @param Request $request
      * @return Response

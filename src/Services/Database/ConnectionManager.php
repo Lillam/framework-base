@@ -4,9 +4,9 @@ namespace Vyui\Services\Database;
 
 use Closure;
 use Vyui\Exceptions\Database\ConnectionException;
-use Vyui\Contracts\Database\ConnectionManagerInterface;
+use Vyui\Contracts\Database\ConnectionManager as ConnectionManagerContract;
 
-class ConnectionManager implements ConnectionManagerInterface
+class ConnectionManager implements ConnectionManagerContract
 {
 	/**
 	 * @var Connection[]

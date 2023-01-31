@@ -20,6 +20,26 @@ class Line
     }
 
     /**
+     * Get the first character of the line
+     *
+     * @return string
+     */
+    public function getFirstCharacter(): string
+    {
+        return $this->content[0];
+    }
+
+    /**
+     * Get the content that resides against the file line.
+     *
+     * @return string
+     */
+    public function getContent(): string
+    {
+        return $this->content;
+    }
+
+    /**
      * Transform the line into a string and return it to the necessary place of access as a string.
      *
      * @return string

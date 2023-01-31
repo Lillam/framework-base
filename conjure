@@ -1,10 +1,10 @@
 #!/usr/bin/env php
 <?php
 
-define('VYUI_START', microtime(true));
-
 use App\Console\Kernel;
 use Vyui\Foundation\Console\Input;
+
+define("FRAMEWORK_START", microtime(true));
 
 /*
 |-----------------------------------------------------------------------------------------------------------------------

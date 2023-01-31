@@ -21,7 +21,6 @@ trait Where
 	 * @param string|null $operator
 	 * @param mixed|null $value
 	 * @return $this
-	 * @throws Exception
 	 */
 	public function where(string|Closure $column, ?string $operator = null, mixed $value = null): static
 	{
@@ -90,7 +89,6 @@ trait Where
 	 * @param string $operator
 	 * @param string|null $boolean
 	 * @return $this
-	 * @throws Exception
 	 */
 	private function setWhere(string $column, string $operator, ?string $boolean = null): static
 	{

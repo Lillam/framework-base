@@ -5,7 +5,8 @@
     "autoload": {
         "psr-4": {
             "Vyui\\": "src/",
-            "App\\": "app/"
+            "App\\": "app/",
+            "Tests\\": "tests/"
         },
         "files": [
             "src/helpers.php"
@@ -19,7 +20,8 @@
     ],
     "minimum-stability": "stable",
     "require": {
-        "php": "^8.1.1",
-        "ext-pdo": "*"
+        "php": "^8.1",
+        "ext-pdo": "*",
+        "ext-mbstring": "*"
     }
 }

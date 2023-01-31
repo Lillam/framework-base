@@ -16,9 +16,8 @@ if (! function_exists('app')) {
      * @return mixed
      */
     function app(?string $abstract = null, array $parameters = []): mixed {
-        return $abstract !== null
-            ? Container::getInstance()->make($abstract, $parameters)
-            : Container::getInstance();
+        return $abstract !== null ? Container::getInstance()->make($abstract, $parameters)
+                                  : Container::getInstance();
     }
 }
 
@@ -31,16 +30,7 @@ if (! function_exists('dd')) {
      * @return void
      */
     function dd(...$variables): void {
-		echo '<div style="word-break: break-word; word-wrap: break-word">';
-
-        foreach ($variables as $variable) {
-            echo '<pre style="padding: 20px; border-radius: 4px; background-color: #f1f1f1;">';
-                var_dump($variable);
-            echo '</pre>';
-        }
-
-		echo '</div>';
-
+		dump($variables);
         die();
     }
 }
@@ -56,7 +46,7 @@ if (! function_exists('dump')) {
 		echo '<div style="word-break: break-word; word-wrap: break-word">';
 		foreach ($variables as $variable) {
 			echo '<pre style="padding: 20px; border-radius: 4px; background-color: #f1f1f1;">';
-			var_dump($variable);
+                var_dump($variable);
 			echo '</pre>';
 		}
 		echo '</div>';
@@ -113,14 +103,53 @@ if (! function_exists('request')) {
      * @return mixed
      */
     function request($key = null, $default = null): mixed {
-        return empty($key)
-            ? app(Request::class)
-            : app(Request::class)->get($key, $default);
+        return ! $key ? app(Request::class)
+                      : app(Request::class)->get($key, $default);
     }
 }
 
 if (! function_exists('asset')) {
+    /**
+     * Get the asset url of the application, predominanlty utilised for getting any asset that might reside within the
+     * public namespace.
+     *
+     * @param string $uri
+     * @param int|null $version
+     * @return string
+     */
 	function asset(string $uri, ?int $version = null): string {
-		return env('APP_URL') . "/$uri?version=$version";
+        $extra = $version ? "?version=$version" : '';
+
+		return env('APP_URL') . "/{$uri}{$extra}";
 	}
+}
+
+if (! function_exists('response')) {
+    /**
+     * Return a response in a simpler way rather than instantiating a response object each location a response is
+     * needed. A helper utility method for simplifying the process.
+     *
+     * @param string $content
+     * @param int $status
+     * @param array $headers
+     * @return Response
+     */
+    function response(string $content = '', int $status = 200, array $headers = []): Response {
+        return new Response($content, $status, $headers);
+    }
+}
+
+if (! function_exists('types')) {
+    /**
+     * This method is designed to take in values such like:
+     * [1, "1", [1, 2, 3]] and return...
+     * [integer, string, array] so this method would be a helper function in oder to return the types in the same
+     * structure as the array that was provided to it.
+     *
+     * @param ...$values
+     * @return array
+     */
+    function types(...$values): array {
+        return array_map(fn ($value) => gettype($value), $values);
+    }
 }

@@ -5,9 +5,9 @@ namespace Vyui\Foundation\Container;
 use Closure;
 use TypeError;
 use ReflectionClass;
-use ReflectionException;
 use ReflectionParameter;
-use Vyui\Support\_Reflect;
+use ReflectionException;
+use Vyui\Support\Helpers\_Reflect;
 use Vyui\Contracts\Container as ContainerContract;
 use Vyui\Exceptions\Container\BindingResolutionException;
 
@@ -86,6 +86,7 @@ class Container implements ContainerContract
      * @param string $abstract
      * @param array $parameters
      * @return mixed
+     *
      * @throws BindingResolutionException
      * @throws ReflectionException
      */
@@ -250,16 +251,16 @@ class Container implements ContainerContract
         // create an instance of the concrete type that's been registered against the binding. This will  instantiate
         // the necessary types and any nested dependencies recursively until all has been resolved.
         if ($this->isBuildable($abstract, $concrete = $this->getConcrete($abstract))) {
-            $abstractObject = $this->build($concrete);
+            $abstraction = $this->build($concrete);
         } else {
-            $abstractObject = $this->make($concrete);
+            $abstraction = $this->make($concrete);
         }
 
         // if this particular binding had been marked as an item of which wants to be shared, then we're going to need
         // to store this in memory, so that upon requesting this abstraction again, we're going to be able to return it
         // once again, without the need for building out the abstraction again.
         if ($this->isShared($abstract)) {
-            $this->instances[$abstract] = $abstractObject;
+            $this->instances[$abstract] = $abstraction;
         }
 
         // upon resolving the abstraction, we're going to mark the abstraction as resolved and begin counting how many
@@ -268,7 +269,7 @@ class Container implements ContainerContract
 
 		array_pop($this->with);
 
-        return $abstractObject;
+        return $abstraction;
     }
 
     /**
@@ -385,13 +386,13 @@ class Container implements ContainerContract
 		foreach ($dependencies as $dependencyParameter) {
 			if ($this->hasParameterOverride($dependencyParameter)) {
 				$results[] = $this->getParameterOverride($dependencyParameter);
-				continue;
+                continue;
 			}
 
 			// Run off and acquire the class, if this is null, then the dependency that we're dealing with is of course
 			// a primitive type... if it's not a class, then we're not going to be able to resolve it, in which this
 			// naturally would error out, to which we're then going to resolve the primitive type instead.
-			$result =  is_null(_Reflect::getParameterClassName($dependencyParameter))
+			$result = is_null(_Reflect::getParameterClassName($dependencyParameter))
                 ? $this->resolvePrimitive($dependencyParameter)
                 : $this->resolveClass($dependencyParameter);
 
@@ -400,9 +401,10 @@ class Container implements ContainerContract
 			// the necessary dependency.
 			if ($dependencyParameter->isVariadic()) {
 				$results = array_merge($results, $result);
-			} else {
-				$results[] = $result;
+                continue;
 			}
+
+            $results[] = $result;
 		}
 
 		return $results;

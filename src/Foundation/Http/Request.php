@@ -2,49 +2,56 @@
 
 namespace Vyui\Foundation\Http;
 
+use Vyui\Foundation\Http\Request\GetParameters;
+use Vyui\Foundation\Http\Request\FileParameters;
+use Vyui\Foundation\Http\Request\PostParameters;
+use Vyui\Foundation\Http\Request\CookieParameters;
+use Vyui\Foundation\Http\Request\ServerParameters;
+use Vyui\Foundation\Http\Request\AttributeParameters;
+
 class Request
 {
     /**
      * The GET parameters of the request.
      *
-     * @var array
+     * @var GetParameters
      */
-    protected array $request;
+    protected GetParameters $query;
 
     /**
      * The POST parameters of the request.
      *
-     * @var array
+     * @var PostParameters
      */
-    protected array $query;
+    protected PostParameters $request;
 
     /**
      * The Request attributes (parameters of which are passed from the PATH_INFO...)
      *
-     * @var array
+     * @var AttributeParameters
      */
-    protected array $attributes;
+    protected AttributeParameters $attributes;
 
     /**
      * The COOKIE parameters for the request.
      *
-     * @var array
+     * @var CookieParameters
      */
-    protected array $cookies;
+    protected CookieParameters $cookies;
 
     /**
      * The FILES parameters of the request.
      *
-     * @var array
+     * @var FileParameters
      */
-    protected array $files;
+    protected FileParameters $files;
 
     /**
      * The SERVER parameters of the request.
      *
-     * @var array
+     * @var ServerParameters
      */
-    protected array $server;
+    protected ServerParameters $server;
 
     /**
      * @param array $query The GET parameters of the request.
@@ -100,16 +107,16 @@ class Request
         array $files = [],
         array $server = []
     ): void {
-        $this->query = $query;
-        $this->request = $request;
-        $this->attributes = $attributes;
-        $this->cookies = $cookies;
-        $this->files = $files;
-        $this->server = $server;
+        $this->query = new GetParameters($query);
+        $this->request = new PostParameters($request);
+        $this->attributes = new AttributeParameters($attributes);
+        $this->cookies = new CookieParameters($cookies);
+        $this->files = new FileParameters($files);
+        $this->server = new ServerParameters($server);
     }
 
     /**
-     * Get an input variable from the request (_GET, _POST) super globals.
+     * Get an input variable from the request (_GET) super global.
      *
      * @param string $key
      * @param $default
@@ -117,7 +124,19 @@ class Request
      */
     public function get(string $key, $default = null): mixed
     {
-        return $this->query[$key] ?? $this->request[$key] ?? $default;
+        return $this->query->get($key, $default);
+    }
+
+    /**
+     * Get an input from the request (_POST)
+     *
+     * @param string $key
+     * @param $default
+     * @return mixed
+     */
+    public function input(string $key, $default = null): mixed
+    {
+        return $this->request->get($key, $default);
     }
 
     /**
@@ -137,7 +156,8 @@ class Request
      */
     public function getUri(): string
     {
-        return $this->server('request_uri');
+        return $this->server('php_self') ??
+               $this->server('request_uri');
     }
 
 	/**
@@ -148,7 +168,7 @@ class Request
 	 */
 	public function isUri(string $uri): bool
 	{
-		return $this->server('request_uri') === $uri;
+		return $this->getUri() === $uri;
 	}
 
 	/**
@@ -166,6 +186,17 @@ class Request
 	}
 
     /**
+     * Method for acquiring a header from the request
+     *
+     * @param string $header
+     * @return mixed
+     */
+    public function getHeader(string $header): mixed
+    {
+        return $this->server($header);
+    }
+
+    /**
      * Method for getting particular variables out of the server variable.
      *
      * @param string $key
@@ -173,6 +204,72 @@ class Request
      */
     private function server(string $key): mixed
     {
-        return $this->server[strtoupper($key)] ?? null;
+        return $this->server->get(mb_strtoupper($key));
+    }
+
+    /**
+     * @return GetParameters
+     */
+    public function getQuery(): GetParameters
+    {
+        return $this->query;
+    }
+
+    /**
+     * @return PostParameters
+     */
+    public function getRequest(): PostParameters
+    {
+        return $this->request;
+    }
+
+    /**
+     * @return CookieParameters
+     */
+    public function getCookies(): CookieParameters
+    {
+        return $this->cookies;
+    }
+
+    /**
+     * @return FileParameters
+     */
+    public function getFiles(): FileParameters
+    {
+        return $this->files;
+    }
+
+    /**
+     * @return ServerParameters
+     */
+    public function getServer(): ServerParameters
+    {
+        return $this->server;
+    }
+
+    /**
+     * @return AttributeParameters
+     */
+    public function getAttributes(): AttributeParameters
+    {
+        return $this->attributes;
+    }
+
+    /**
+     * Acquire all the information about the request; getting all the parameters and merging them all into a singular
+     * array that we can return to the user.
+     *
+     * @return array
+     */
+    public function getAllParameters(): array
+    {
+        return [
+            ...$this->getAttributes()->all(),
+            ...$this->getQuery()->all(),
+            ...$this->getRequest()->all(),
+            ...$this->getFiles()->all(),
+            ...$this->getServer()->all(),
+            ...$this->getCookies()->all(),
+        ];
     }
 }

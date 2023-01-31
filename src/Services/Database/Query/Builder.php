@@ -194,11 +194,11 @@ abstract class Builder
 	}
 
 	/**
-	 * @return array
+	 * @return Model|null
 	 */
-	public function first(): array
+	public function first(): Model|null
 	{
-		return $this->take(1)->all();
+		return $this->take(1)->all()[0] ?? null;
 	}
 
 	/**
@@ -226,11 +226,11 @@ abstract class Builder
 	 */
 	private function setQueryType(string $type): static
 	{
-		if (! in_array($type, $this->queryTypes)) {
-			throw new InvalidQueryTypeException(
-				"[$type] does not exist within " . implode(',', $this->queryTypes)
-			);
-		}
+//		if (! in_array($type, $this->queryTypes)) {
+//			throw new InvalidQueryTypeException(
+//				"[$type] does not exist within " . implode(',', $this->queryTypes)
+//			);
+//		}
 
 		$this->type = $type;
 

@@ -6,6 +6,7 @@ use Vyui\Foundation\Application;
 use Vyui\Foundation\Console\Commands\Make;
 use Vyui\Foundation\Console\Commands\Command;
 use Vyui\Contracts\Console\Kernel as KernelContract;
+use Vyui\Foundation\Console\Commands\Test;
 
 class Kernel implements KernelContract
 {
@@ -20,7 +21,8 @@ class Kernel implements KernelContract
 	 * @var string[]
 	 */
 	protected array $commands = [
-		'make' => Make::class
+		'make' => Make::class,
+        'test' => Test::class
 	];
 
 	/**
@@ -67,12 +69,15 @@ class Kernel implements KernelContract
 		return $this->application->make($this->commands[$key], ['arguments' => $arguments]);
 	}
 
-	/**
-	 * @param Input $input
-	 * @param Output|null $output
-	 * @return int
-	 * @throws CommandNotFoundException
-	 */
+    /**
+     * Take an input as well as output stream and buffer the output to the console. returning a success if the whole
+     * process had been carried out successfully.
+     *
+     * @param Input $input
+     * @param Output|null $output
+     * @return int
+     * @throws CommandNotFoundException
+     */
 	public function handle(Input $input, ?Output $output = null): int
 	{
 		$command = $this->getCommand(

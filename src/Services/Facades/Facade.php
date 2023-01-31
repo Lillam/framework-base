@@ -3,8 +3,10 @@
 namespace Vyui\Services\Facades;
 
 use RuntimeException;
+use ReflectionException;
 use Vyui\Contracts\Container;
 use Vyui\Foundation\Application;
+use Vyui\Exceptions\Container\BindingResolutionException;
 
 abstract class Facade
 {
@@ -38,6 +40,8 @@ abstract class Facade
      * @param string $method
      * @param array $arguments
      * @return mixed
+     * @throws ReflectionException
+     * @throws BindingResolutionException
      */
     public static function __callStatic(string $method, array $arguments = []): mixed
     {

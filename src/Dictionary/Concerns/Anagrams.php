@@ -136,19 +136,17 @@ trait Anagrams
 	/**
 	 * Acquire all the words that can be found from an anagram.
 	 *
-	 * @param int $minLength
-	 * @param int $maxLength
 	 * @return array
 	 */
-	public function findWordsFromAnagram(int $minLength = 3, int $maxLength = 7): array
+	public function findWordsFromAnagram(): array
 	{
-		foreach ($this->filesystem->files($this->getPath()) as $file) {
-			array_map(function($line) use ($minLength, $maxLength) {
-				if ($this->isValidAnagram($line) && $this->isValidAnagramToWord($line)) {
-					$this->addWordToAnagrams($line);
-				}
-				$this->wordsInDictionary += 1;
-			}, $this->filesystem->lines($file));
+		foreach ($this->filesystem->files($this->getPath("/text")) as $file) {
+			array_map(function (string $line) {
+                if ($this->isValidAnagram($line) && $this->isValidAnagramToWord($line)) {
+                    $this->addWordToAnagrams($line);
+                }
+                $this->wordsInDictionary += 1;
+            }, $this->filesystem->lines($file));
 		}
 
 		return $this->wordsFromAnagram;
@@ -157,14 +155,10 @@ trait Anagrams
 	/**
 	 * Acquire all the words that can be found from an anagram but in reverse.
 	 *
-	 * @param int $minLength
-	 * @param int $maxLength
 	 * @return array
 	 */
-	public function findWordsFromAnagramInReverse(int $minLength = 3, int $maxLength = 7): array
+	public function findWordsFromAnagramInReverse(): array
 	{
-		$this->wordsFromAnagram = array_reverse($this->findWordsFromAnagram($minLength, $maxLength));
-
-		return $this->wordsFromAnagram;
+		return $this->wordsFromAnagram = array_reverse($this->findWordsFromAnagram());
 	}
 }

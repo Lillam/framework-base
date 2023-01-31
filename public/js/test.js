@@ -7,7 +7,7 @@ const successOrError = (is, { expected, actual }, error = null) => {
     }
 
     const errorMessage = error
-        ? `Fail - ${epected} ${error} ${actual}`
+        ? `Fail - ${expected} ${error} ${actual}`
         : `Fail - Actual: ${actual}, Expected: ${expected}`
 
     throw new Error(errorMessage);
@@ -52,7 +52,7 @@ const it = (testName, callback) => {
     }
 };
 
-// describe('My Test Suite', () => {
+// describe('My Tests Suite', () => {
 //     it('1 === 1', () => {
 //         expect(1).toBe(1);
 //     });

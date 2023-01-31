@@ -1,9 +1,10 @@
 <?php
 
-define("FRAMEWORK_START", microtime(true));
-
 use Vyui\Contracts\Http\Kernel;
+use Vyui\Foundation\Application;
 use Vyui\Foundation\Http\Request;
+
+define("FRAMEWORK_START", microtime(true));
 
 /*
 |-----------------------------------------------------------------------------------------------------------------------
@@ -26,8 +27,13 @@ require '../vendor/autoload.php';
 |
 */
 
-/** @var \Vyui\Foundation\Application $application */
+/** @var Application $application */
 $application = require_once '../bootstrap/application.php';
+
+
+if (env('APP_ENV') === 'dev') {
+    require_once './playground.php';
+}
 
 /*
 |-----------------------------------------------------------------------------------------------------------------------
@@ -41,7 +47,7 @@ $application = require_once '../bootstrap/application.php';
 /** @var \App\Http\Kernel $kernel */
 $kernel = $application->make(Kernel::class);
 
-/*
+/*s
 |-----------------------------------------------------------------------------------------------------------------------
 | Prepare and Ship the Request into a Response.
 |-----------------------------------------------------------------------------------------------------------------------
@@ -52,89 +58,6 @@ $kernel = $application->make(Kernel::class);
 */
 
 $response = $kernel->handle($request = Request::capture());
-
-//$connection = $application->make(\Vyui\Services\Database\ConnectionManagerInterface::class);
-//dd($connection->connection('mysql')->query()->where(function ($query) {
-//
-//}));
-
-//dd(\App\Models\News::query()->insert([
-//	'test' => 'testing',
-//	'another_test' => 10
-//]));
-
-// \Vyui\Support\Facades\Storage::disk('local');
-//
-//dd(
-//	\App\Models\News::query()
-//		->join('news_category', 'news.category_id', '=', 'news_category.id')
-//		->where('news_category.id', '=', 2)
-//		->all()
-//);
-//
-//dd(
-//	\App\Models\NewsCategory::query()
-//		->select('id', 'url')
-//		->where('id', '>=', 1)
-//		->where(function ($query) {
-//			$query->where('url', '=', 'website-news')
-//				  ->orWhere('url', '=', 'server-news');
-//		})
-//		->orWhere(function ($query) {
-//			$query->where('id', '=', 1)
-//				   ->orWhere('id', '=', 2);
-//		})
-//		->all(),
-//	\App\Models\News::query()
-//		->where('category_id', '=', 2)
-//		->limit(1)
-//		->all()
-//);
-
-//
-//$start = microtime(true);
-//
-
-// /** @var \Vyui\Dictionary\Dictionary $dictionary */
-// $dictionary = $application->make(\Vyui\Dictionary\Dictionary::class);
-
-// dd($dictionary->convertDictionaryFilesToPHPFiles());
-
-//$dictionary->setAnagram(request('word') ?? 'cardiac')
-//	->findWordsFromAnagram(
-//		(int) request('min',3),
-//		(int) request('max', 7)
-//	);
-
-// dd($dictionary);
-
-//
-//$string = <<<EOL
-//# Heading
-//hello there, this is just something that should turn into a p tag?
-//- something
-//- something
-// - something
-//  - something
-//## Sub Heading
-//this is also something that should convert into a p tag?
-//### Sub Heading
-//#### Sub Heading
-//##### Sub Heading
-//###### Sub Heading
-//EOL;
-//
-//dd(
-//	\Vyui\Support\Markdown\Markdown::parse($string),
-//	\Vyui\Support\Markdown\Markdown::convert($string)
-//);
-//
-//dd(
-//    $dictionary,
-//    $time = microtime(true) - $start,
-//    $application->buildTime() < LARAVEL_BUILD_TIME ? 'faster' : 'slower',
-//    $application->buildTime()
-//);
 
 /*
 |-----------------------------------------------------------------------------------------------------------------------
