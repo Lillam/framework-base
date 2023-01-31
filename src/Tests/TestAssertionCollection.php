@@ -27,9 +27,9 @@ class TestAssertionCollection
     public function add(int|string $key, mixed $value): static
     {
         if ($this->exists($key)) {
-            // todo add a method here that generates a warning to the user that the particular item has already been
-            //      added to the array... which could potentially spark the developer to alter the means in which they
-            //      are implementing a feature with this method.
+            // todo | Add a method here that generates a warning to the user that the particular item has already been
+            //      | added to the array... which could potentially spark the developer to alter the means in which
+            //      | they are implementing a feature with this method.
         }
 
         $this->items[$key] = $value;
@@ -50,11 +50,12 @@ class TestAssertionCollection
 
     /**
      * @param int|string $key
+     * @param mixed $default
      * @return mixed
      */
-    public function get(int|string $key): mixed
+    public function get(int|string $key, mixed $default = null): mixed
     {
-        return $this->items[$key] ?? null;
+        return $this->items[$key] ?? $default;
     }
 
     /**

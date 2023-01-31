@@ -17,7 +17,7 @@ class WebController extends Controller
 	 */
 	public function index(Request $request, ?Task $task = null): Response
 	{
-        dd($request->getUri(), $task->get('name'));
+
 //        return response()->json(array_map(function ($item) {
 //            return $item->getAttributes();
 //        }, User::all()));

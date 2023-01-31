@@ -305,11 +305,9 @@ class Route
 		// $neededParameters = _Reflect::getClassMethodParameterNames($object, $action);
         $neededParameters = _Reflect::getClassMethodParameterInfo($object, $action);
 
-        // todo previously this was the return, if we want to return to a previous state of work then this particular
-        //      snippet of code wants to be simply returned as opposed to be defined as parameters.
         // iterate over the parameters of the request which will be the ones that we've decided that are necessary
         // to the request; and if this is the case; then we're simply going to filter the ones that aren't really
-        // neccessary to the request, or necessary in terms of what's been asked for within the controller that's going
+        // necessary to the request, or necessary in terms of what's been asked for within the controller that's going
         // to be spooled up.
 		$parameters = array_filter(
             $this->getParameters(),

@@ -196,7 +196,7 @@ class Make extends Command
 		$this->filesystem->makeDirectory($this->getMakingDirectory(), 0755, true);
 		$this->filesystem->put($this->getMakingFile(), $this->compile());
 
-		$this->print(ucwords($this->getMaking()) . ' has been generated successfully');
+		$this->output->print(ucwords($this->getMaking()) . ' has been generated successfully');
 
 		return 1;
 	}

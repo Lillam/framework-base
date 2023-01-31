@@ -3,6 +3,7 @@
 
 use App\Console\Kernel;
 use Vyui\Foundation\Console\Input;
+use Vyui\Foundation\Console\Output;
 
 define("FRAMEWORK_START", microtime(true));
 
@@ -43,4 +44,4 @@ $application = require_once __DIR__ . '/bootstrap/application.php';
 /** @var Kernel $kernel */
 $kernel = $application->make(Kernel::class);
 
-$kernel->handle($input = new Input);
+$kernel->handle(new Input, new Output);

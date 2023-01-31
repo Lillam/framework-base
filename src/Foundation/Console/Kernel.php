@@ -4,9 +4,9 @@ namespace Vyui\Foundation\Console;
 
 use Vyui\Foundation\Application;
 use Vyui\Foundation\Console\Commands\Make;
+use Vyui\Foundation\Console\Commands\Test;
 use Vyui\Foundation\Console\Commands\Command;
 use Vyui\Contracts\Console\Kernel as KernelContract;
-use Vyui\Foundation\Console\Commands\Test;
 
 class Kernel implements KernelContract
 {
@@ -80,10 +80,8 @@ class Kernel implements KernelContract
      */
 	public function handle(Input $input, ?Output $output = null): int
 	{
-		$command = $this->getCommand(
-			$input->getCommandName(),
-			$input->getTokens()
-		);
+		$command = $this->getCommand($input->getCommandName(), $input->getTokens())
+                        ->setOutput($output);
 
 		return $command->execute();
 	}

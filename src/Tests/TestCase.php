@@ -25,7 +25,7 @@ use Vyui\Tests\Assertions\AssertArrayNotHasKey;
 
 // todo | clean this class up wit the use of traits, meaning that the assertion of the type would be a trat that gets
 //      | applied to the class, which naturally would clean the above up; removing the needs of imports and more focuses
-//      | on what the test caase is aiming to do.
+//      | on what the test case is aiming to do.
 
 abstract class TestCase
 {
@@ -347,7 +347,7 @@ abstract class TestCase
         // first things first within this method we're going to want to figure out what the method's name is based on
         // it's defined name such as testSomethingIsActuallyTrue would want to be output as:
         // Test Something Is Actually True -> 3 assertions 3 passes check mark or
-        // Test Something IS Atually True -> 3 assertions 2 passes and 1 fail cross mark.
+        // Test Something Is Actually True -> 3 assertions 2 passes and 1 fail cross mark.
         $this->testName = _String::fromString($method)->convertCamelCaseToSentence();
 
         // call the expected method that the developer had originally intended.
@@ -363,32 +363,31 @@ abstract class TestCase
      */
     private function processAssertion(TestAssertion $assertion): void
     {
-        // eveluate the assertion and then upon doing so set the state of the assertion to the evaluation (true|false)
+        // evaluate the assertion and then upon doing so set the state of the assertion to the evaluation (true|false)
         // so that we can then later utilise this result
         $assertion->setState($assertion->evaluate());
 
         $this->assertions->add($this->getTestName(), array_merge(
-            $this->assertions->get($this->getTestName()) ?? [],
+            $this->assertions->get($this->getTestName(), []),
             [$assertion]
         ));
 
-        $this->incrementAssertions($assertion->getState());
+        $this->incrementAssertions($assertion);
     }
 
     /**
      * A method in which will increment the counts of passed/failed assertions as well as the total number of assertions
      * that has been made within the test case.
      *
-     * @param bool $evaluation
+     * @param TestAssertion $assertion
      * @return void
      */
-    private function incrementAssertions(bool $evaluation): void
+    private function incrementAssertions(TestAssertion $assertion): void
     {
         $this->totalAssertions += 1;
 
-        $evaluation
-            ? $this->passedAssertions += 1
-            : $this->failedAssertions += 1;
+        $assertion->getState() ? $this->passedAssertions += 1
+                               : $this->failedAssertions += 1;
     }
 
     /**

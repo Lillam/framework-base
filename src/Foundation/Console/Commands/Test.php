@@ -90,14 +90,12 @@ class Test extends Command
                 // print separator so that we know what we're working with, when talking about each particular test in
                 // question. This is a way of knowing that the previous test assertions had ended now we're onto
                 // a new set.
-                $this->print("├──────────────────────────────────────────────────────────");
+                $this->output->print("├──────────────────────────────────────────────────────────");
 
                 // Let the developer know which test is getting run; this would be the overall class file that's
-                // being run; so the developer would know which file the test has been run and if an error occurrs
+                // being run; so the developer would know which file the test has been run and if an error occurs
                 // limits the place where they need to look.
-                $this->printInfo("ⓘ Starting testing $test");
-
-                // $this->print("│");
+                $this->output->printInfo("ⓘ Starting testing $test");
 
                 foreach ($classMethods as $method) {
                     // Here we could actually do $test->{$method}() which will call the method directly however; This
@@ -106,16 +104,16 @@ class Test extends Command
                     // it within the $method variable; apply once and then fire the original code that was intended.
                     $test->__call($method->getName());
 
-                    // print to the devleoper that the specific test is being run, which if there happens to be an issue
-                    // around this point then the developer will know exactly where to focus their efforts.
-                    $this->print("ⓘ {$test->getTestName()}");
+                    // print to the developer that the specific test is being run, which if there happens to be an
+                    // issue around this point then the developer will know exactly where to focus their efforts.
+                    $this->output->print("ⓘ {$test->getTestName()}");
 
                     // iterate over all the assertions and print out what the status of the assertion is, since we have
                     // knowledge of the assertion whether it was successful or not... we can dump out the message here
                     foreach ($test->getAssertions($test->getTestName()) as $assertion) {
-                        $this->print("├── ", false);
-                        $assertion->getState() ? $this->printSuccess("✓ {$assertion->getMessage()}")
-                                               : $this->printError("✗ {$assertion->getMessage()}");
+                        $this->output->print("├── ", false);
+                        $assertion->getState() ? $this->output->printSuccess("✓ {$assertion->getMessage()}")
+                                               : $this->output->printError("✗ {$assertion->getMessage()}");
                     }
                 }
 
@@ -126,15 +124,15 @@ class Test extends Command
 
                 // print to the user, depending on whether the particular assertion had passed or failed; if it had
                 // failed the developer would know exactly where to look.
-                $test->wasSuccessful() ? $this->printSuccess("ⓘ {$this->getTotalTestAssertionMessage($test)}")
-                                       : $this->printError("ⓘ {$this->getTotalTestAssertionMessage($test)}");
+                $test->wasSuccessful() ? $this->output->printSuccess($this->getTotalTestAssertionMessage($test))
+                                       : $this->output->printError($this->getTotalTestAssertionMessage($test));
             }
 
             // If for some reason there was an issue in trying to reflect the class that we have (which there shouldn't
             // be), as we actually have the class implemented, in the loading; but we are going to print out that
             // something had gone wrong during the reflection.
             catch (Throwable $exception) {
-                $this->print("there was an issue testing $test [{$exception->getMessage()}]");
+                $this->output->print("there was an issue testing $test [{$exception->getMessage()}]");
             }
         }
 
@@ -147,7 +145,7 @@ class Test extends Command
      */
     private function getTotalTestAssertionMessage(TestCase $test): string
     {
-        return "$test [{$test->getPassedAssertions()}/{$test->getTotalAssertions()}]";
+        return "ⓘ $test [{$test->getPassedAssertions()}/{$test->getTotalAssertions()}]";
     }
 
     /**
@@ -180,9 +178,10 @@ class Test extends Command
             // from however this right now is just going to be firing up the testing files... this will be loaded
             // through the application so dependencies can be injected via the constructor as per needed to see how the
             // whole system would work with the dependency injector.
-            $test = _String::fromString($file)->remove([$this->application->getBasePath('/'), '.php'])
-                                              ->replace('/', '\\')
-                                              ->ucFirst();
+            $test = _String::fromString($file)
+                ->remove([$this->application->getBasePath('/'), '.php'])
+                ->replace('/', '\\')
+                ->ucFirst();
 
             // After loading the test file we can print out that the test had been successfully loaded and the
             // application had managed to make the test class.
@@ -194,7 +193,7 @@ class Test extends Command
             // we're going to need to alert to the developer via the console that there was something wrong during
             // the process of creation; and dump out the message of the exception to the reader.
             catch (Throwable $exception) {
-                $this->printError("✗ failed to load $test [{$exception->getMessage()}]");
+                $this->output->printError("✗ failed to load $test [{$exception->getMessage()}]");
             }
         }
 
