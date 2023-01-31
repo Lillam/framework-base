@@ -178,10 +178,9 @@ class Test extends Command
             // from however this right now is just going to be firing up the testing files... this will be loaded
             // through the application so dependencies can be injected via the constructor as per needed to see how the
             // whole system would work with the dependency injector.
-            $test = _String::fromString($file)
-                ->remove([$this->application->getBasePath('/'), '.php'])
-                ->replace('/', '\\')
-                ->ucFirst();
+            $test = _String::fromString($file)->remove([$this->application->getBasePath('/'), '.php'])
+                                              ->replace('/', '\\')
+                                              ->ucFirst();
 
             // After loading the test file we can print out that the test had been successfully loaded and the
             // application had managed to make the test class.
