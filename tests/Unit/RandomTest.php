@@ -8,7 +8,7 @@ class RandomTest extends TestCase
 {
     public function testSomethingReallyRandom(): void
     {
-        $this->assertEquals(1 + 1, 3);
+        $this->assertEquals(1 + 1, 2);
         $this->assertLooseEquals("1", 1);
         $this->assertTrue(true);
         $this->assertFalse(false);

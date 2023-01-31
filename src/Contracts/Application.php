@@ -25,11 +25,11 @@ interface Application
     /**
      * Register a provider into the application.
      *
-     * @param Service $provider
+     * @param Service $service
      * @param string|null $registerAs
      * @return void
      */
-    public function register(Service $provider, string $registerAs = null): void;
+    public function register(Service $service, string $registerAs = null): void;
 
     /**
      * Give control to the container in order to make the abstraction.

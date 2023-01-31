@@ -57,9 +57,10 @@ abstract class Command
      * so that we can refer back to what was outputted in a step by step of the command.
      *
      * @param string $printing
+     * @param bool $newLine
      * @return void
      */
-    public function print(string $printing): void
+    public function print(string $printing, bool $newLine = true): void
     {
         $this->printStack[] = $printing;
 
@@ -69,7 +70,7 @@ abstract class Command
             array_keys($printColourParsing),
             array_values($printColourParsing),
             $printing
-        ) . PHP_EOL;
+        ) . ($newLine ? PHP_EOL : '');
     }
 
     /**

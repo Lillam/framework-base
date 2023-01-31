@@ -69,27 +69,27 @@ class Application extends Container implements ApplicationContract
             \Vyui\Services\Routing\RoutingService::class,
             \Vyui\Services\View\ViewService::class,
 		 	\Vyui\Services\Database\DatabaseService::class
-        ] as $provider) {
-			$this->register(new $provider($this), $provider);
+        ] as $service) {
+			$this->register(new $service($this), $service);
 		}
     }
 
     /**
      * Register a provider into the application.
      *
-     * @param Service $provider
+     * @param Service $service
      * @param string|null $registerAs
      * @return void
      */
-    public function register(Service $provider, string $registerAs = null): void
+    public function register(Service $service, string $registerAs = null): void
     {
-        $provider->register();
+        $service->register();
 
         if ($registerAs === null) {
-            $registerAs = (string) $provider;
+            $registerAs = (string) $service;
         }
 
-        $this->services[$registerAs] = $provider;
+        $this->services[$registerAs] = $service;
         $this->servicesRegistered[$registerAs] = true;
     }
 
@@ -144,5 +144,16 @@ class Application extends Container implements ApplicationContract
     public function make(string $abstract, array $parameters = []): mixed
     {
         return parent::make($abstract, $parameters);
+    }
+
+    /**
+     * When this method runs; the object has destructed at this point we can find out whether or not the entire life
+     * cycle of the application had been faster than that of the stated.
+     *
+     * @return void
+     */
+    public function __destruct()
+    {
+        // dd($this->buildTimeFasterThan(env('LARAVEL_BUILD_TIME')));
     }
 }

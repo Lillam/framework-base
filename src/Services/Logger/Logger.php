@@ -2,10 +2,11 @@
 
 namespace Vyui\Services\Logger;
 
+use DateTime;
 use Vyui\Foundation\Application;
+use Vyui\Support\Helpers\_String;
 use Vyui\Contracts\Filesystem\Filesystem;
 use Vyui\Contracts\Logger\Logger as LoggerContract;
-use Vyui\Support\Helpers\_String;
 
 class Logger implements LoggerContract
 {
@@ -35,7 +36,7 @@ class Logger implements LoggerContract
      *
      * @var string
      */
-    protected string $path = "/storage/framework/logs/vyui.log";
+    protected string $path = '/storage/framework/logs/vyui.log';
 
     /**
      * @param Application $application
@@ -48,7 +49,7 @@ class Logger implements LoggerContract
     }
 
     /**
-     * Log something to a file.
+     * Log something to a file via a delay to the log output.
      *
      * @param string $contents
      * @return static
@@ -60,25 +61,58 @@ class Logger implements LoggerContract
         return $this;
     }
 
+    /**
+     * Log something to a file, immediately.
+     *
+     * @param string $contents
+     * @return void
+     */
     public function directLog(string $contents): void
     {
-        $this->filesystem->writeLine(
-            $this->application->getBasePath($this->path),
-            _String::fromString("$contents \n")
-                ->prepend((new \DateTime)->format('Y-m-d H:i'))
-        );
+        $this->filesystem->writeLine($this->getLogFilePath(), $this->getLogFileContents("$contents \n"));
+    }
+
+    /**
+     * Get the current timestamp at the point of activating the log.
+     *
+     * @return string
+     */
+    private function getCurrentTimeStamp(): string
+    {
+        return (new DateTime)->format('Y-m-d H:i');
+    }
+
+    /**
+     * Get the file log path.
+     *
+     * @return string
+     */
+    private function getLogFilePath(): string
+    {
+        return $this->application->getBasePath($this->path);
+    }
+
+    /**
+     * Get the log file contents, whether that's from the output passed through or from the contents that has been
+     * attached to the object.
+     *
+     * @param string|null $output
+     * @return string
+     */
+    private function getLogFileContents(?string $output = null): string
+    {
+        return _String::fromString($output ?? $this->output)->prepend($this->getCurrentTimeStamp())
+                                                                   ->toString();
     }
 
     /**
      * When this objects life span has been completed all the contents of the output will be dumped into a file
      * this will stop the unnecessary continuous writes to the file, reading/writing times.
+     *
+     * @return void
      */
     public function __destruct()
     {
-        $this->filesystem->writeLine(
-            $this->application->getBasePath($this->path),
-            _String::fromString($this->output)
-                ->prepend((new \DateTime)->format('Y-m-d H:i'))
-        );
+        $this->filesystem->writeLine($this->getLogFilePath(), $this->getLogFileContents());
     }
 }

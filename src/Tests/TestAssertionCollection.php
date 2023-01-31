@@ -50,6 +50,15 @@ class TestAssertionCollection
 
     /**
      * @param int|string $key
+     * @return mixed
+     */
+    public function get(int|string $key): mixed
+    {
+        return $this->items[$key] ?? null;
+    }
+
+    /**
+     * @param int|string $key
      * @return bool
      */
     public function exists(int|string $key): bool
@@ -58,11 +67,13 @@ class TestAssertionCollection
     }
 
     /**
+     * @param int|string|null $key
      * @return array
      */
-    public function all(): array
+    public function all(int|string $key = null): array
     {
-        return $this->items;
+        return $key ? $this->items[$key]
+                    : $this->items;
     }
 
     /**

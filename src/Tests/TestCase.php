@@ -3,16 +3,16 @@
 namespace Vyui\Tests;
 
 use Vyui\Support\Helpers\_String;
-use Vyui\Tests\Assertions\AssertArray;
-use Vyui\Tests\Assertions\AssertFloat;
 use Vyui\Tests\Assertions\AssertInt;
 use Vyui\Tests\Assertions\AssertNull;
-use Vyui\Tests\Assertions\AssertString;
 use Vyui\Tests\Assertions\AssertTrue;
+use Vyui\Tests\Assertions\AssertArray;
 use Vyui\Tests\Assertions\AssertCount;
 use Vyui\Tests\Assertions\AssertEmpty;
 use Vyui\Tests\Assertions\AssertFalse;
+use Vyui\Tests\Assertions\AssertFloat;
 use Vyui\Tests\Assertions\AssertEquals;
+use Vyui\Tests\Assertions\AssertString;
 use Vyui\Tests\Assertions\AssertNotNull;
 use Vyui\Tests\Assertions\TestAssertion;
 use Vyui\Tests\Assertions\AssertLessThan;
@@ -22,6 +22,10 @@ use Vyui\Tests\Assertions\AssertArrayHasKey;
 use Vyui\Tests\Assertions\AssertGreaterThan;
 use Vyui\Tests\Assertions\AssertLooseEquals;
 use Vyui\Tests\Assertions\AssertArrayNotHasKey;
+
+// todo | clean this class up wit the use of traits, meaning that the assertion of the type would be a trat that gets
+//      | applied to the class, which naturally would clean the above up; removing the needs of imports and more focuses
+//      | on what the test caase is aiming to do.
 
 abstract class TestCase
 {
@@ -37,7 +41,7 @@ abstract class TestCase
      *
      * @var int
      */
-    protected int $successfulAssertions = 0;
+    protected int $passedAssertions = 0;
 
     /**
      * The total number of assertions that had failed, this would give the display of having 6/10 assertions
@@ -285,6 +289,22 @@ abstract class TestCase
     }
 
     /**
+     * @return int
+     */
+    public function getPassedAssertions(): int
+    {
+        return $this->passedAssertions;
+    }
+
+    /**
+     * @return int
+     */
+    public function getFailedAssertions(): int
+    {
+        return $this->failedAssertions;
+    }
+
+    /**
      * Get the total number of assertions that would have been made during this test.
      *
      * @return int
@@ -297,11 +317,12 @@ abstract class TestCase
     /**
      * Get the passed tests for the particular test in question.
      *
+     * @param int|string|null $key
      * @return TestAssertion[]
      */
-    public function getAssertions(): array
+    public function getAssertions(int|string $key = null): array
     {
-        return $this->assertions->all();
+        return $this->assertions->all($key);
     }
 
     /**
@@ -330,7 +351,7 @@ abstract class TestCase
         $this->testName = _String::fromString($method)->convertCamelCaseToSentence();
 
         // call the expected method that the developer had originally intended.
-        $this->{$method}();
+        $this->{$method}(...$parameters);
     }
 
     /**
@@ -342,14 +363,32 @@ abstract class TestCase
      */
     private function processAssertion(TestAssertion $assertion): void
     {
-        $this->assertions->add($this->totalAssertions += 1, $assertion);
+        // eveluate the assertion and then upon doing so set the state of the assertion to the evaluation (true|false)
+        // so that we can then later utilise this result
+        $assertion->setState($assertion->evaluate());
 
-        if ($assertion->setState($assertion->evaluate())->getState()) {
-            $this->successfulAssertions += 1;
-            return;
-        }
+        $this->assertions->add($this->getTestName(), array_merge(
+            $this->assertions->get($this->getTestName()) ?? [],
+            [$assertion]
+        ));
 
-        $this->failedAssertions += 1;
+        $this->incrementAssertions($assertion->getState());
+    }
+
+    /**
+     * A method in which will increment the counts of passed/failed assertions as well as the total number of assertions
+     * that has been made within the test case.
+     *
+     * @param bool $evaluation
+     * @return void
+     */
+    private function incrementAssertions(bool $evaluation): void
+    {
+        $this->totalAssertions += 1;
+
+        $evaluation
+            ? $this->passedAssertions += 1
+            : $this->failedAssertions += 1;
     }
 
     /**
