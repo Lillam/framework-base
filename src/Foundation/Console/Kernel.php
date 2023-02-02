@@ -5,6 +5,7 @@ namespace Vyui\Foundation\Console;
 use Vyui\Foundation\Application;
 use Vyui\Foundation\Console\Commands\Make;
 use Vyui\Foundation\Console\Commands\Test;
+use Vyui\Foundation\Console\Commands\Format;
 use Vyui\Foundation\Console\Commands\Command;
 use Vyui\Contracts\Console\Kernel as KernelContract;
 
@@ -21,8 +22,9 @@ class Kernel implements KernelContract
 	 * @var string[]
 	 */
 	protected array $commands = [
-		'make' => Make::class,
-        'test' => Test::class
+		'make'   => Make::class,
+        'test'   => Test::class,
+        'format' => Format::class
 	];
 
 	/**

@@ -30,6 +30,14 @@ require '../vendor/autoload.php';
 /** @var Application $application */
 $application = require_once '../bootstrap/application.php';
 
+/*
+|-----------------------------------------------------------------------------------------------------------------------
+| Layout the play area.
+|-----------------------------------------------------------------------------------------------------------------------
+| Offer a playground to fool around and test some random code whilst in the mode of building the application. Take a
+| break from writing tests and calm down and let your inner playful side out.
+|
+*/
 
 if (env('APP_ENV') === 'dev') {
     require_once './playground.php';

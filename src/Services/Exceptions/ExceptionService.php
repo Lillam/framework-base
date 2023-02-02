@@ -10,10 +10,6 @@ class ExceptionService extends Service
     public function register(): void
     {
         $this->application->singleton(Handler::class, Handler::class);
-		/** @var Handler $handler */
-        $handler = $this->application->make(Handler::class);
-//        @set_exception_handler([$handler, 'render']);
-//        @set_error_handler([$handler, 'render']);
     }
 
     /**

@@ -15,22 +15,25 @@ $application = new Vyui\Foundation\Application(
 
 /*
 |-----------------------------------------------------------------------------------------------------------------------
-| Bind the necessary Instances.
+| Bind the Applications Kernel.
 |-----------------------------------------------------------------------------------------------------------------------
-| The first thing the application needs to do, is boot itself up, so here we're going to make an application instance
-| which will act as the overarching container for everything that is pertinent to the application.
+| The application is in need of something that will be taking care of all the hits to the index page, first things first
+| we are going to be applying the http kernel to the application so that all requests will be handled by this.
 |
 */
 
-$application->singleton(
-    Vyui\Contracts\Http\Kernel::class,
-    App\Http\Kernel::class
-);
+$application->singleton(Vyui\Contracts\Http\Kernel::class, App\Http\Kernel::class);
 
-$application->singleton(
-    Vyui\Contracts\Console\Kernel::class,
-    App\Console\Kernel::class
-);
+/*
+|-----------------------------------------------------------------------------------------------------------------------
+| Bind the Console Kernel.
+|-----------------------------------------------------------------------------------------------------------------------
+| The Console is in need of something that will be taking care of all the hits that are to the console (conjure) file
+| and processing the outcome.
+|
+*/
+
+$application->singleton(Vyui\Contracts\Console\Kernel::class, App\Console\Kernel::class);
 
 /*
 |-----------------------------------------------------------------------------------------------------------------------

@@ -23,7 +23,8 @@ class TranslatorService extends Service
     {
         $this->application->instance(
 			TranslatorContract::class,
-			(new Translator())->setFileLocation($this->application->getBasePath($this->path))
+			(new Translator)->setFileLocation($this->application->getBasePath($this->path))
+                            ->setLanguage(config('app.language.default'))
 		);
     }
 

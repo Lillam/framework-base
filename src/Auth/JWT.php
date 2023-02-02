@@ -2,20 +2,59 @@
 
 namespace Vyui\Auth;
 
-use Exception;
-use InvalidArgumentException;
-
 class JWT
 {
+    /**
+     * @var string
+     */
     protected string $type = 'JWT';
+
+    /**
+     * @var string
+     */
     protected string $algorithm = 'HS256';
 
+    /**
+     * @var string
+     */
     protected string $hmacAlgorithm = 'sha256';
+
+    /**
+     * The token in which is used to encrypt the payload.
+     * TODO: | get this to be auto generated and re-generated on the fly which can be implemented into the env package
+     *       | which dumps this value into your .env (APP_KEY)
+     *
+     * @var string
+     */
     protected string $secretToken = '7A25432A462D4A614E645267556A586E3272357538782F413F4428472B4B6250';
 
+    /**
+     * @var string
+     */
     protected string $header;
+
+    /**
+     * @var string
+     */
     protected string $payload;
+
+    /**
+     * @var string
+     */
     protected string $signature;
+
+    /**
+     * Set the secret token for the JWT.
+     *
+     * @param string $secret
+     * @return $this
+     */
+    public function setSecretToken(string $secret): static
+    {
+        $this->secretToken = $secret;
+
+        return $this;
+    }
 
     /**
      * @param array $payload
@@ -43,12 +82,14 @@ class JWT
     /**
      * @param string $token
      * @return array
-     * @throws Exception
+     * @throws TokenInvalidException
+     * @throws TokenExpiredException
+     * @throws TokenSignatureMatchException
      */
     public function decode(string $token): array
     {
         if (preg_match("/^(?<header>.+)\.(?<payload>.+)\.(?<signature>.+)$/", $token, $matches) !== 1) {
-            throw new InvalidArgumentException("Invalid token format");
+            throw new TokenInvalidException("Invalid token format");
         }
 
         ['header' => $header, 'payload' => $payload, 'signature' => $signature] = $matches;
@@ -57,12 +98,17 @@ class JWT
             $this->prepareSignature($header, $payload),
             $this->base64urlDecode($signature)
         )) {
-            throw new Exception("Signature doesn't match");
+            throw new TokenSignatureMatchException("Signature doesn't match");
         }
 
         return $this->getDecoded($payload);
     }
 
+    /**
+     * @param string $payload
+     * @return array
+     * @throws TokenExpiredException
+     */
     private function getDecoded(string $payload): array
     {
         $this->validatePayload(
@@ -123,6 +169,9 @@ class JWT
         return $this;
     }
 
+    /**
+     * @return string
+     */
     private function getSignature(): string
     {
         return $this->signature;
@@ -136,6 +185,11 @@ class JWT
         return time() + 20;
     }
 
+    /**
+     * @param array $payload
+     * @return void
+     * @throws TokenExpiredException
+     */
     private function validatePayload(array $payload): void
     {
         if ($payload['exp'] < time()) {

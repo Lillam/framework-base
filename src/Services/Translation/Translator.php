@@ -19,7 +19,7 @@ class Translator implements TranslatorContract
      *
      * @var string
      */
-    protected string $language = 'en';
+    protected string $language = 'EN';
 
     /**
      * Set the file location where all translation files will be found.

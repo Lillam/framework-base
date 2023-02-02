@@ -11,7 +11,7 @@ class Debugger
      */
     public array $tests = [];
 
-    public function run(Closure $f): static
+    public function run(string $name, Closure $f): static
     {
         $start = microtime(true);
 
@@ -19,7 +19,7 @@ class Debugger
 
         $end = microtime(true);
 
-        $this->tests[] = $end - $start;
+        $this->tests[$name] = $end - $start;
 
         return $this;
     }

@@ -164,7 +164,7 @@ class Dictionary
     }
 
     /**
-     * This method is utilised for commiting the words to memory; this ensures that the persistence of words that had
+     * This method is utilised for committing the words to memory; this ensures that the persistence of words that had
      * been added to the object's lifespan.
      *
      * @return void

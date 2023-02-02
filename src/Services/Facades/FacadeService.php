@@ -7,7 +7,7 @@ use Vyui\Services\Service;
 class FacadeService extends Service
 {
 	/**
-	 * Regsite the Facade, setting the facade's application to the one against the service.
+	 * Register the Facade, setting the facade's application to the one against the service.
 	 *
 	 * @return void
 	 */

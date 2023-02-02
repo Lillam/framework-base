@@ -53,9 +53,14 @@ class Filesystem implements FilesystemContract
         // iterate over the files and if we've specified to hydrate then we're going to want to return these particular
         // items as file items as opposed to the name of the files. We can delay the process of hydration by simply
         // returning the names of the files instead.
-        foreach ($files as $fileKey => $file) {
-            $files[$fileKey] = $hydrate ? new SplFileObject($file)
-                : $file;
+        // todo - find a better method of handling this as this is going to be running into the exception:
+        //        too many opened files; probably forgo this particular portion and not hydrate files
+        //        but instead begin opening them when the file is actually being tampered with in some way?
+        //        this would simplify this method to just return $this->filesRecursively($path);
+        if ($hydrate) {
+            foreach ($files as $fileKey => $file) {
+                $files[$fileKey] = new SplFileObject($file);
+            }
         }
 
         return $files;
@@ -67,6 +72,8 @@ class Filesystem implements FilesystemContract
      * process for acquiring file information as this will just be the immediate collection of the files before
      * modifying to SPLFileObjects.
      *
+     * todo fix this particular method up and make it much nicer to look at; and much nicer to work with.
+     *
      * @param string $path
      * @return string[]
      */
@@ -74,11 +81,10 @@ class Filesystem implements FilesystemContract
     {
         $return = [];
 
-        // if the base directory exists;
         if ($this->exists($path)) {
-            $files = array_diff(scandir($path) ?: [], $this->ignoredFiles);
+            $files = array_diff($this->scanDirectory($path), $this->ignoredFiles);
             foreach ($files as $file) {
-                if (! str_contains($file, '.php')) {
+                if (! str_contains($file, '.')) {
                     $return = array_merge($return, $this->filesRecursively("$path/$file"));
                     continue;
                 }
@@ -88,6 +94,19 @@ class Filesystem implements FilesystemContract
         }
 
         return $return;
+    }
+
+    /**
+     * @param string $path
+     * @return array
+     */
+    public function scanDirectory(string $path): array
+    {
+        if (! is_dir($path)) {
+            return [];
+        }
+
+        return scandir($path);
     }
 
     /**

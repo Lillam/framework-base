@@ -37,7 +37,7 @@ if (! function_exists('dd')) {
 
 if (! function_exists('dump')) {
 	/**
-	 * A metho which will be utilised for dumping variables on a page.
+	 * A method which will be utilised for dumping variables on a page.
 	 *
 	 * @param ...$variables
 	 * @return void
@@ -110,7 +110,7 @@ if (! function_exists('request')) {
 
 if (! function_exists('asset')) {
     /**
-     * Get the asset url of the application, predominanlty utilised for getting any asset that might reside within the
+     * Get the asset url of the application, mainly utilised for getting any asset that might reside within the
      * public namespace.
      *
      * @param string $uri

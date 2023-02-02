@@ -24,6 +24,15 @@ interface Filesystem
      */
     public function files(string $path, bool $hydrate = false): array;
 
+    /**
+     * Scan the directory for files, check if the item is a directory and if it does return an array of files otherwise
+     * return an empty array.
+     *
+     * @param string $path
+     * @return array
+     */
+    public function scanDirectory(string $path): array;
+
 	/**
 	 * Get the lines of a file.
 	 *
