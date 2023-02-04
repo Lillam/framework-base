@@ -7,12 +7,12 @@ use Vyui\Contracts\Config\Config as ConfigContract;
 
 class ConfigService extends Service
 {
-	/**
-	 * The location where you can find the configuration files.
-	 *
-	 * @var string
-	 */
-	protected string $path = '/config/';
+    /**
+     * The location where you can find the configuration files.
+     *
+     * @var string
+     */
+    protected string $path = '/config/';
 
     /**
      * Register the config instance into the application so that it's possible for the application to interact with all
@@ -23,8 +23,8 @@ class ConfigService extends Service
     public function register(): void
     {
         $this->application->instance(ConfigContract::class, (new Config)
-			->setPath($this->application->getBasePath($this->path))
-			->loadConfigurations()
+            ->setPath($this->application->getBasePath($this->path))
+            ->loadConfigurations()
         );
     }
 

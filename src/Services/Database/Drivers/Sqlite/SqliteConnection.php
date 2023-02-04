@@ -8,29 +8,29 @@ use Vyui\Services\Database\Drivers\Sqlite\Query\SqliteBuilder;
 
 class SqliteConnection extends Connection
 {
-	private PDO $pdo;
+    private PDO $pdo;
 
-	protected string $path;
+    protected string $path;
 
-	public function __construct(string $path)
-	{
-		$this->path = $path;
+    public function __construct(string $path)
+    {
+        $this->path = $path;
 
-		$this->pdo = new PDO("sqlite:$path");
-	}
+        $this->pdo = new PDO("sqlite:$path");
+    }
 
-	public function getDatabase(): string
-	{
-		return $this->path;
-	}
+    public function getDatabase(): string
+    {
+        return $this->path;
+    }
 
-	public function pdo(): PDO
-	{
-		return $this->pdo;
-	}
+    public function pdo(): PDO
+    {
+        return $this->pdo;
+    }
 
-	public function query(): SqliteBuilder
-	{
-		return new SqliteBuilder($this);
-	}
+    public function query(): SqliteBuilder
+    {
+        return new SqliteBuilder($this);
+    }
 }

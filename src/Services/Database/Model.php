@@ -13,10 +13,10 @@ abstract class Model
 {
     use Getters, Setters;
 
-	/**
-	 * @var string
-	 */
-	protected string $table;
+    /**
+     * @var string
+     */
+    protected string $table;
 
     /**
      * The identifier for this particular model.
@@ -25,12 +25,12 @@ abstract class Model
      */
     protected string $primaryKey = 'id';
 
-	/**
-	 * The attributes for the model that comes back from the database.
-	 *
-	 * @var array
-	 */
-	protected array $attributes = [];
+    /**
+     * The attributes for the model that comes back from the database.
+     *
+     * @var array
+     */
+    protected array $attributes = [];
 
     /**
      * The attributes for the model of which will be stripped from the return values.
@@ -39,52 +39,52 @@ abstract class Model
      */
     protected array $except = [];
 
-	/**
-	 * The attributes that are allowed to be filled.
-	 *
-	 * @var array
-	 */
-	protected array $fillable = [];
+    /**
+     * The attributes that are allowed to be filled.
+     *
+     * @var array
+     */
+    protected array $fillable = [];
 
-	/**
-	 * The database connection resolver for the model.
-	 *
-	 * @var ConnectionManager
-	 */
-	protected static ConnectionManager $resolver;
+    /**
+     * The database connection resolver for the model.
+     *
+     * @var ConnectionManager
+     */
+    protected static ConnectionManager $resolver;
 
-	/**
-	 * The current set connection driver that the model will be utilising.
-	 *
-	 * @var string
-	 */
-	protected static string $connection;
+    /**
+     * The current set connection driver that the model will be utilising.
+     *
+     * @var string
+     */
+    protected static string $connection;
 
-	/**
-	 * @param array $attributes
-	 */
-	public function __construct(array $attributes = [])
-	{
-		$this->getTable();
+    /**
+     * @param array $attributes
+     */
+    public function __construct(array $attributes = [])
+    {
+        $this->getTable();
 
-		$this->fillAttributes($attributes);
-	}
+        $this->fillAttributes($attributes);
+    }
 
     public function getAttributes(): array
     {
         return $this->attributes;
     }
 
-	/**
-	 * @param array $attributes
-	 * @return $this
-	 */
-	public function fillAttributes(array $attributes): static
-	{
-		$this->attributes = $this->throughFillable($attributes);
+    /**
+     * @param array $attributes
+     * @return $this
+     */
+    public function fillAttributes(array $attributes): static
+    {
+        $this->attributes = $this->throughFillable($attributes);
 
-		return $this;
-	}
+        return $this;
+    }
 
     /**
      * Filter out the attributes that aren't in the fillable column; if they don't exist then we don't want to be
@@ -104,23 +104,23 @@ abstract class Model
         return $attributes;
     }
 
-	/**
-	 * Get the name of the table, if a name hasn't been specified then model is going to resort to utilising the name
-	 * model underscore separated. i.e: snake_case.
-	 *
-	 * @return string
+    /**
+     * Get the name of the table, if a name hasn't been specified then model is going to resort to utilising the name
+     * model underscore separated. i.e: snake_case.
+     *
+     * @return string
      * @throws
-	 */
-	public function getTable(): string
-	{
-		if (! empty($this->table)) {
-			return $this->table;
-		}
+     */
+    public function getTable(): string
+    {
+        if (! empty($this->table)) {
+            return $this->table;
+        }
 
-		return $this->table = _String::snakecase(
+        return $this->table = _String::snakecase(
             _Reflect::getClassShortName(static::class)
         );
-	}
+    }
 
     /**
      * @return string
@@ -130,46 +130,46 @@ abstract class Model
         return $this->primaryKey;
     }
 
-	/**
-	 * @return Connection
-	 */
-	public function getConnection(): Connection
-	{
-		return static::resolveConnection($this->getConnectionName());
-	}
+    /**
+     * @return Connection
+     */
+    public function getConnection(): Connection
+    {
+        return static::resolveConnection($this->getConnectionName());
+    }
 
-	/**
-	 * @param string $connection
-	 * @return void
-	 */
-	public static function setConnection(string $connection): void
-	{
-		static::$connection = $connection;
-	}
+    /**
+     * @param string $connection
+     * @return void
+     */
+    public static function setConnection(string $connection): void
+    {
+        static::$connection = $connection;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getConnectionName(): string
-	{
-		return static::$connection;
-	}
+    /**
+     * @return string
+     */
+    public function getConnectionName(): string
+    {
+        return static::$connection;
+    }
 
-	/**
-	 * @return Builder
-	 */
-	public static function query(): Builder
-	{
-		return (new static)->newBaseQuery();
-	}
+    /**
+     * @return Builder
+     */
+    public static function query(): Builder
+    {
+        return (new static)->newBaseQuery();
+    }
 
-	/**
-	 * @return array
-	 */
-	public static function all(): array
-	{
-		return (new static)->newBaseQuery()->all();
-	}
+    /**
+     * @return array
+     */
+    public static function all(): array
+    {
+        return (new static)->newBaseQuery()->all();
+    }
 
     /**
      * @param string|Closure $column
@@ -177,44 +177,44 @@ abstract class Model
      * @param mixed|null $value
      * @return Builder
      */
-	public static function where(string|Closure $column, ?string $operator = null, mixed $value = null): Builder
-	{
-		return (new static)->newBaseQuery()->where($column, $operator, $value);
-	}
+    public static function where(string|Closure $column, ?string $operator = null, mixed $value = null): Builder
+    {
+        return (new static)->newBaseQuery()->where($column, $operator, $value);
+    }
 
-	/**
-	 * Generate a new base query for the model to be working with.
-	 *
-	 * @return Builder
-	 */
-	public function newBaseQuery(): Builder
-	{
-		return $this->getConnection()->query()->table(
-			$this->getTable()
-		)->forModel($this);
-	}
+    /**
+     * Generate a new base query for the model to be working with.
+     *
+     * @return Builder
+     */
+    public function newBaseQuery(): Builder
+    {
+        return $this->getConnection()->query()->table(
+            $this->getTable()
+        )->forModel($this);
+    }
 
-	/**
-	 * Get the connection from the resolver.
-	 *
-	 * @param string|null $connection
-	 * @return Connection
-	 */
-	public static function resolveConnection(?string $connection = null): Connection
-	{
-		return static::$resolver->connection($connection);
-	}
+    /**
+     * Get the connection from the resolver.
+     *
+     * @param string|null $connection
+     * @return Connection
+     */
+    public static function resolveConnection(?string $connection = null): Connection
+    {
+        return static::$resolver->connection($connection);
+    }
 
-	/**
-	 * Set the database connection resolver to the model.
-	 *
-	 * @param ConnectionManager $resolver
-	 * @return void
-	 */
-	public static function setResolver(ConnectionManager $resolver): void
-	{
-		static::$resolver = $resolver;
-	}
+    /**
+     * Set the database connection resolver to the model.
+     *
+     * @param ConnectionManager $resolver
+     * @return void
+     */
+    public static function setResolver(ConnectionManager $resolver): void
+    {
+        static::$resolver = $resolver;
+    }
 
     /**
      * Create some magic methods to the model where the developer will be able to start interacting with the model in a

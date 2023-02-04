@@ -4,5 +4,5 @@ namespace Vyui\Services\Filesystem\Extensions;
 
 abstract class Extension
 {
-	protected string $extension;
+    protected string $extension;
 }

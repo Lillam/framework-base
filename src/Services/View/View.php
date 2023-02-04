@@ -39,25 +39,25 @@ class View
         $this->data = $data;
     }
 
-	/**
-	 * Method for acquiring the template against the view.
-	 *
-	 * @return string
-	 */
-	public function getTemplate(): string
-	{
-		return $this->template;
-	}
+    /**
+     * Method for acquiring the template against the view.
+     *
+     * @return string
+     */
+    public function getTemplate(): string
+    {
+        return $this->template;
+    }
 
-	/**
-	 * Method for acquiring the data that's against the view.
-	 *
-	 * @return array
-	 */
-	public function getData(): array
-	{
-		return $this->data;
-	}
+    /**
+     * Method for acquiring the data that's against the view.
+     *
+     * @return array
+     */
+    public function getData(): array
+    {
+        return $this->data;
+    }
 
     /**
      * Turn the view class instance into a string.

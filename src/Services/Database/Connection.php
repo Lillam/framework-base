@@ -6,7 +6,7 @@ use PDO;
 
 abstract class Connection
 {
-	abstract public function pdo(): PDO;
+    abstract public function pdo(): PDO;
 
-	abstract public function getDatabase(): string;
+    abstract public function getDatabase(): string;
 }

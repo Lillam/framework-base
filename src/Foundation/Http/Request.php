@@ -160,30 +160,30 @@ class Request
                $this->server('request_uri');
     }
 
-	/**
-	 * check a given uri against the one that's been hit from the server.
-	 *
-	 * @param string $uri
-	 * @return bool
-	 */
-	public function isUri(string $uri): bool
-	{
-		return $this->getUri() === $uri;
-	}
+    /**
+     * check a given uri against the one that's been hit from the server.
+     *
+     * @param string $uri
+     * @return bool
+     */
+    public function isUri(string $uri): bool
+    {
+        return $this->getUri() === $uri;
+    }
 
-	/**
-	 * Get a normalised version of the url string of this particular request.
-	 *
-	 * @return string
-	 */
-	public function getNormalisedUri(): string
-	{
-		return preg_replace(
-			'/[\/]{2,}/',
-			'',
-			'/' . trim($this->getUri(), '/') . '/'
-		);
-	}
+    /**
+     * Get a normalised version of the url string of this particular request.
+     *
+     * @return string
+     */
+    public function getNormalisedUri(): string
+    {
+        return preg_replace(
+            '/[\/]{2,}/',
+            '',
+            '/' . trim($this->getUri(), '/') . '/'
+        );
+    }
 
     /**
      * Method for acquiring a header from the request

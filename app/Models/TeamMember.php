@@ -6,5 +6,5 @@ use Vyui\Services\Database\Model;
 
 class TeamMember extends Model
 {
-	protected string $table = 'team';
+    protected string $table = 'team';
 }

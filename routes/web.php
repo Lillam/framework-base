@@ -17,7 +17,7 @@ use Vyui\Support\Facades\Route;
 use App\Http\Controllers\Web\WebController;
 
 //Route::get('/yascreem/{test}', function (): \Vyui\Foundation\Http\Response {
-//	return view('home2');
+//    return view('home2');
 //});
 
 Route::get('/yascreem/{test?}', fn ($test) => view('home2', ['test' => $test]));

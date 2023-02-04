@@ -33,13 +33,13 @@ interface Filesystem
      */
     public function scanDirectory(string $path): array;
 
-	/**
-	 * Get the lines of a file.
-	 *
-	 * @param SplFileObject $file
-	 * @return Line[]
-	 */
-	public function lines(SplFileObject $file): array;
+    /**
+     * Get the lines of a file.
+     *
+     * @param SplFileObject $file
+     * @return Line[]
+     */
+    public function lines(SplFileObject $file): array;
 
     /**
      * Write the contents of a file.
@@ -60,22 +60,22 @@ interface Filesystem
      */
     public function writeLine(string $path, string $content): int|bool;
 
-	/**
-	 * @param string $path
-	 * @param int $mode
-	 * @param bool $recursive
-	 * @param bool $force
-	 * @return bool
-	 */
-	public function makeDirectory(string $path, int $mode = 0755, bool $recursive = false, bool $force = false): bool;
+    /**
+     * @param string $path
+     * @param int $mode
+     * @param bool $recursive
+     * @param bool $force
+     * @return bool
+     */
+    public function makeDirectory(string $path, int $mode = 0755, bool $recursive = false, bool $force = false): bool;
 
-	/**
-	 * Delete a file.
-	 *
-	 * @param string $path
-	 * @return bool
-	 */
-	public function delete(string $path): bool;
+    /**
+     * Delete a file.
+     *
+     * @param string $path
+     * @return bool
+     */
+    public function delete(string $path): bool;
 
     /**
      * Determine whether a file exists or not.

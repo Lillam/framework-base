@@ -9,7 +9,7 @@ use Vyui\Dictionary\Concerns\Conversion;
 
 class Dictionary
 {
-	use Anagrams, Conversion;
+    use Anagrams, Conversion;
 
     /**
      * The file system that the dictionary will be utilising in order for acquiring the files of the dictionary.
@@ -185,17 +185,17 @@ class Dictionary
      */
     public function setPath(?string $path = null): static
     {
-		$this->path = $path;
+        $this->path = $path;
 
         return $this;
     }
 
     /**
      * return the file location
-	 *
-	 * @param string|null $path
-	 * @return string
-	 */
+     *
+     * @param string|null $path
+     * @return string
+     */
     public function getPath(?string $path = null): string
     {
         return $this->path . $path;

@@ -25,13 +25,13 @@ class BasicEngine implements Engine
 //            $contents = str_replace('{' . $key . '}', $datum, $contents);
 //        }
 
-		extract($view->getData());
-		ob_start();
+        extract($view->getData());
+        ob_start();
 
-		include $view->getTemplate();
+        include $view->getTemplate();
 
-		$contents = ob_get_contents();
-		ob_get_clean();
+        $contents = ob_get_contents();
+        ob_get_clean();
 
         return new Response($contents ?? '');
     }

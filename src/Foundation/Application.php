@@ -68,10 +68,10 @@ class Application extends Container implements ApplicationContract
             \Vyui\Services\Exceptions\ExceptionService::class,
             \Vyui\Services\Routing\RoutingService::class,
             \Vyui\Services\View\ViewService::class,
-		 	\Vyui\Services\Database\DatabaseService::class
+             \Vyui\Services\Database\DatabaseService::class
         ] as $service) {
-			$this->register(new $service($this), $service);
-		}
+            $this->register(new $service($this), $service);
+        }
     }
 
     /**
@@ -125,14 +125,14 @@ class Application extends Container implements ApplicationContract
         return microtime(true) - FRAMEWORK_START;
     }
 
-	/**
-	 * @param float $buildTime
-	 * @return bool
-	 */
-	public function buildTimeFasterThan(float $buildTime): bool
-	{
-		return $this->buildTime() < $buildTime;
-	}
+    /**
+     * @param float $buildTime
+     * @return bool
+     */
+    public function buildTimeFasterThan(float $buildTime): bool
+    {
+        return $this->buildTime() < $buildTime;
+    }
 
     /**
      * Give control to the container in order to make the abstraction.

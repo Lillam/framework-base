@@ -115,6 +115,6 @@ class Format extends Command
         //      the unnecessary spacing and wild spacing intermittently between files... at the very least this can be
         //      utilised for highlighting such issues with the project.
 
-        return str_replace('	', '    ', $fileContents);
+        return str_replace('    ', '    ', $fileContents);
     }
 }

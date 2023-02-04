@@ -4,10 +4,10 @@ namespace Vyui\Services\Routing;
 
 class RouteRegex
 {
-	protected string $route;
+    protected string $route;
 
-	public function __construct(string $route)
-	{
+    public function __construct(string $route)
+    {
 
-	}
+    }
 }

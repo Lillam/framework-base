@@ -4,18 +4,18 @@ namespace Vyui\Services\Routing;
 
 class RouteUriRegex
 {
-	/**
-	 * @var string
-	 */
-	protected string $regex;
+    /**
+     * @var string
+     */
+    protected string $regex;
 
-	/**
-	 * @param Route $route
-	 */
-	public function __construct(Route $route)
-	{
-		$this->setRegex($route);
-	}
+    /**
+     * @param Route $route
+     */
+    public function __construct(Route $route)
+    {
+        $this->setRegex($route);
+    }
 
     /**
      * @param Route $route
@@ -35,11 +35,11 @@ class RouteUriRegex
         );
     }
 
-	/**
-	 * @return string
-	 */
-	public function __toString(): string
-	{
-		return $this->regex;
-	}
+    /**
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->regex;
+    }
 }

@@ -6,9 +6,9 @@ use Vyui\Services\Database\Connection;
 
 interface ConnectionManager
 {
-	/**
-	 * @param string $connection
-	 * @return Connection
-	 */
-	public function connection(string $connection): Connection;
+    /**
+     * @param string $connection
+     * @return Connection
+     */
+    public function connection(string $connection): Connection;
 }
