@@ -28,6 +28,15 @@ class Filesystem implements FilesystemContract
     }
 
     /**
+     * @param string $path
+     * @return SplFileObject
+     */
+    public function open(string $path): SplFileObject
+    {
+        return new SplFileObject($path);
+    }
+
+    /**
      * Acquire all the files that might be located in a particular directory. and map them into an array of
      * SplFileObjects.
      *

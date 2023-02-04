@@ -30,27 +30,27 @@ if (! function_exists('dd')) {
      * @return void
      */
     function dd(...$variables): void {
-		dump($variables);
+        dump($variables);
         die();
     }
 }
 
 if (! function_exists('dump')) {
-	/**
-	 * A method which will be utilised for dumping variables on a page.
-	 *
-	 * @param ...$variables
-	 * @return void
-	 */
-	function dump(...$variables): void {
-		echo '<div style="word-break: break-word; word-wrap: break-word">';
-		foreach ($variables as $variable) {
-			echo '<pre style="padding: 20px; border-radius: 4px; background-color: #f1f1f1;">';
+    /**
+     * A method which will be utilised for dumping variables on a page.
+     *
+     * @param ...$variables
+     * @return void
+     */
+    function dump(...$variables): void {
+        echo '<div style="word-break: break-word; word-wrap: break-word">';
+        foreach ($variables as $variable) {
+            echo '<pre style="padding: 20px; border-radius: 4px; background-color: #f1f1f1;">';
                 var_dump($variable);
-			echo '</pre>';
-		}
-		echo '</div>';
-	}
+            echo '</pre>';
+        }
+        echo '</div>';
+    }
 }
 
 if (! function_exists('env')) {
@@ -117,11 +117,10 @@ if (! function_exists('asset')) {
      * @param int|null $version
      * @return string
      */
-	function asset(string $uri, ?int $version = null): string {
+    function asset(string $uri, ?int $version = null): string {
         $extra = $version ? "?version=$version" : '';
-
-		return env('APP_URL') . "/{$uri}{$extra}";
-	}
+        return env('APP_URL') . "/{$uri}{$extra}";
+    }
 }
 
 if (! function_exists('response')) {
