@@ -6,12 +6,12 @@ use Vyui\Foundation\Console\Output;
 
 abstract class Command
 {
-	/**
+    /**
      * The arguments in which will be passed with the command.
      *
-	 * @var string[]
-	 */
-	protected array $arguments = [];
+     * @var string[]
+     */
+    protected array $arguments = [];
 
     /**
      * The output buffer for the command in particular.
@@ -21,19 +21,19 @@ abstract class Command
     protected Output $output;
 
     /**
-	 * @param array $arguments
-	 */
-	public function __construct(array $arguments = [])
-	{
-		$this->arguments = $arguments;
-	}
+     * @param array $arguments
+     */
+    public function __construct(array $arguments = [])
+    {
+        $this->arguments = $arguments;
+    }
 
     /**
      * Execute the command
      *
      * @return int
      */
-	abstract public function execute(): int;
+    abstract public function execute(): int;
 
     /**
      * @param Output $output

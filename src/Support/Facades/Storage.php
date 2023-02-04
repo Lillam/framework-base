@@ -10,13 +10,13 @@ use Vyui\Contracts\Filesystem\Filesystem as FileSystemContract;
  */
 class Storage extends Facade
 {
-	/**
-	 * Get the Filesystem's Facade accessor name.
-	 *
-	 * @return string
-	 */
-	public static function getFacadeAccessor(): string
-	{
-		return FileSystemContract::class;
-	}
+    /**
+     * Get the Filesystem's Facade accessor name.
+     *
+     * @return string
+     */
+    public static function getFacadeAccessor(): string
+    {
+        return FileSystemContract::class;
+    }
 }

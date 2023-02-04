@@ -8,14 +8,14 @@ use Vyui\Contracts\Exceptions\Handler as HandlerContract;
 
 class Handler implements HandlerContract
 {
-	/**
-	 * @param Throwable|int $exception
-	 * @return Response
-	 */
+    /**
+     * @param Throwable|int $exception
+     * @return Response
+     */
     public function render(Throwable|int $exception): Response
     {
-		return view('exceptions', [
-			'exception' => $exception
-		])->send();
+        return view('exceptions', [
+            'exception' => $exception
+        ])->send();
     }
 }

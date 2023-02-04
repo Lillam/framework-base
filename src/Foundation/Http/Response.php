@@ -34,7 +34,7 @@ class Response implements ResponseContract
      */
     public function __construct(string $content, int $status = 200, array $headers = [])
     {
-		$this->content = $content;
+        $this->content = $content;
         $this->status = $status;
         $this->headers = $headers;
     }
@@ -65,7 +65,7 @@ class Response implements ResponseContract
     {
         echo $this->content;
 
-		return $this;
+        return $this;
     }
 
     /**
@@ -75,12 +75,12 @@ class Response implements ResponseContract
      */
     public function sendHeaders(): self
     {
-		if (! headers_sent()) {
+        if (! headers_sent()) {
             header('Access-Control-Allow-Origin: *');
             array_map(fn ($header) => header($header), $this->headers);
-		}
+        }
 
-		return $this;
+        return $this;
     }
 
     /**
@@ -96,14 +96,14 @@ class Response implements ResponseContract
         return $this;
     }
 
-	/**
-	 * Return the response as a pure string content, if the object is cast to a string then we're just simply
-	 * going to return the content.
-	 *
-	 * @return string
-	 */
-	public function __toString(): string
-	{
-		return $this->content;
-	}
+    /**
+     * Return the response as a pure string content, if the object is cast to a string then we're just simply
+     * going to return the content.
+     *
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->content;
+    }
 }

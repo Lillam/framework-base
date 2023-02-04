@@ -6,14 +6,14 @@ use Exception;
 
 trait Update
 {
-	protected array $updates = [];
+    protected array $updates = [];
 
-	/**
-	 * @return $this
-	 * @throws Exception
-	 */
-	public function update(): static
-	{
-		return $this->setQueryType('update');
-	}
+    /**
+     * @return $this
+     * @throws Exception
+     */
+    public function update(): static
+    {
+        return $this->setQueryType('update');
+    }
 }

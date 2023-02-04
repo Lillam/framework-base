@@ -55,6 +55,6 @@ class Translator implements TranslatorContract
      */
     public function translate(string $key): string
     {
-		return '';
+        return '';
     }
 }

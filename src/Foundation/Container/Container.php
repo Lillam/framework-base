@@ -48,12 +48,12 @@ class Container implements ContainerContract
      */
     protected array $resolvedCount = [];
 
-	/**
-	 * Contextual building build stack override parameters.
-	 *
-	 * @var array
-	 */
-	protected array $with = [];
+    /**
+     * Contextual building build stack override parameters.
+     *
+     * @var array
+     */
+    protected array $with = [];
 
     /**
      * Set the global access to the available container.
@@ -177,56 +177,56 @@ class Container implements ContainerContract
         return ! $this->isBound($abstract);
     }
 
-	/**
-	 * Flesh out and instantiate an abstracted concretion of the given type within the container.
-	 *
-	 * @param string|Closure $concrete
-	 * @return mixed
-	 * @throws BindingResolutionException
-	 * @throws ReflectionException
-	 */
-	public function build(string|Closure $concrete): mixed
-	{
-		// if the concrete had been passed through as a Closure, we will just execute the closure and return early
-		// handing back the results of the function, which allows functions to be utilised as resolvers.
-		if ($concrete instanceof Closure) {
-			return $concrete($this, []);
-		}
+    /**
+     * Flesh out and instantiate an abstracted concretion of the given type within the container.
+     *
+     * @param string|Closure $concrete
+     * @return mixed
+     * @throws BindingResolutionException
+     * @throws ReflectionException
+     */
+    public function build(string|Closure $concrete): mixed
+    {
+        // if the concrete had been passed through as a Closure, we will just execute the closure and return early
+        // handing back the results of the function, which allows functions to be utilised as resolvers.
+        if ($concrete instanceof Closure) {
+            return $concrete($this, []);
+        }
 
-		// attempt to reflect a particular concretion that we're dealing with. If we're incapable of reflecting the
-		// class then it's safe to assume that the concrete class does not exist... and the container is going to be
-		// incapable of building.
-		try {
-			$reflector = new ReflectionClass($concrete);
-		} catch (ReflectionException $exception) {
-			throw new BindingResolutionException("The target [$concrete] does not exist.", 0, $exception);
-		}
+        // attempt to reflect a particular concretion that we're dealing with. If we're incapable of reflecting the
+        // class then it's safe to assume that the concrete class does not exist... and the container is going to be
+        // incapable of building.
+        try {
+            $reflector = new ReflectionClass($concrete);
+        } catch (ReflectionException $exception) {
+            throw new BindingResolutionException("The target [$concrete] does not exist.", 0, $exception);
+        }
 
-		// check to see whether the class is instantiable, and if it isn't; then we're going to be returning early and
-		// throwing an error, letting the developer know that this particular abstraction cannot be instantiated.
-		// possible that an abstract class or an interface is attempting to be instantiated.
-		if (! $reflector->isInstantiable()) {
-			throw new BindingResolutionException("The target class [$concrete] is not instantiable.");
-		}
+        // check to see whether the class is instantiable, and if it isn't; then we're going to be returning early and
+        // throwing an error, letting the developer know that this particular abstraction cannot be instantiated.
+        // possible that an abstract class or an interface is attempting to be instantiated.
+        if (! $reflector->isInstantiable()) {
+            throw new BindingResolutionException("The target class [$concrete] is not instantiable.");
+        }
 
-		// if the constructor has been returned as null (empty) then no constructor is required for this abstraction
-		// also meaning that there are no dependencies for the abstraction; so we're able to just return the concrete
-		// as it stands.
-		if (is_null($constructor = $reflector->getConstructor())) {
-			return new $concrete;
-		}
+        // if the constructor has been returned as null (empty) then no constructor is required for this abstraction
+        // also meaning that there are no dependencies for the abstraction; so we're able to just return the concrete
+        // as it stands.
+        if (is_null($constructor = $reflector->getConstructor())) {
+            return new $concrete;
+        }
 
-		// attempt to resolve the dependencies for the abstraction's constructor, and if we're unable to do this we're
-		// going to need to throw an exception. Assuming we're able to get past this particular portion we can assume
-		// the abstraction can now be whipped up and instantiated.
-		try {
-			$dependencies = $this->resolveDependencies($constructor->getParameters());
-		} catch (BindingResolutionException $exception) {
-			throw new $exception;
-		}
+        // attempt to resolve the dependencies for the abstraction's constructor, and if we're unable to do this we're
+        // going to need to throw an exception. Assuming we're able to get past this particular portion we can assume
+        // the abstraction can now be whipped up and instantiated.
+        try {
+            $dependencies = $this->resolveDependencies($constructor->getParameters());
+        } catch (BindingResolutionException $exception) {
+            throw new $exception;
+        }
 
-		return $reflector->newInstanceArgs($dependencies);
-	}
+        return $reflector->newInstanceArgs($dependencies);
+    }
 
     /**
      * Resolve the abstraction from the container and return the results.
@@ -245,7 +245,7 @@ class Container implements ContainerContract
             return $this->instances[$abstract];
         }
 
-		$this->with[] = $parameters;
+        $this->with[] = $parameters;
 
         // At this point, upon deciding whether the abstraction/concrete is buildable or not, we're ready to
         // create an instance of the concrete type that's been registered against the binding. This will  instantiate
@@ -267,7 +267,7 @@ class Container implements ContainerContract
         // times the abstract has been resolved within the container. This is for debugging purposes.
         $this->markResolved($abstract);
 
-		array_pop($this->with);
+        array_pop($this->with);
 
         return $abstraction;
     }
@@ -351,7 +351,7 @@ class Container implements ContainerContract
     {
         if (! is_null($abstract)) {
             return isset($this->bindings[$abstract])
-				? [$this->bindings[$abstract]]
+                ? [$this->bindings[$abstract]]
                 : [];
         }
 
@@ -381,37 +381,37 @@ class Container implements ContainerContract
      */
     private function resolveDependencies(array $dependencies): array
     {
-		$results = [];
+        $results = [];
 
-		foreach ($dependencies as $dependencyParameter) {
-			if ($this->hasParameterOverride($dependencyParameter)) {
-				$results[] = $this->getParameterOverride($dependencyParameter);
+        foreach ($dependencies as $dependencyParameter) {
+            if ($this->hasParameterOverride($dependencyParameter)) {
+                $results[] = $this->getParameterOverride($dependencyParameter);
                 continue;
-			}
+            }
 
-			// Run off and acquire the class, if this is null, then the dependency that we're dealing with is of course
-			// a primitive type... if it's not a class, then we're not going to be able to resolve it, in which this
-			// naturally would error out, to which we're then going to resolve the primitive type instead.
-			$result = is_null(_Reflect::getParameterClassName($dependencyParameter))
+            // Run off and acquire the class, if this is null, then the dependency that we're dealing with is of course
+            // a primitive type... if it's not a class, then we're not going to be able to resolve it, in which this
+            // naturally would error out, to which we're then going to resolve the primitive type instead.
+            $result = is_null(_Reflect::getParameterClassName($dependencyParameter))
                 ? $this->resolvePrimitive($dependencyParameter)
                 : $this->resolveClass($dependencyParameter);
 
-			// if the dependency had been marked as variadic, then we're going to want to pass the variable in as an
-			// array of items and continue to the next variable, otherwise ignore this block all together and insert
-			// the necessary dependency.
-			if ($dependencyParameter->isVariadic()) {
-				$results = array_merge($results, $result);
+            // if the dependency had been marked as variadic, then we're going to want to pass the variable in as an
+            // array of items and continue to the next variable, otherwise ignore this block all together and insert
+            // the necessary dependency.
+            if ($dependencyParameter->isVariadic()) {
+                $results = array_merge($results, $result);
                 continue;
-			}
+            }
 
             $results[] = $result;
-		}
+        }
 
-		return $results;
+        return $results;
 //        return array_map(function (ReflectionParameter $dependencyParameter) use ($dependencies) {
-//			if ($this->hasParameterOverride($dependencyParameter)) {
-//				return $this->getParameterOverride($dependencyParameter);
-//			}
+//            if ($this->hasParameterOverride($dependencyParameter)) {
+//                return $this->getParameterOverride($dependencyParameter);
+//            }
 //
 //            // Run off and acquire the class, if this is null, then the dependency that we're dealing with is of course
 //            // a primitive type... if it's not a class, then we're not going to be able to resolve it, in which this
@@ -424,38 +424,38 @@ class Container implements ContainerContract
 //            // array of items and continue to the next variable, otherwise ignore this block all together and insert the
 //            // necessary dependency.
 //
-//			// if the dependency is variadic, then we're going to merge the variadic variable in with the dependencies.
-//			return $dependencyParameter->isVariadic()
-//				? array_merge($dependencies, $result)
-//				: $result;
+//            // if the dependency is variadic, then we're going to merge the variadic variable in with the dependencies.
+//            return $dependencyParameter->isVariadic()
+//                ? array_merge($dependencies, $result)
+//                : $result;
 //        }, $dependencies);
     }
 
-	/**
-	 * @param ReflectionParameter $dependencyParameter
-	 * @return bool
-	 */
-	private function hasParameterOverride(ReflectionParameter $dependencyParameter): bool
-	{
-		return array_key_exists($dependencyParameter->name, $this->getLastParameterOverride());
-	}
+    /**
+     * @param ReflectionParameter $dependencyParameter
+     * @return bool
+     */
+    private function hasParameterOverride(ReflectionParameter $dependencyParameter): bool
+    {
+        return array_key_exists($dependencyParameter->name, $this->getLastParameterOverride());
+    }
 
-	/**
-	 * @param ReflectionParameter $dependencyParameter
-	 * @return mixed
-	 */
-	private function getParameterOverride(ReflectionParameter $dependencyParameter): mixed
-	{
-		return $this->getLastParameterOverride()[$dependencyParameter->name];
-	}
+    /**
+     * @param ReflectionParameter $dependencyParameter
+     * @return mixed
+     */
+    private function getParameterOverride(ReflectionParameter $dependencyParameter): mixed
+    {
+        return $this->getLastParameterOverride()[$dependencyParameter->name];
+    }
 
-	/**
-	 * @return array
-	 */
-	private function getLastParameterOverride(): array
-	{
-		return count($this->with) ? end($this->with) : [];
-	}
+    /**
+     * @return array
+     */
+    private function getLastParameterOverride(): array
+    {
+        return count($this->with) ? end($this->with) : [];
+    }
 
     /**
      * Resolve a non-class as a primitive dependency type.
@@ -494,12 +494,12 @@ class Container implements ContainerContract
         // can return those values instead.
         catch (BindingResolutionException $exception) {
             if ($dependency->isDefaultValueAvailable()) {
-				array_pop($this->with);
+                array_pop($this->with);
                 return $dependency->getDefaultValue();
             }
 
             if ($dependency->isVariadic()) {
-				array_pop($this->with);
+                array_pop($this->with);
                 return [];
             }
 

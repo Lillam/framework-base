@@ -6,11 +6,11 @@ use Vyui\Services\Service;
 
 class FacadeService extends Service
 {
-	/**
-	 * Register the Facade, setting the facade's application to the one against the service.
-	 *
-	 * @return void
-	 */
+    /**
+     * Register the Facade, setting the facade's application to the one against the service.
+     *
+     * @return void
+     */
     public function register(): void
     {
         Facade::setFacadeApplication($this->application);

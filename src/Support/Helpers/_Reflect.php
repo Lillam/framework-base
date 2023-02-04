@@ -39,22 +39,22 @@ class _Reflect
         return $name;
     }
 
-	/**
+    /**
      * A Helper method to get a classes' methods parameter names; which will be utilised for autowiring the necessary
      * variable names to a particular class upon building.
      *
-	 * @param object $class
-	 * @param string|null $method
-	 * @return array
-	 */
-	public static function getClassMethodParameterNames(object $class, ?string $method = null): array
-	{
-		$parameters = $method !== null
-			? (new ReflectionClass($class))->getMethod($method)->getParameters()
-			: (new ReflectionFunction($class))->getParameters();
+     * @param object $class
+     * @param string|null $method
+     * @return array
+     */
+    public static function getClassMethodParameterNames(object $class, ?string $method = null): array
+    {
+        $parameters = $method !== null
+            ? (new ReflectionClass($class))->getMethod($method)->getParameters()
+            : (new ReflectionFunction($class))->getParameters();
 
         return array_flip(array_map(fn ($item) => $item->getName(), $parameters));
-	}
+    }
 
     /**
      * A method which will return an array keyed by the name of the variable along with some various information

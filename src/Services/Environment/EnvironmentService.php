@@ -7,12 +7,12 @@ use Vyui\Contracts\Environment\Environment as EnvironmentContract;
 
 class EnvironmentService extends Service
 {
-	/**
-	 * The location where you can find the environment file (.env).
-	 *
-	 * @var string
-	 */
-	protected string $path = '/';
+    /**
+     * The location where you can find the environment file (.env).
+     *
+     * @var string
+     */
+    protected string $path = '/';
 
     /**
      * Register the environment Service into the application and bind the functionality there. so that we have

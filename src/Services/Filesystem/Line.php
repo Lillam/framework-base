@@ -4,16 +4,16 @@ namespace Vyui\Services\Filesystem;
 
 class Line
 {
-	/**
-	 * The contents of the line of a file.
-	 *
-	 * @var string
-	 */
+    /**
+     * The contents of the line of a file.
+     *
+     * @var string
+     */
     protected string $content;
 
-	/**
-	 * @param string $content
-	 */
+    /**
+     * @param string $content
+     */
     public function __construct(string $content)
     {
         $this->content = trim($content, "\n");

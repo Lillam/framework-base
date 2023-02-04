@@ -20,35 +20,35 @@ class Route
      */
     protected string $uri;
 
-	/**
-	 * The regex rendition of the uri that has been defined.
-	 *
-	 * @var RouteUriRegex
-	 */
-	protected RouteUriRegex $uriRegex;
+    /**
+     * The regex rendition of the uri that has been defined.
+     *
+     * @var RouteUriRegex
+     */
+    protected RouteUriRegex $uriRegex;
 
-	/**
-	 * @var string
-	 */
-	protected string $method;
+    /**
+     * @var string
+     */
+    protected string $method;
 
     /**
      * The handler of which will be called upon being handled.
      *
-	 * [controller, action] (tuple)
+     * [controller, action] (tuple)
      * @var array
      */
     protected array $action;
 
-	/**
-	 * @var RouteParameters
-	 */
-	// protected RouteParameters $routeParameters;
+    /**
+     * @var RouteParameters
+     */
+    // protected RouteParameters $routeParameters;
 
-	/**
-	 * @var array
-	 */
-	protected array $parameters = [];
+    /**
+     * @var array
+     */
+    protected array $parameters = [];
 
     /**
      * @var array
@@ -56,168 +56,168 @@ class Route
     protected array $optionalParameters = [];
 
     /**
-	 * @param string $method
+     * @param string $method
      * @param string $uri
      * @param string|array|Closure $action
      */
     public function __construct(string $method, string $uri, string|array|Closure $action)
     {
-		$this->setMethod($method)
-			 ->setUri($uri)
-			 ->setAction($action);
+        $this->setMethod($method)
+             ->setUri($uri)
+             ->setAction($action);
 
-		$this->uriRegex = new RouteUriRegex($this);
-		// $this->routeParameters = new RouteParameters($this);
+        $this->uriRegex = new RouteUriRegex($this);
+        // $this->routeParameters = new RouteParameters($this);
     }
 
-	/**
-	 * et the method assigned to this particular route.
-	 *
-	 * @param string $method
-	 * @return $this
-	 */
-	public function setMethod(string $method): self
-	{
-		$this->method = $method;
+    /**
+     * et the method assigned to this particular route.
+     *
+     * @param string $method
+     * @return $this
+     */
+    public function setMethod(string $method): self
+    {
+        $this->method = $method;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Get the method assigned to this particular route.
-	 *
-	 * @return string
-	 */
-	public function getMethod(): string
-	{
-		return $this->method;
-	}
+    /**
+     * Get the method assigned to this particular route.
+     *
+     * @return string
+     */
+    public function getMethod(): string
+    {
+        return $this->method;
+    }
 
-	/**
-	 * Set the uri of this particular route.
-	 *
-	 * @param string $uri
-	 * @return $this
-	 */
-	public function setUri(string $uri): self
-	{
-		$this->uri = $uri;
+    /**
+     * Set the uri of this particular route.
+     *
+     * @param string $uri
+     * @return $this
+     */
+    public function setUri(string $uri): self
+    {
+        $this->uri = $uri;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Get the url string of this particular route.
-	 *
-	 * @return string
-	 */
-	public function getUri(): string
-	{
-		return $this->uri;
-	}
+    /**
+     * Get the url string of this particular route.
+     *
+     * @return string
+     */
+    public function getUri(): string
+    {
+        return $this->uri;
+    }
 
-	/**
-	 * @return RouteUriRegex
-	 */
-	public function getUriRegex(): RouteUriRegex
-	{
-		return $this->uriRegex;
-	}
+    /**
+     * @return RouteUriRegex
+     */
+    public function getUriRegex(): RouteUriRegex
+    {
+        return $this->uriRegex;
+    }
 
-	/**
-	 * Get a normalised version of the url string of this particular route.
-	 *
-	 * @return string
-	 */
-	public function getNormalisedUri(): string
-	{
-		return preg_replace(
-			'/[\/]{2,}/',
-			'',
-			'/' . trim($this->getUri(), '/') . '/'
-		);
-	}
+    /**
+     * Get a normalised version of the url string of this particular route.
+     *
+     * @return string
+     */
+    public function getNormalisedUri(): string
+    {
+        return preg_replace(
+            '/[\/]{2,}/',
+            '',
+            '/' . trim($this->getUri(), '/') . '/'
+        );
+    }
 
-	/**
-	 * Set the action of this particular route.
-	 *
-	 * @param string|array|Closure $action
-	 * @return $this
-	 */
-	public function setAction(string|array|Closure $action): self
-	{
-		$this->action = match (gettype($action)) {
-			'array' => $action,
-			'string' => explode('@', $action),
-			'object' => [$action, null],
-			default => null,
-		};
+    /**
+     * Set the action of this particular route.
+     *
+     * @param string|array|Closure $action
+     * @return $this
+     */
+    public function setAction(string|array|Closure $action): self
+    {
+        $this->action = match (gettype($action)) {
+            'array' => $action,
+            'string' => explode('@', $action),
+            'object' => [$action, null],
+            default => null,
+        };
 
-		if (! $this->action) {
-			// throw an error here... we're needing to break out, that controller is just not going to work
-		}
+        if (! $this->action) {
+            // throw an error here... we're needing to break out, that controller is just not going to work
+        }
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Does the route match the request?
-	 *
-	 * @param Request $request
-	 * @return bool
-	 */
-	public function isMatching(Request $request): bool
-	{
+    /**
+     * Does the route match the request?
+     *
+     * @param Request $request
+     * @return bool
+     */
+    public function isMatching(Request $request): bool
+    {
         // if the method of the request is matching and if the uri is matching, then we are able to just immediately
         // return true; as this would be a direct match.
-		if ($this->matchesMethod($request) && $this->matchesUri($request)) {
-			return true;
-		}
+        if ($this->matchesMethod($request) && $this->matchesUri($request)) {
+            return true;
+        }
 
-		if (! _String::contains($this->getUriRegex(), '+', '*')) {
-			return false;
-		}
-
-		preg_match_all("#{$this->getUriRegex()}?$#", $request->getNormalisedUri(), $matches);
-
-		if (empty($matches = array_filter(
-			$matches[1], fn ($item) => empty($item) || $item[0] !== $request->getNormalisedUri()
-		))) {
+        if (! _String::contains($this->getUriRegex(), '+', '*')) {
             return false;
         }
 
-		$this->parameters = array_combine(
-			$this->parameters,
-			array_values(array_map(fn ($match) => $match, $matches)) +
-			       array_fill(0, (count($this->parameters) - 1), null)
-		);
+        preg_match_all("#{$this->getUriRegex()}?$#", $request->getNormalisedUri(), $matches);
 
-		return true;
-	}
+        if (empty($matches = array_filter(
+            $matches[1], fn ($item) => empty($item) || $item[0] !== $request->getNormalisedUri()
+        ))) {
+            return false;
+        }
 
-	/**
-	 * Get the action of this particular route.
-	 *
-	 * @return array
-	 */
-	public function getAction(): array
-	{
-		return $this->action;
-	}
+        $this->parameters = array_combine(
+            $this->parameters,
+            array_values(array_map(fn ($match) => $match, $matches)) +
+                   array_fill(0, (count($this->parameters) - 1), null)
+        );
 
-	/**
-	 * Add a parameter to the route.
-	 *
-	 * @param string $parameter
-	 * @return void
-	 */
-	public function addParameter(string $parameter): void
-	{
-		$this->parameters[] = rtrim($parameter, '?');
+        return true;
+    }
+
+    /**
+     * Get the action of this particular route.
+     *
+     * @return array
+     */
+    public function getAction(): array
+    {
+        return $this->action;
+    }
+
+    /**
+     * Add a parameter to the route.
+     *
+     * @param string $parameter
+     * @return void
+     */
+    public function addParameter(string $parameter): void
+    {
+        $this->parameters[] = rtrim($parameter, '?');
         if (mb_strpos($parameter, '?') !== false) {
             $this->addOptionalParameter(rtrim($parameter, '?'));
         }
-	}
+    }
 
     /**
      * Add an optional parameter to the route.
@@ -230,59 +230,59 @@ class Route
         $this->optionalParameters[] = $parameter;
     }
 
-	/**
-	 * Get the parameters that are associated to this particular route.
-	 *
-	 * @return array
-	 */
-	public function getParameters(): array
-	{
-		return $this->parameters;
-	}
+    /**
+     * Get the parameters that are associated to this particular route.
+     *
+     * @return array
+     */
+    public function getParameters(): array
+    {
+        return $this->parameters;
+    }
 
-	/**
-	 * Does the request match the route method.
-	 *
-	 * @param Request $request
-	 * @return bool
-	 */
-	public function matchesMethod(Request $request): bool
-	{
-		return $this->getMethod() === $request->getMethod();
-	}
+    /**
+     * Does the request match the route method.
+     *
+     * @param Request $request
+     * @return bool
+     */
+    public function matchesMethod(Request $request): bool
+    {
+        return $this->getMethod() === $request->getMethod();
+    }
 
-	/**
-	 * Does the request match the route uri.
-	 *
-	 * @param Request $request
-	 * @return bool
-	 */
-	public function matchesUri(Request $request): bool
-	{
-		return $this->getUri() === $request->getUri();
-	}
+    /**
+     * Does the request match the route uri.
+     *
+     * @param Request $request
+     * @return bool
+     */
+    public function matchesUri(Request $request): bool
+    {
+        return $this->getUri() === $request->getUri();
+    }
 
-	/**
-	 * Dispatch the route that has been matched against the particular request; build out the process that's needed
-	 * in order for this particular route to be executed.
-	 *
-	 * @param Application $application
-	 * @param Request $request
-	 * @return Response
-	 */
-	public function dispatch(Application $application, Request $request): Response
-	{
-		[$controller, $action] = $this->getAction();
+    /**
+     * Dispatch the route that has been matched against the particular request; build out the process that's needed
+     * in order for this particular route to be executed.
+     *
+     * @param Application $application
+     * @param Request $request
+     * @return Response
+     */
+    public function dispatch(Application $application, Request $request): Response
+    {
+        [$controller, $action] = $this->getAction();
 
-		// attach the request to the parameters of the route.
-		$this->parameters['request'] = $request;
+        // attach the request to the parameters of the route.
+        $this->parameters['request'] = $request;
 
-		// if we haven't defined a controller for this particular route then it means that
-		// we're dealing with a closure meaning that we can just simply return here without
-		// needing to do anything else.
-		if (! $action) {
-			return $controller(...$this->buildParameters($controller));
-		}
+        // if we haven't defined a controller for this particular route then it means that
+        // we're dealing with a closure meaning that we can just simply return here without
+        // needing to do anything else.
+        if (! $action) {
+            return $controller(...$this->buildParameters($controller));
+        }
 
         // Have the application create the specified controller along with all it's dependencies.
         $controller = $application->make((string) $controller);
@@ -290,30 +290,30 @@ class Route
         /** @var Controller $controller */
         return $controller->throughMiddleware($request)
                           ->call($action, $this->buildParameters($controller, $action));
-	}
+    }
 
-	/**
-	 * Build the route parameters that's going to be needed to be used by the controller, pass in the necessary
-	 * parameters for the controller to run the route.
-	 *
-	 * @param object $object
-	 * @param string|null $action
-	 * @return array
-	 */
-	private function buildParameters(object $object, string $action = null): array
-	{
-		// $neededParameters = _Reflect::getClassMethodParameterNames($object, $action);
+    /**
+     * Build the route parameters that's going to be needed to be used by the controller, pass in the necessary
+     * parameters for the controller to run the route.
+     *
+     * @param object $object
+     * @param string|null $action
+     * @return array
+     */
+    private function buildParameters(object $object, string $action = null): array
+    {
+        // $neededParameters = _Reflect::getClassMethodParameterNames($object, $action);
         $neededParameters = _Reflect::getClassMethodParameterInfo($object, $action);
 
         // iterate over the parameters of the request which will be the ones that we've decided that are necessary
         // to the request; and if this is the case; then we're simply going to filter the ones that aren't really
         // necessary to the request, or necessary in terms of what's been asked for within the controller that's going
         // to be spooled up.
-		$parameters = array_filter(
+        $parameters = array_filter(
             $this->getParameters(),
             function ($key) use ($neededParameters) {
-			    return array_key_exists($key, $neededParameters);
-		    },
+                return array_key_exists($key, $neededParameters);
+            },
             ARRAY_FILTER_USE_KEY
         );
 
@@ -347,5 +347,5 @@ class Route
         }
 
         return $parameters;
-	}
+    }
 }

@@ -10,14 +10,13 @@ use Vyui\Foundation\Http\Controller;
 
 class WebController extends Controller
 {
-	/**
-	 * @param Request $request
+    /**
+     * @param Request $request
      * @param Task|null $task
-	 * @return Response
-	 */
-	public function index(Request $request, ?Task $task = null): Response
-	{
-
+     * @return Response
+     */
+    public function index(Request $request, ?Task $task = null): Response
+    {
 //        return response()->json(array_map(function ($item) {
 //            return $item->getAttributes();
 //        }, User::all()));
@@ -27,15 +26,15 @@ class WebController extends Controller
                 'name' => "{$user->getFirstName()} {$user->getLastName()}"
             ];
         }, User::all()));
-	}
+    }
 
-	public function test(Request $request, $testing, $test): Response
-	{
-		return view('home2', [
-			'some_data' => [
-				'test' => $test,
-				'testing' => $testing
-			]
-		]);
-	}
+    public function test(Request $request, $testing, $test): Response
+    {
+        return view('home2', [
+            'some_data' => [
+                'test' => $test,
+                'testing' => $testing
+            ]
+        ]);
+    }
 }

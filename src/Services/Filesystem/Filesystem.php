@@ -119,8 +119,8 @@ class Filesystem implements FilesystemContract
     }
 
     /**
-	 * Get the lines of a file.
-	 *
+     * Get the lines of a file.
+     *
      * @param SplFileObject $file
      * @return Line[]
      */
@@ -161,36 +161,36 @@ class Filesystem implements FilesystemContract
         return file_put_contents($path, "$content\n", LOCK_EX | FILE_APPEND);
     }
 
-	/**
-	 * Make a directory with specific permissions.
-	 *
-	 * @param string $path
-	 * @param int $mode
-	 * @param bool $recursive
-	 * @param bool $force
-	 * @return bool
-	 */
-	public function makeDirectory(string $path, int $mode = 0755, bool $recursive = false, bool $force = false): bool
-	{
-		// if the directory already exists, then there's no real need to continue here. exit early and return false
-		// to indicate that directory had not been made. If force has been specified then this is going to be ignored
-		// and the directory will forcefully be made.
-		if (! $force && $this->exists($path)) {
-			return false;
-		}
+    /**
+     * Make a directory with specific permissions.
+     *
+     * @param string $path
+     * @param int $mode
+     * @param bool $recursive
+     * @param bool $force
+     * @return bool
+     */
+    public function makeDirectory(string $path, int $mode = 0755, bool $recursive = false, bool $force = false): bool
+    {
+        // if the directory already exists, then there's no real need to continue here. exit early and return false
+        // to indicate that directory had not been made. If force has been specified then this is going to be ignored
+        // and the directory will forcefully be made.
+        if (! $force && $this->exists($path)) {
+            return false;
+        }
 
-		return $force ? @mkdir($path, $mode, $recursive)
-			          : mkdir($path, $mode, $recursive);
-	}
+        return $force ? @mkdir($path, $mode, $recursive)
+                      : mkdir($path, $mode, $recursive);
+    }
 
-	/**
-	 * @param string $path
-	 * @return bool
-	 */
-	public function delete(string $path): bool
-	{
-		return unlink($path);
-	}
+    /**
+     * @param string $path
+     * @return bool
+     */
+    public function delete(string $path): bool
+    {
+        return unlink($path);
+    }
 
     /**
      * Determine whether a file exists or not.

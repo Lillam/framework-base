@@ -4,5 +4,5 @@ namespace Vyui\Services\Filesystem\Extensions;
 
 class ExtensionPHP extends Extension
 {
-	protected string $type = '.php';
+    protected string $type = '.php';
 }

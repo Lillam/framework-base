@@ -23,10 +23,10 @@ class Kernel implements KernelContract
      */
     protected Router $router;
 
-	/**
-	 * @param Application $application
-	 * @param Router $router
-	 */
+    /**
+     * @param Application $application
+     * @param Router $router
+     */
     public function __construct(Application $application, Router $router)
     {
         $this->application = $application;
@@ -62,7 +62,7 @@ class Kernel implements KernelContract
     {
         $this->application->instance(Request::class, $request);
 
-		return $this->router->dispatch($request);
+        return $this->router->dispatch($request);
     }
 
     /**
