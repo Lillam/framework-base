@@ -31,6 +31,9 @@ class DatabaseService extends Service
         Model::setConnection(config('database.default'));
     }
 
+    /**
+     * @return void
+     */
     public function bootstrap(): void
     {
         $this->bootstrapped = true;

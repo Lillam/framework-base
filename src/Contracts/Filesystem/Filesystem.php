@@ -16,6 +16,14 @@ interface Filesystem
     public function get(string $path): string;
 
     /**
+     * Get the file object; we can begin iterating over the lines.
+     *
+     * @param string $path
+     * @return SplFileObject
+     */
+    public function open(string $path): SplFileObject;
+
+    /**
      * Get the files of a directory.
      *
      * @param string $path

@@ -17,13 +17,10 @@ class WebController extends Controller
      */
     public function index(Request $request, ?Task $task = null): Response
     {
-//        return response()->json(array_map(function ($item) {
-//            return $item->getAttributes();
-//        }, User::all()));
-
-        return response()->json(array_map(function ($user) {
+        return response()->json(array_map(function ($user) use ($task) {
             return [
-                'name' => "{$user->getFirstName()} {$user->getLastName()}"
+                'name' => "{$user->getFirstName()} {$user->getLastName()}",
+                'task' => $task
             ];
         }, User::all()));
     }
