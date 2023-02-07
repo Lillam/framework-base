@@ -52,7 +52,6 @@ class ViewManager
         // to make the directory, providing that the directory hasn't already been made yet.
         if ($makeDirectory && ! is_dir($path)) {
             mkdir($path);
-            dd($path);
         }
 
         $this->storagePath = $path;
