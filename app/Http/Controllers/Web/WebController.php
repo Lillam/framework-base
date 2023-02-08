@@ -25,7 +25,7 @@ class WebController extends Controller
         }, User::all()));
     }
 
-    public function test(Request $request, $testing, $test): Response
+    public function test(Request $request, $test, $testing): Response
     {
         return view('home2', [
             'some_data' => [

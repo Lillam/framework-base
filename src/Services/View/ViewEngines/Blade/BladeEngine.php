@@ -6,10 +6,16 @@ use Vyui\Services\View\View;
 use Vyui\Contracts\View\Engine;
 use Vyui\Foundation\Http\Response;
 use Vyui\Services\View\HasViewManager;
+//use Vyui\Services\View\ViewEngines\Blade\Compiles\CompilesEchos;
+//use Vyui\Services\View\ViewEngines\Blade\Compiles\CompilesExtends;
+//use Vyui\Services\View\ViewEngines\Blade\Compiles\CompilesIf;
+//use Vyui\Services\View\ViewEngines\Blade\Compiles\CompilesLoops;
+//use Vyui\Services\View\ViewEngines\Blade\Compiles\CompilesSections;
 
 class BladeEngine implements Engine
 {
     use HasViewManager;
+    // use CompilesIf, CompilesLoops, CompilesSections, CompilesEchos, CompilesExtends;
 
     /**
      * @var array

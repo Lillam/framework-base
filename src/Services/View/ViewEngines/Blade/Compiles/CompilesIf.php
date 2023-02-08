@@ -10,12 +10,13 @@ trait CompilesIf
      */
     private function compileIf(string $template): string
     {
-        $template = preg_replace_callback('#@if\(([^)]+)\)#', function ($matches) {
-            return "<?php if ($matches[1]): ?>";
-        }, $template);
-
-        return preg_replace_callback('#@endif#', function () {
-            return '<?php endif; ?>';
-        }, $template);
+        return preg_replace_callback_array([
+            "#@if\(([^)]+)\)#" => function ($matches) {
+                return "<?php if ($matches[1]): ?>";
+            },
+            "#@endif#" => function () {
+                return '<?php endif; ?>';
+            }
+        ], $template);
     }
 }

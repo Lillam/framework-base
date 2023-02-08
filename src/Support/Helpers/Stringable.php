@@ -193,6 +193,19 @@ class Stringable
     }
 
     /**
+     * Repeat the current state, (x) amount of times based on what the developer has decided to pass.
+     *
+     * @param int $repeating
+     * @return $this
+     */
+    public function repeat(int $repeating = 0): static
+    {
+        $this->string = implode(array_fill(0, $repeating, $this->string));
+
+        return $this;
+    }
+
+    /**
      * A publid method in which allows us to turn the object into just a string, this will essentially be the final
      * method that gets called before it's no longer operable as an object.
      *

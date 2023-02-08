@@ -2,10 +2,9 @@
 
 namespace Vyui\Foundation\Console\Commands;
 
-use Exception;
 use Vyui\Foundation\Application;
-use Vyui\Contracts\Filesystem\Filesystem;
 use Vyui\Support\Helpers\_String;
+use Vyui\Contracts\Filesystem\Filesystem;
 
 class Format extends Command
 {
@@ -164,6 +163,22 @@ class Format extends Command
     }
 
     /**
+     * Increment the amount of errors that had been found within indentations.
+     *
+     * @param string $file
+     * @return void
+     */
+    private function incrementIndentationErrors(string $file): void
+    {
+        if (! isset($this->indentationErrors[$file])) {
+            $this->indentationErrors[$file] = 1;
+            return;
+        }
+
+        $this->indentationErrors[$file] += 1;
+    }
+
+    /**
      * Iterate over each file and begin checking to see whether they're in need of fixing or not...
      *
      * @return void
@@ -194,22 +209,18 @@ class Format extends Command
 
             $placingBack = preg_replace_callback_array([
                 // look for the particular tab indent and replace it for 4 spaces instead; this would fix up the
-                // random spacing caused within github as well as within the project. this keeps your format appropriate
-                "/((?!\))	(?!\())/" => function () use ($file) {
-                    if (! isset($this->indentationErrors[$file])) {
-                        $this->indentationErrors[$file] = 1;
-                    } else {
-                        $this->indentationErrors[$file] += 1;
-                    }
-
-                    return '    ';
+                // random spacing caused within github as well as within the project. this particular snippet should be
+                // ignored upon the actual formatter coming to format the formatter; wild.
+                "/((?!\))	(?!\())/" => function () use ($file): string {
+                    $this->incrementIndentationErrors($file);
+                    return _String::fromString(' ')->repeat(4);
                 }
             ], $fileContents);
 
             // if this particular file has any errors of the sorts then we're going to be able to then decide to save
             // the file, if not then there's no real need to do anything of the sorts; and just skip past this
             // particular segment
-            if (isset($this->indentationErrors[$file])) {
+            if (array_key_exists($file, $this->indentationErrors)) {
                 $this->filesystem->put($file, $placingBack);
                 $this->output->printSuccess(
                     "✓ Fixed up indentations for: [$file ({$this->indentationErrors[$file]})]"

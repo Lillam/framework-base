@@ -189,7 +189,7 @@ class Route
         $this->parameters = array_combine(
             $this->parameters,
             array_values(array_map(fn ($match) => $match, $matches)) +
-                   array_fill(0, (count($this->parameters) - 1), null)
+                   array_fill(0, (count($this->parameters)), null)
         );
 
         return true;
@@ -323,6 +323,13 @@ class Route
         foreach ($parameters as $parameterKey => $parameter) {
             if (array_key_exists($parameterKey, $neededParameters)) {
                 $type = $neededParameters[$parameterKey]['type'];
+
+                // if the type has been passed as an item of which is null; then we can immediately do nothing and just
+                // skip passed this particular item as nothing really needs to happen here.
+                if (! $type) {
+                    continue;
+                }
+
                 // if the type has been specified to be a string; then we're good to just iterate on past this
                 // particular parameter; and simply move on.
                 if ($type === "string") {

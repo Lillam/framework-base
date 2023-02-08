@@ -6,4 +6,4 @@ vendor/
 
 .idea/
 
-storage/
+storage/framework/views/*

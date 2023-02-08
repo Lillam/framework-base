@@ -75,7 +75,7 @@ class _Reflect
 
         foreach ($parameters as $parameter) {
             $return[$parameter->getName()] = [
-                'type' => $parameter->getType()->getName()
+                'type' => $parameter->getType()?->getName() ?? null
             ];
         }
 

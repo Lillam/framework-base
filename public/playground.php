@@ -1,5 +1,7 @@
 <?php
 
+dd(\Vyui\Support\Helpers\_String::fromString(1)->repeat(4)->toString());
+
 //$array = [
 //    'test' => [
 //        'item' => [

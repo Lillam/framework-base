@@ -21,9 +21,9 @@ use App\Http\Controllers\Web\WebController;
 //});
 
 Route::get('/yascreem/{test?}', fn ($test) => view('home2', ['test' => $test]));
+Route::get('/tests/{test}/{testing}', [\App\Http\Controllers\Web\WebController::class, 'test']);
 
 Route::get('/', [WebController::class, 'index']);
-Route::get('/tests/{test}/{testing}', [\App\Http\Controllers\Web\WebController::class, 'test']);
 Route::get('/tasks/{task?}', [\App\Http\Controllers\Web\WebController::class, 'index']);
 
 Route::get('/api/users', [\App\Http\Controllers\Api\UserController::class, 'index']);
