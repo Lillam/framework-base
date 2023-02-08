@@ -4,6 +4,7 @@ namespace Vyui\Foundation\Console\Commands;
 
 use Vyui\Foundation\Application;
 use Vyui\Support\Helpers\_String;
+use Vyui\Services\Formatter\PhpFile;
 use Vyui\Contracts\Filesystem\Filesystem;
 
 class Format extends Command
@@ -64,12 +65,26 @@ class Format extends Command
     protected array $ignoredFiles = [];
 
     /**
+     * todo -> Modify this particular variable to utilise the new PHPFile that has been made within the codebase; which
+     *         will be utilised in order for appending to a file. Which will iterate over the build of a particular PHP
+     *         file.
+     *         <?php
+     *         blank line
+     *         namespace of the file
+     *         blank line
+     *         imports (which would be stored as a parameter inside the file $imports = []; which contains them...
+     *                  meaning that the developer can decide how these want to be printed back to the file that we're
+     *                  constructing... ordered by length, alphabetically, ascending descending etc...)
+     *         methods (which would be stored as a parameter inside the file $methods = []; which contains them...
+     *                  meaning that the developer can decide how these want to be printed back, whether these want to
+     *                  to be organised by publicity (private, protected, static, public etc)
+     *
      * The pieces of the file that will be getting fixed; that will need building so that we can then later apply this
      * to be submitted into the filesystem at a later point. (this is so that we can organise accordingly.
      *
-     * @var string[]
+     * @var PhpFile
      */
-    protected array $currentlyFixingFile = [];
+    protected PhpFile $currentFile;
 
     /**
      * @param Application $application
@@ -186,36 +201,18 @@ class Format extends Command
     private function fixAllProjectFiles(): void
     {
         foreach ($this->files as $file) {
-//            $fo = $this->filesystem->open($file);
-//            $fix = _String::fromString('');
-//            while (! $fo->eof()) {
-//                // todo ->
-//                //      start of file
-//                //      must be one space between
-//                //      namespace
-//                //      must be one space between
-//                //      use of imports
-//                //      must be one space between
-//                //      is class
-//                //          does class have brace on the end or below - if on the end strip it off and move it below
-//                $fix->append($fo->current());
-//                $this->currentlyFixingFile[] = str_replace("\n", '', $fo->current());
-//
-//                // iterate to the next line in the file unless we have hit the end of the file...
-//                $fo->next();
-//            }
-
-            $fileContents = $this->filesystem->get($file);
-
             $placingBack = preg_replace_callback_array([
                 // look for the particular tab indent and replace it for 4 spaces instead; this would fix up the
                 // random spacing caused within github as well as within the project. this particular snippet should be
                 // ignored upon the actual formatter coming to format the formatter; wild.
                 "/((?!\))	(?!\())/" => function () use ($file): string {
                     $this->incrementIndentationErrors($file);
+                    // todo -> Change repeating from static (4) to a constant variable somewhere that might reside in
+                    //         the user's configuration somewhere along the lines so that this will format to the
+                    //         developer's standards.
                     return _String::fromString(' ')->repeat(4);
                 }
-            ], $fileContents);
+            ], $this->filesystem->get($file));
 
             // if this particular file has any errors of the sorts then we're going to be able to then decide to save
             // the file, if not then there's no real need to do anything of the sorts; and just skip past this
