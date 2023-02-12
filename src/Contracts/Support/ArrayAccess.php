@@ -16,4 +16,9 @@ interface ArrayAccess
      * @return mixed
      */
     public function get(int|string $key): mixed;
+
+    /**
+     * @return array
+     */
+    public function all(): array;
 }

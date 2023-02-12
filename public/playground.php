@@ -1,6 +1,31 @@
 <?php
 
-dd(\Vyui\Support\Helpers\_String::fromString(1)->repeat(4)->toString());
+/**
+ * const actual = priceWithMonthlyDiscount(16, 130, 0.15);
+const expected = 14528;
+expect(actual).toBeCloseTo(expected, DIFFERENCE_PRECISION_IN_DIGITS);
+ */
+
+//$dayRate = 16;
+//$dayHours = 8;
+//$days = 110;
+//
+//$discountedDays = 20;
+//$discount = 1 - 0.15;
+//
+//dd(
+//    (
+//        $days * ($dayRate * $dayHours)
+//    ) + (
+//        ($discountedDays * ($dayRate * $dayHours)) * $discount
+//    )
+//);
+
+// dd(\Vyui\Support\Facades\DB::connection('mysql'), \Vyui\Support\Facades\DB::getConnections('mysql'));
+
+// dd(\Vyui\Support\Facades\DB::getConnections());
+
+// dd(\Vyui\Support\Helpers\_String::fromString(1)->repeat(4)->toString());
 
 //$array = [
 //    'test' => [

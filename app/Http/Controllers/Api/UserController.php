@@ -18,6 +18,8 @@ class UserController extends Controller
         $password = $request->get('password');
         $user = User::where('email', '=', 'liam.taylor@outlook.com')->first()->__toArray();
 
+        // todo extract into a token service which can create access tokens, refresh tokens etc in a more simplified
+        //      more elegant manner that is more re-usable and easier to write than this.
         $token = (new JWT)->encode([
             'exp' => time() + 100,
             'user' => $user

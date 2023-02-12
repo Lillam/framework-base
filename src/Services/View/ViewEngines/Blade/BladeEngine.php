@@ -74,10 +74,10 @@ class BladeEngine implements Engine
      */
     public function compile(string $template): string
     {
-        $template = $this->compileExtends($template);
-        $template = $this->compileIf($template);
         $template = $this->compileYield($template);
         $template = $this->compileSection($template);
+        $template = $this->compileExtends($template);
+        $template = $this->compileIf($template);
         $template = $this->compileForEachLoop($template);
         $template = $this->compileForLoop($template);
         $template = $this->compileEcho($template);
@@ -171,7 +171,7 @@ class BladeEngine implements Engine
             return "<?php foreach($matches[1]): ?>";
         }, $template);
 
-        return preg_replace_callback('#@endforeach#', function ($matches) {
+        return preg_replace_callback('#@endforeach#', function () {
             return "<?php endforeach; ?>";
         }, $template);
     }
@@ -183,7 +183,7 @@ class BladeEngine implements Engine
     private function compileYield(string $template): string
     {
         return preg_replace_callback('#@yield\(([^)]+)\)#', function ($matches) {
-
+            return $this->yields[str_replace("'", '', $matches[1])];
         }, $template);
     }
 

@@ -140,24 +140,29 @@ class Request
     }
 
     /**
-     * Get the method that the request is using.
+     * Get the method that the request is using. this method is going to return one of the following request methods:
+     * PUT, POST, PATCH, DELETE, GET as a string.
      *
      * @return string|null
      */
     public function getMethod(): ?string
     {
-        return $this->server('request_method');
+        return $this->getServer()->get('REQUEST_METHOD');
     }
 
     /**
-     * get the url of the application
+     * get the url of the application, we are going to acquire this from the PHP_SELF otherwise; if this ends up being
+     * index.php we are instead going to acquire it from the REQUEST_URI instead.
      *
      * @return string
      */
     public function getUri(): string
     {
-        return $this->server('php_self') ??
-               $this->server('request_uri');
+        if (($uri = $this->getServer()->get('PHP_SELF')) !== '/index.php/') {
+            return $uri;
+        }
+
+        return $this->getServer()->get('REQUEST_URI');
     }
 
     /**
@@ -193,18 +198,7 @@ class Request
      */
     public function getHeader(string $header): mixed
     {
-        return $this->server($header);
-    }
-
-    /**
-     * Method for getting particular variables out of the server variable.
-     *
-     * @param string $key
-     * @return mixed
-     */
-    private function server(string $key): mixed
-    {
-        return $this->server->get(mb_strtoupper($key));
+        return $this->getServer()->get($header);
     }
 
     /**

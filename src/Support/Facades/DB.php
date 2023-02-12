@@ -5,6 +5,10 @@ namespace Vyui\Support\Facades;
 use Vyui\Services\Facades\Facade;
 use Vyui\Contracts\Database\ConnectionManager;
 
+/**
+ * @method static connection(string $connection): Connection
+ * @method static getConnections(?string $connection): Connection
+ */
 class DB extends Facade
 {
     /**

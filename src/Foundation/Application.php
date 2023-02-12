@@ -68,7 +68,7 @@ class Application extends Container implements ApplicationContract
             \Vyui\Services\Exceptions\ExceptionService::class,
             \Vyui\Services\Routing\RoutingService::class,
             \Vyui\Services\View\ViewService::class,
-             \Vyui\Services\Database\DatabaseService::class
+            \Vyui\Services\Database\DatabaseService::class
         ] as $service) {
             $this->register(new $service($this), $service);
         }

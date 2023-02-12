@@ -39,6 +39,14 @@ class Collection implements ArrayAccess
     }
 
     /**
+     * @return array
+     */
+    public function all(): array
+    {
+        return $this->items;
+    }
+
+    /**
      * Transform the object collection into an iterable array that's possible to foreach over.
      *
      * @return array
