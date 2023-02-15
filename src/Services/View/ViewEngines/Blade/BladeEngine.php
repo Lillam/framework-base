@@ -6,16 +6,10 @@ use Vyui\Services\View\View;
 use Vyui\Contracts\View\Engine;
 use Vyui\Foundation\Http\Response;
 use Vyui\Services\View\HasViewManager;
-//use Vyui\Services\View\ViewEngines\Blade\Compiles\CompilesEchos;
-//use Vyui\Services\View\ViewEngines\Blade\Compiles\CompilesExtends;
-//use Vyui\Services\View\ViewEngines\Blade\Compiles\CompilesIf;
-//use Vyui\Services\View\ViewEngines\Blade\Compiles\CompilesLoops;
-//use Vyui\Services\View\ViewEngines\Blade\Compiles\CompilesSections;
 
 class BladeEngine implements Engine
 {
     use HasViewManager;
-    // use CompilesIf, CompilesLoops, CompilesSections, CompilesEchos, CompilesExtends;
 
     /**
      * @var array
@@ -34,9 +28,9 @@ class BladeEngine implements Engine
     public function render(View $view): Response
     {
         $hash = md5($view->template);
-        $cachedFile = $this->manager->getStoragePath() . "$hash.php";
+        $cachedFile = $this->manager->getStoragePath("$hash.php");
 
-        if (! file_exists($hash) || filemtime($view->template) > filemtime($hash)) {
+        if (! file_exists($hash) || filemtime($view->template) > filemtime($cachedFile)) {
             file_put_contents($cachedFile, $this->compile(file_get_contents($view->template)));
         }
 
@@ -75,8 +69,8 @@ class BladeEngine implements Engine
     public function compile(string $template): string
     {
         $template = $this->compileYield($template);
-        $template = $this->compileSection($template);
         $template = $this->compileExtends($template);
+        $template = $this->compileSection($template);
         $template = $this->compileIf($template);
         $template = $this->compileForEachLoop($template);
         $template = $this->compileForLoop($template);
@@ -114,9 +108,12 @@ class BladeEngine implements Engine
      */
     private function compileExtends(string $template): string
     {
-        return preg_replace_callback('#@extends\(([^)]+)\)#', function ($matches) {
+        $template = preg_replace_callback('#@extends\(([^)]+)\)#', function ($matches) {
+            dd($matches[1]);
             return '<?php $this->extends(' . $matches[1] . '); ?>';
         }, $template);
+
+        return $template;
     }
 
     /**
@@ -125,9 +122,26 @@ class BladeEngine implements Engine
      */
     private function compileSection(string $template): string
     {
-        return preg_replace_callback('#@section\(([^)]+)\)#', function ($matches) use ($template) {
-            $this->yield(str_replace(['\'', '"'], '', $matches[1]), '');
-            return $matches[0];
+        return preg_replace_callback('#@section\(([^)]+)\)#', function ($matches) use (&$template) {
+            // capture the yield piece so that we can store within the engine that the yield component is going to be
+            // referenced by what's been captured.
+            $yielding = str_replace(["'", '"'], '', $matches[1]);
+
+            // upon capturing the yield, we are going to look for this particular yield piece within the template and
+            // if we can find it, then we're going to compile the yield segment into the content section which will
+            // later be referenced.
+            $template = preg_replace_callback_array(
+                [
+                    "/(?<=@section\(\"$yielding\"\)\n)([\S\s]*?)(?=@endsection)/" => function ($matches) use ($yielding) {
+                        $this->yield($yielding, $this->compile($matches[0]));
+                        return '';
+                    },
+                    "/@section\(\"$yielding\"\)/" => fn () => '',
+                    "/@endsection/" => fn () => ''
+                ],
+                $template
+            );
+            return $template;
         }, $template);
     }
 
@@ -153,7 +167,7 @@ class BladeEngine implements Engine
     private function compileForLoop(string $template): string
     {
         $template = preg_replace_callback('#@for\(([^)]+)\)#', function ($matches) {
-            return "<?php for($matches[1]): ?>";
+            return "<?php for ($matches[1]): ?>";
         }, $template);
 
         return preg_replace_callback('#@endfor#', function () {
@@ -183,7 +197,7 @@ class BladeEngine implements Engine
     private function compileYield(string $template): string
     {
         return preg_replace_callback('#@yield\(([^)]+)\)#', function ($matches) {
-            return $this->yields[str_replace("'", '', $matches[1])];
+            return '<?= $this->getYield("' . str_replace("'", '', $matches[1]) .  '"); ?>';
         }, $template);
     }
 
@@ -191,28 +205,37 @@ class BladeEngine implements Engine
      * Add a section block (yield) to append all the information to acquire back at a later point.
      *
      * @param string $yield
-     * @param string|null $yieldContent
+     * @param string $yieldContent
      * @return void
      */
-    private function yield(string $yield, ?string $yieldContent = null): void
+    private function yield(string $yield, string $yieldContent = ''): void
     {
-        $this->yields[$yield] = $yieldContent ?? '';
+        $this->yields[$yield] = $this->compile($yieldContent);
+    }
+
+    /**
+     * @param string $yielding
+     * @return string
+     */
+    public function getYield(string $yielding): string
+    {
+        return $this->yields[$yielding] ?? '';
     }
 
     /**
      * @param string $section
      * @return string
      */
-    public function section(string $section): string
-    {
-        if (! isset($this->yields[$section])) {
-            return '';
-        }
-
-        $content = $this->yields[$section];
-        unset($this->yields[$section]);
-        return $content;
-    }
+//    public function section(string $section): string
+//    {
+//        if (! isset($this->yields[$section])) {
+//            return '';
+//        }
+//
+//        $content = $this->compile($this->yields[$section]);
+//        unset($this->yields[$section]);
+//        return $content;
+//    }
 
     /**
      * Extending a template.
@@ -223,7 +246,7 @@ class BladeEngine implements Engine
     public function extends(string $template): static
     {
         $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
-        $this->layouts[realpath($backtrace[0]['file'])] = $template;
+        $this->layouts[realpath($backtrace[0]['file'])] = $this->compile($template);
         return $this;
     }
 

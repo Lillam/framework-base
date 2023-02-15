@@ -62,11 +62,12 @@ class ViewManager
     /**
      * Get the storage path that has been set for the view manager.
      *
+     * @param string $path
      * @return string
      */
-    public function getStoragePath(): string
+    public function getStoragePath(string $path = ''): string
     {
-        return $this->storagePath;
+        return $this->storagePath . $path;
     }
 
     /**

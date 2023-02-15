@@ -59,6 +59,11 @@ class View
         return $this->data;
     }
 
+    public function wasExtended(): bool
+    {
+        return isset($this->data['extended']) && $this->data['extended'];
+    }
+
     /**
      * Turn the view class instance into a string.
      *

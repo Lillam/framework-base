@@ -2,6 +2,12 @@
 
 namespace Vyui\Support\Helpers;
 
+/**
+ * Random regex rules
+ * /([a-z]*).php/ a regex rule that captures: template.[something.php]
+ * / {4}/ a regex rule that captures spaces (of a defined type)
+ *
+ */
 class _Regex
 {
     /**

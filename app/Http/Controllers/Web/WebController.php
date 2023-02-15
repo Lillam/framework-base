@@ -27,7 +27,7 @@ class WebController extends Controller
 
     public function test(Request $request, $test, $testing): Response
     {
-        return view('home2', [
+        return view('home3', [
             'some_data' => [
                 'test' => $test,
                 'testing' => $testing
