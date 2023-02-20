@@ -21,6 +21,13 @@ class View
     public string $template;
 
     /**
+     * The file of which will have been stored.
+     *
+     * @var string
+     */
+    public string $templateHash;
+
+    /**
      * The data that wants to be passed to the view.
      *
      * @var array
@@ -50,6 +57,20 @@ class View
     }
 
     /**
+     * Get the template string as a hashed version, this should never change unless the name of the file changes.
+     *
+     * @return string
+     */
+    public function getHashedTemplate(): string
+    {
+        if (! empty($this->templateHash)) {
+            return $this->templateHash;
+        }
+
+        return $this->templateHash = md5($this->template);
+    }
+
+    /**
      * Method for acquiring the data that's against the view.
      *
      * @return array
@@ -57,11 +78,6 @@ class View
     public function getData(): array
     {
         return $this->data;
-    }
-
-    public function wasExtended(): bool
-    {
-        return isset($this->data['extended']) && $this->data['extended'];
     }
 
     /**

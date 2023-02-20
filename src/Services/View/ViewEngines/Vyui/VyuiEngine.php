@@ -4,6 +4,7 @@ namespace Vyui\Services\View\ViewEngines\Vyui;
 
 use Vyui\Services\View\View;
 use Vyui\Contracts\View\Engine;
+use Vyui\Support\Helpers\_String;
 use Vyui\Foundation\Http\Response;
 use Vyui\Services\View\HasViewManager;
 
@@ -12,19 +13,25 @@ class VyuiEngine implements Engine
     use HasViewManager;
 
     /**
+     * Layout blocks that will be "extended"
+     *
      * @var array
      */
     protected array $layouts = [];
 
     /**
+     * Little blocks of content that will be rendered back to the frontend.
+     *
      * @var array
      */
     protected array $yields = [];
 
     /**
+     * A set of regex rules that will aid the compiling process.
+     *
      * @var string[]
      */
-    protected array $regex = [
+    protected array $compilerRegex = [
         'yield'   => '/#\[yield: (.*)\]/',
         'extends' => '/#\[extends: (layouts\/master)\]/',
         'section' => '/(\#\[section: (.*)\])([\S\s]*?)(\#\[\/section\])/',
@@ -35,100 +42,90 @@ class VyuiEngine implements Engine
     ];
 
     /**
-     * todo - right now this particular method is creating files for each individual component however I want to simplify
-     *        the process at the point when a file gets created and stored into a file for later retrieval. I'm intending
-     *        that at the point of a file is made, the file will have everything that's needed to be built.
+     * Take a view, and look to see if we have a view in storage for this compilation otherwise compile it then load it
+     * to display to the user.
+     *
+     * @issue -> Currently if extending a file, the file of which was extended (if it changes) won't trigger a compile
+     *           again meaning that you'd then need to clear the view cache which is non desirable so this will need
+     *           to change somewhere; either that or have a compiled file name based on the view.
      *
      * @param View $view
      * @return Response
      */
     public function render(View $view): Response
     {
-        $hash = md5($view->template);
-        $cachedFile = $this->manager->getStoragePath("$hash.php");
+        $cache = $this->manager->getStoragePath(
+            _String::fromString($view->getHashedTemplate())->append('.php')
+        );
 
-        if (isset($view->data['yields'])) {
-            $this->yields = array_merge($this->yields, $view->data['yields']);
+        if ($this->shouldRecompile($cache, $view)) {
+            // Acquire the original content from the view that has been passed in.
+            $originalContent = $this->getViewManager()->getFileContent($view->template);
+            // Pre-compile the original content which will look for key-words, like yield, extends and begin stripping
+            // and making sections and blocks within the engine, so that they can be mapped accordingly to its' main
+            // template.
+            $precompiled = $this->preCompile($originalContent);
+            // compile the content finally, which will begin attaching all the above yields, sections and layouts to
+            // the final template and then dump them into a cached PHP file.
+            $compiled = $this->compile($precompiled);
+            // place the contents that has been compiled into storage so that we can simply acquire the file from the
+            // build and then execute the PHP.
+            $this->getViewManager()->putFileContent($cache, $compiled);
         }
 
-        if (! file_exists($cachedFile) || filemtime($view->template) > filemtime($cachedFile)) {
-            // todo put the line below back into here after debugging purposes; this is to stop the need for having to
-            //      to make any alterations.
-        }
-
-        file_put_contents($cachedFile, $this->compile(file_get_contents($view->template)));
-
-        extract($view->data);
-        ob_start();
-
-        include $cachedFile;
-
-        $content = ob_get_contents();
-        ob_end_clean();
-
-        if ($layout = $this->layouts[$cachedFile] ?? null) {
-            $this->yields['body'] = $content;
-            return view($layout, array_merge(
-                $view->data,
-                ['content' => $content, 'extended' => true]
-            ));
-        }
-
-        // todo what we need to do is initially get the first loaded file and decide then what we're going to be doing
-        //      with it, upon recursively collecting a bunch of files together, we can then pass it what the overall
-        //      collection of files will be needing
-
-        return new Response($content);
+        return new Response($this->getCompiledFileContents($cache, $view->getData()));
     }
 
     /**
-     * @param string $template
+     * Look for a few keywords, such as "extends" and we are going to replace this with even more content.
+     *
+     * @param string $content
      * @return string
      */
-    private function compile(string $template): string
+    public function preCompile(string $content): string
+    {
+        $content = preg_replace_callback_array([
+            $this->compilerRegex['section'] => function ($matches) {
+                $this->yields[$matches[2]] = $matches[0];
+            }
+        ], $content);
+
+        $content = preg_replace_callback_array([
+            $this->compilerRegex['extends'] => function ($matches) {
+                // here we are going to look for a file that has been matched within the extends...
+                return $this->layouts[$matches[1]] = $this->getViewManager()->getFileContent(
+                    $this->getViewManager()->getResourcePath("$matches[1].vyui.php")
+                );
+            }
+        ], $content);
+
+        return preg_replace_callback_array([
+            $this->compilerRegex['yield'] => function ($matches) {
+                return $this->yields[$matches[1]] ?? '';
+            }
+        ], $content);
+    }
+
+    /**
+     * @param string $content
+     * @return string
+     */
+    public function compile(string $content): string
     {
         return preg_replace_callback_array([
-            $this->regex['yield']   => fn ($matches) => $this->compileYield($matches),
-            $this->regex['extends'] => fn ($matches) => $this->compileExtends($matches),
-            $this->regex['section'] => fn ($matches) => $this->compileSection($matches),
-            $this->regex['if']      => fn ($matches) => $this->compileIf($matches),
-            $this->regex['for']     => fn ($matches) => $this->compileFor($matches),
-            $this->regex['foreach'] => fn ($matches) => $this->compileForEach($matches),
-            $this->regex['echo']    => fn ($matches) => $this->compileEcho($matches)
-        ], $template);
+            $this->compilerRegex['section'] => fn ($matches) => $this->compileSection($matches),
+            $this->compilerRegex['if']      => fn ($matches) => $this->compileIf($matches),
+            $this->compilerRegex['for']     => fn ($matches) => $this->compileFor($matches),
+            $this->compilerRegex['foreach'] => fn ($matches) => $this->compileForEach($matches),
+            $this->compilerRegex['echo']    => fn ($matches) => $this->compileEcho($matches)
+        ], $content);
     }
 
-    /**
-     * @param array $matches
-     * @return string
-     */
-    protected function compileYield(array $matches): string
+    private function compileSection(array $matches): string
     {
-        return '<?= $this->getYield("' . $matches[1] .  '"); ?>';
-    }
-
-    /**
-     * @param array $matches
-     * @return string
-     */
-    protected function compileExtends(array $matches): string
-    {
-        return '<?php $this->extends("' . $matches[1] . '"); ?>';
-    }
-
-    /**
-     * @param array $matches
-     * @return string
-     */
-    protected function compileSection(array $matches): string
-    {
-        $content = $this->compile($matches[3]);
-        $this->yields[$matches[2]] = $content;
-        return <<<END
-           <?php \$this->startSection("$matches[2]"); ?>
-                $content
-           <?php \$this->endSection("$matches[2]"); ?> 
-        END;
+        return "<?php \$this->startSection('$matches[2]'); ?>" .
+               $matches[3] .
+               "<?php \$this->endSection('$matches[2]'); ?>";
     }
 
     /**
@@ -166,38 +163,39 @@ class VyuiEngine implements Engine
 
     protected function compileEcho(array $matches): string
     {
-        return "<?= $matches[1]; ?>";
+        return "<?php echo $matches[1]; ?>";
+    }
+
+    public function startSection(): void
+    {
+
+    }
+
+    public function endSection(): void
+    {
+
     }
 
     /**
-     * @param string $yielding
+     * @param string $cachedFilePath
+     * @param array $data
      * @return string
      */
-    public function getYield(string $yielding): string
+    private function getCompiledFileContents(string $cachedFilePath, array $data): string
     {
-        return $this->yields[$yielding] ?? '';
+        extract($data);
+        ob_start();
+
+        include $cachedFilePath;
+
+        $content = ob_get_contents();
+        ob_end_clean();
+
+        return $content;
     }
 
-    public function startSection()
+    private function shouldRecompile(string $cache, View $view): bool
     {
-
-    }
-
-    public function endSection()
-    {
-
-    }
-
-    /**
-     * Extending a template.
-     *
-     * @param string $template
-     * @return $this
-     */
-    public function extends(string $template): static
-    {
-        $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
-        $this->layouts[realpath($backtrace[0]['file'])] = $template;
-        return $this;
+        return ! file_exists($cache) || filemtime($view->template) > filemtime($cache);
     }
 }

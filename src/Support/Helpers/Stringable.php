@@ -27,7 +27,7 @@ class Stringable
      */
     public function append(string $string): static
     {
-        $this->string = "{$this->string} $string";
+        $this->string = "{$this->string}$string";
 
         return $this;
     }

@@ -5,9 +5,15 @@ namespace Vyui\Services\View;
 use Exception;
 use Vyui\Contracts\View\Engine;
 use Vyui\Foundation\Http\Response;
+use Vyui\Contracts\Filesystem\Filesystem;
 
 class ViewManager
 {
+    /**
+     * @var Filesystem
+     */
+    protected Filesystem $filesystem;
+
     /**
      * @var string[]
      */
@@ -24,6 +30,14 @@ class ViewManager
      * @var string|null
      */
     protected ?string $storagePath = null;
+
+    /**
+     * @param Filesystem $filesystem
+     */
+    public function __construct(Filesystem $filesystem)
+    {
+        $this->filesystem = $filesystem;
+    }
 
     /**
      * Add a path to the ViewManager, this is where the view manager will know where to look for views in the system.
@@ -128,5 +142,33 @@ class ViewManager
     public function templateDoesNotExist(string $template): bool
     {
         return ! $this->templateDoesExist($template);
+    }
+
+    /**
+     * @param string|null $file
+     * @return string
+     */
+    public function getResourcePath(?string $file): string
+    {
+        return $this->paths[0] . $file;
+    }
+
+    /**
+     * @param string $file
+     * @return string
+     */
+    public function getFileContent(string $file): string
+    {
+        return $this->filesystem->get($file);
+    }
+
+    /**
+     * @param string $file
+     * @param string $contents
+     * @return void
+     */
+    public function putFileContent(string $file, string $contents): void
+    {
+        $this->filesystem->put($file, $contents);
     }
 }

@@ -27,10 +27,10 @@ class WebController extends Controller
 
     public function test(Request $request, $test, $testing): Response
     {
-        return view('home3', [
+        return view('home4', [
             'some_data' => (object) [
-                'test' => $test,
-                'testing' => $testing
+                'test' => "this is a trap",
+                'testing' => "right?"
             ]
         ]);
     }
