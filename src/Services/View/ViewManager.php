@@ -154,21 +154,10 @@ class ViewManager
     }
 
     /**
-     * @param string $file
-     * @return string
+     * @return Filesystem
      */
-    public function getFileContent(string $file): string
+    public function getFilesystem(): Filesystem
     {
-        return $this->filesystem->get($file);
-    }
-
-    /**
-     * @param string $file
-     * @param string $contents
-     * @return void
-     */
-    public function putFileContent(string $file, string $contents): void
-    {
-        $this->filesystem->put($file, $contents);
+        return $this->filesystem;
     }
 }

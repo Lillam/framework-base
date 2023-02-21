@@ -13,6 +13,19 @@ class VyuiEngine implements Engine
     use HasViewManager;
 
     /**
+     * The current cache of the view we're trying to render. This will be utilised for storing the name of the file and
+     * the time in which the file had been built against the time that exists against the real file.
+     *
+     * @var string
+     */
+    protected string $cache = '';
+
+    /**
+     * @var array
+     */
+    protected array $cacheComponents = [];
+
+    /**
      * Layout blocks that will be "extended"
      *
      * @var array
@@ -45,22 +58,32 @@ class VyuiEngine implements Engine
      * Take a view, and look to see if we have a view in storage for this compilation otherwise compile it then load it
      * to display to the user.
      *
-     * @issue -> Currently if extending a file, the file of which was extended (if it changes) won't trigger a compile
-     *           again meaning that you'd then need to clear the view cache which is non desirable so this will need
+     * @issue -> Currently if extending a file, the file of which was extended (if it changes) won't trigger a compiling
+     *           again meaning that you'd then need to clear the view cache which is non-desirable so this will need
      *           to change somewhere; either that or have a compiled file name based on the view.
+     *
+     * @issue -> Currently this particular class and method is heavily depending on a filesystem existing within the
+     *           application; so this might potentially be a better thing should this particular class utilise default
+     *           php methods in order for getting the file content, rather than being heavily intertwined and
+     *           interlocked together... making it less modular all around.
+     *
      *
      * @param View $view
      * @return Response
      */
     public function render(View $view): Response
     {
+        $this->cache = $view->getHashedTemplate();
+
+        $this->cacheComponents[$this->cache][] = $view->getTemplate();
+
         $cache = $this->manager->getStoragePath(
             _String::fromString($view->getHashedTemplate())->append('.php')
         );
 
         if ($this->shouldRecompile($cache, $view)) {
             // Acquire the original content from the view that has been passed in.
-            $originalContent = $this->getViewManager()->getFileContent($view->template);
+            $originalContent = $this->getViewManager()->getFilesystem()->get($view->template);
             // Pre-compile the original content which will look for key-words, like yield, extends and begin stripping
             // and making sections and blocks within the engine, so that they can be mapped accordingly to its' main
             // template.
@@ -70,7 +93,10 @@ class VyuiEngine implements Engine
             $compiled = $this->compile($precompiled);
             // place the contents that has been compiled into storage so that we can simply acquire the file from the
             // build and then execute the PHP.
-            $this->getViewManager()->putFileContent($cache, $compiled);
+            $this->getViewManager()->getFilesystem()->put($cache, $compiled);
+            // put the components to file so that we can reference this at a later time - utilised for the sake of
+            // knowing whether something within the file stack has been changed or not.
+            $this->putCompiledComponentsToFile();
         }
 
         return new Response($this->getCompiledFileContents($cache, $view->getData()));
@@ -84,20 +110,21 @@ class VyuiEngine implements Engine
      */
     public function preCompile(string $content): string
     {
-        $content = preg_replace_callback_array([
-            $this->compilerRegex['section'] => function ($matches) {
-                $this->yields[$matches[2]] = $matches[0];
-            }
-        ], $content);
+        $content = preg_replace_callback($this->compilerRegex['section'], function ($matches) {
+            $this->yields[$matches[2]] = $matches[0];
+        }, $content);
 
-        $content = preg_replace_callback_array([
-            $this->compilerRegex['extends'] => function ($matches) {
-                // here we are going to look for a file that has been matched within the extends...
-                return $this->layouts[$matches[1]] = $this->getViewManager()->getFileContent(
-                    $this->getViewManager()->getResourcePath("$matches[1].vyui.php")
-                );
-            }
-        ], $content);
+        $content = preg_replace_callback($this->compilerRegex['extends'], function ($matches) {
+            // here we are going to look for a file that has been matched within the extends...
+            $extendContentPath = $this->getViewManager()
+                                      ->getResourcePath("$matches[1].vyui.php");
+
+            $this->cacheComponents[$this->cache][] = $extendContentPath;
+
+            return $this->layouts[$matches[1]] = $this->getViewManager()
+                                                      ->getFilesystem()
+                                                      ->get($extendContentPath);
+        }, $content);
 
         return preg_replace_callback_array([
             $this->compilerRegex['yield'] => function ($matches) {
@@ -166,11 +193,27 @@ class VyuiEngine implements Engine
         return "<?php echo $matches[1]; ?>";
     }
 
+    /**
+     * @issue -> this is just a code separator to let the user know that there was a yielding to the content that has
+     *           been started.
+     * @todo  -> offer this a sense of functionality or remove from the code and potentially just dump comments to the
+     *           cached file to let the developer know where a segment had started.
+     *
+     * @return void
+     */
     public function startSection(): void
     {
 
     }
 
+    /**
+     * @issue -> this is just a code separator to let the developer know that there was a yielding to the content and
+     *           was ended.
+     * @todo ->  offer this a sense of functionality or remove from the code and potentially dump comments to the cached
+     *           file to let the developer know where a segment has been ended.
+     *
+     * @return void
+     */
     public function endSection(): void
     {
 
@@ -194,8 +237,64 @@ class VyuiEngine implements Engine
         return $content;
     }
 
+    /**
+     * Cache the current component pieces into a file that we can then later look for when we're in need of being able
+     * to decide whether a particular build needs re-compiling or not.
+     *
+     * @return void
+     */
+    private function putCompiledComponentsToFile(): void
+    {
+        // if we don't have more than one component in the tree of files that took this particular file to build then
+        // we are going to return early otherwise the rest of the code will be unnecessary to the process.
+        if (count($this->cacheComponents[$this->cache]) <= 1) {
+            return;
+        }
+
+        // build the current component tree for this particular file; however this only really wants to happen when
+        // there has been a need for it... such as having components bigger than the necessary.
+        $this->getViewManager()->getFilesystem()->makeDirectory(
+            $this->getViewManager()->getStoragePath('/builds')
+        );
+
+        $cacheComponentsPath = $this->getViewManager()->getStoragePath("/builds/{$this->cache}.php");
+        $cacheComponentsContent = _String::fromString("<?php return [\n")
+            ->append('    "')
+            ->append(join("\",\n    \"", $this->cacheComponents[$this->cache]))
+            ->append("\"\n")
+            ->append('];');
+
+        $this->getViewManager()->getFilesystem()->put($cacheComponentsPath, $cacheComponentsContent);
+    }
+
+    /**
+     * Find out whether the particular view needs to be re compiled or not.
+     *
+     * @param string $cache
+     * @param View $view
+     * @return bool
+     */
     private function shouldRecompile(string $cache, View $view): bool
     {
-        return ! file_exists($cache) || filemtime($view->template) > filemtime($cache);
+        if (! file_exists($cache)) {
+            return true;
+        }
+
+        if (filemtime($view->template) > filemtime($cache)) {
+            return true;
+        }
+
+        if ($this->getViewManager()->getFilesystem()->exists(
+            $path = $this->getViewManager()->getStoragePath("/builds/{$this->cache}.php")
+        )) {
+            $files = include($path);
+            foreach ($files as $file) {
+                if (filemtime($file) > filemtime($cache)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }

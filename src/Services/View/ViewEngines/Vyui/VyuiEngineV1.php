@@ -77,10 +77,9 @@ class VyuiEngineV1 implements Engine
             //          the below code wants to be included back in here when done with the testing portion of things.
         }
 
-        $this->getViewManager()
-             ->putFileContent(
-                 $this->currentCacheFile, $this->compile($this->getFileToCompile($view))
-             );
+        $this->getViewManager()->getFilesystem()->put(
+            $this->currentCacheFile, $this->compile($this->getFileToCompile($view))
+        );
 
         $content = $this->getCompiledFileContents($this->currentCacheFile, $view->getData());
 
@@ -97,7 +96,7 @@ class VyuiEngineV1 implements Engine
      */
     private function getFileToCompile(View $view): string
     {
-        return $this->getViewManager()->getFileContent($view->template);
+        return $this->getViewManager()->getFilesystem()->get($view->template);
     }
 
     /**
