@@ -45,7 +45,7 @@ class VyuiEngine implements Engine
      * @var string[]
      */
     protected array $compilerRegex = [
-        'yield'   => '/#\[yield: (.*)\]/',
+        'yield'   => '/( *)#\[yield: (.*)\]/',
         'extends' => '/#\[extends: (layouts\/master)\]/',
         'section' => '/(\#\[section: (.*)\])([\S\s]*?)(\#\[\/section\])/',
         'if'      => '/(\#\[if: (.*)\])([\S\s]*?)(\#\[\/if\])/',
@@ -128,7 +128,15 @@ class VyuiEngine implements Engine
 
         return preg_replace_callback_array([
             $this->compilerRegex['yield'] => function ($matches) {
-                return $this->yields[$matches[1]] ?? '';
+                if (! isset($this->yields[$matches[2]])) {
+                    return '';
+                }
+                $space = $matches[1];
+                // here we are going to do a bit of jiggery pokery to sort out the layout of the created cached file,
+                // even though this is worthless, the presentation of files just... has to be right up there.
+                return preg_replace_callback('/(.*)[\s\S]/', function ($matches) use ($space) {
+                    return $space . $matches[0];
+                }, $this->yields[$matches[2]]);
             }
         ], $content);
     }
@@ -259,6 +267,7 @@ class VyuiEngine implements Engine
 
         $cacheComponentsPath = $this->getViewManager()->getStoragePath("/builds/{$this->cache}.php");
         $cacheComponentsContent = _String::fromString("<?php return [\n")
+            ->append("    // This file {$this->cache}.php was generated utilising the following files: \n")
             ->append('    "')
             ->append(join("\",\n    \"", $this->cacheComponents[$this->cache]))
             ->append("\"\n")
@@ -276,11 +285,7 @@ class VyuiEngine implements Engine
      */
     private function shouldRecompile(string $cache, View $view): bool
     {
-        if (! file_exists($cache)) {
-            return true;
-        }
-
-        if (filemtime($view->template) > filemtime($cache)) {
+        if (! file_exists($cache) || filemtime($view->template) > filemtime($cache)) {
             return true;
         }
 
