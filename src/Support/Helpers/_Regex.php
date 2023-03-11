@@ -33,4 +33,17 @@ class _Regex
     {
         return preg_replace("/.*$character/", '', $value);
     }
+
+    /**
+     * Get a string and turn it into an acronym; example: Portable Network Graphic -> PNG
+     *
+     * @param string $value
+     * @return string
+     */
+    public static function acronise(string $value): string
+    {
+        return implode('', array_map(function ($m) {
+            return preg_replace('/[a-z]/', '', ucfirst($m))[0];
+        }, explode(' ', str_replace('-', ' ', $value))));
+    }
 }

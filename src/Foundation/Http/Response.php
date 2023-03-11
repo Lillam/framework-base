@@ -86,12 +86,16 @@ class Response implements ResponseContract
     /**
      * Return the response as a json response.
      *
-     * @param array $data
+     * @param mixed $data
      * @return $this
      */
-    public function json(array $data): self
+    public function json(mixed $data): self
     {
-        $this->content = json_encode($data);
+        $this->content = json_encode(
+            ! is_array($data)
+                ? ['data' => $data]
+                : $data
+        );
 
         return $this;
     }

@@ -11,7 +11,6 @@
         <div class="h-screen flex justify-content-center align-items-center">
             <div>
                 #[yield: body]
-                aa
             </div>
         </div>
         #[yield: footer]

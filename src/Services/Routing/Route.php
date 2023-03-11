@@ -302,7 +302,6 @@ class Route
      */
     private function buildParameters(object $object, string $action = null): array
     {
-        // $neededParameters = _Reflect::getClassMethodParameterNames($object, $action);
         $neededParameters = _Reflect::getClassMethodParameterInfo($object, $action);
 
         // iterate over the parameters of the request which will be the ones that we've decided that are necessary
@@ -323,6 +322,11 @@ class Route
         foreach ($parameters as $parameterKey => $parameter) {
             if (array_key_exists($parameterKey, $neededParameters)) {
                 $type = $neededParameters[$parameterKey]['type'];
+
+                // right here we are going to have unassigned this from the needed parameters so that if there is still
+                // anything left within the needed parameters then we are still needing to be makign something and
+                // building it out for later use...
+                unset($neededParameters[$parameterKey]);
 
                 // if the type has been passed as an item of which is null; then we can immediately do nothing and just
                 // skip passed this particular item as nothing really needs to happen here.
@@ -353,6 +357,18 @@ class Route
             }
         }
 
-        return $parameters;
+        // if we still have any needed parameters left at this point, then we are going to be needing to build them out
+        // and look to start auto wiring right there.
+        // todo -> this needs removing entirely because we are going to be needing to auto-wire this via the application
+        //         and if this still cannot be made then we're all good to just skip past it and call it a day.
+        foreach ($neededParameters as $neededKey => $neededParameter) {
+            if (in_array($neededParameter['type'], ['int', 'string'])) {
+                continue;
+            }
+
+            $neededParameters[$neededKey] = new $neededParameter['type'];
+        }
+
+        return array_merge($parameters, $neededParameters);
     }
 }

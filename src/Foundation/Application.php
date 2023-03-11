@@ -2,6 +2,7 @@
 
 namespace Vyui\Foundation;
 
+use Vyui\Services\Auth\AuthService;
 use Vyui\Services\Service;
 use Vyui\Foundation\Container\Container;
 use Vyui\Contracts\Application as ApplicationContract;
@@ -28,6 +29,11 @@ class Application extends Container implements ApplicationContract
      * @var array<string, bool>
      */
     protected array $servicesRegistered = [];
+
+    /**
+     * @var array
+     */
+    protected array $events = [];
 
     /**
      * @param string $basePath
@@ -68,7 +74,8 @@ class Application extends Container implements ApplicationContract
             \Vyui\Services\Exceptions\ExceptionService::class,
             \Vyui\Services\Routing\RoutingService::class,
             \Vyui\Services\View\ViewService::class,
-            \Vyui\Services\Database\DatabaseService::class
+            \Vyui\Services\Database\DatabaseService::class,
+            AuthService::class,
         ] as $service) {
             $this->register(new $service($this), $service);
         }
@@ -154,6 +161,7 @@ class Application extends Container implements ApplicationContract
      */
     public function __destruct()
     {
-        // dd($this->buildTimeFasterThan(env('LARAVEL_BUILD_TIME')));
+        // todo -> when we are done with the application, any events that need to be mapped and handled then we can
+        //         fire off the events that were stored within the application at the point of destruction.
     }
 }

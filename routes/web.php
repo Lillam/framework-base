@@ -15,6 +15,7 @@
 
 use Vyui\Support\Facades\Route;
 use App\Http\Controllers\Web\WebController;
+use App\Http\Controllers\Api\ApiController;
 
 //Route::get('/yascreem/{test}', function (): \Vyui\Foundation\Http\Response {
 //    return view('home2');
@@ -28,3 +29,9 @@ Route::get('/tasks/{task?}', [\App\Http\Controllers\Web\WebController::class, 'i
 
 Route::get('/api/users', [\App\Http\Controllers\Api\UserController::class, 'index']);
 Route::post('/api/login', [\App\Http\Controllers\Api\UserController::class, 'login']);
+
+
+Route::get('/parseToken', [WebController::class, 'parseToken']);
+
+Route::get('/api/token',         [ApiController::class, 'getToken']);
+Route::get('/api/token/refresh', [ApiController::class, 'refreshToken']);

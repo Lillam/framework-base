@@ -1,5 +1,21 @@
 <?php
 
+// dd(\Vyui\Support\Helpers\_Regex::acronise('Complementary metal-oxide semiconductor'));
+
+//$words = [
+//    'Portable network graphic',
+//    'Plastic Surgery',
+//    'Content Management System',
+//    '',
+//    null
+//];
+//
+//foreach ($words as $word) {
+//    var_dump(\Vyui\Support\Helpers\_Regex::acronise($word));
+//}
+//
+//die();
+
 /**
  * const actual = priceWithMonthlyDiscount(16, 130, 0.15);
 const expected = 14528;
@@ -131,11 +147,11 @@ expect(actual).toBeCloseTo(expected, DIFFERENCE_PRECISION_IN_DIGITS);
 //);
 
 
-//$token = (new \Vyui\Contracts\Auth\JWT)->encode([
-//    'id' => 1,
-//    'name' => 'liam taylor',
-//    'exp' => time() + 20,
-//]);
+$token = (new \Vyui\Auth\JWT)->encode([
+    'id' => 1,
+    'name' => 'liam taylor',
+    'exp' => time() + 20,
+]);
 
 //dD(base64_encode(json_encode([
 //    "id" => 1,

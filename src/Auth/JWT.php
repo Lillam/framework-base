@@ -192,9 +192,9 @@ class JWT
      */
     private function validatePayload(array $payload): void
     {
-        if ($payload['exp'] < time()) {
-            throw new TokenExpiredException;
-        }
+//        if ($payload['exp'] < time()) {
+//            throw new TokenExpiredException;
+//        }
     }
 
     /**

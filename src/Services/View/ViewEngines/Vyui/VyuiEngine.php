@@ -265,6 +265,9 @@ class VyuiEngine implements Engine
             $this->getViewManager()->getStoragePath('/builds')
         );
 
+        // Acquire the build path as well as what is going into the build path, which can be utilised later in the
+        // process of building the template which will help with later deciding whether the template wants re
+        // compiling.
         $cacheComponentsPath = $this->getViewManager()->getStoragePath("/builds/{$this->cache}.php");
         $cacheComponentsContent = _String::fromString("<?php return [\n")
             ->append("    // This file {$this->cache}.php was generated utilising the following files: \n")
@@ -289,17 +292,21 @@ class VyuiEngine implements Engine
             return true;
         }
 
+        // todo -> Find a nicer way to write this because I hate the way that this is currently written and how it's
+        //         looking; doesn't look the most intuitive.
         if ($this->getViewManager()->getFilesystem()->exists(
             $path = $this->getViewManager()->getStoragePath("/builds/{$this->cache}.php")
         )) {
-            $files = include($path);
-            foreach ($files as $file) {
+            foreach (include($path) as $file) {
                 if (filemtime($file) > filemtime($cache)) {
+                    var_dump('we remade it');
                     return true;
                 }
             }
         }
 
+        // if we've made it here then we really shouldn't be recompiling... and can just return the original file that
+        // we had already built.
         return false;
     }
 }
