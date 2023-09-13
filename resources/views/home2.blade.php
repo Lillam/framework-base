@@ -1,4 +1,4 @@
-@extends('layouts/main')
+@extends('layouts.mainblade')
 @section("body")
     Hello there
     @if(1 === 1)

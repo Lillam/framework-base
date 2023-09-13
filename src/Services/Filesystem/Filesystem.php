@@ -70,6 +70,12 @@ class Filesystem implements FilesystemContract
             foreach ($files as $fileKey => $file) {
                 $files[$fileKey] = new SplFileObject($file);
             }
+
+            // is iterating faster than that of just an array map? - or even an array walk even? - though it does look
+            // a lot nicer being one line rather than several lines of code (3)... I'll have to perform the operations
+            // on either side, however SplFileObject does tend to be costly, so might need to do a lazy load of their
+            // type rather than having multiple concurrent SPL File Objects.
+            // $files = array_map(fn (string $file) => new SplFileObject($file), $files);
         }
 
         return $files;

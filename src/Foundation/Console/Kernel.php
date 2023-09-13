@@ -3,11 +3,8 @@
 namespace Vyui\Foundation\Console;
 
 use Vyui\Foundation\Application;
-use Vyui\Foundation\Console\Commands\Make;
-use Vyui\Foundation\Console\Commands\Test;
-use Vyui\Foundation\Console\Commands\Format;
-use Vyui\Foundation\Console\Commands\Command;
 use Vyui\Contracts\Console\Kernel as KernelContract;
+use Vyui\Foundation\Console\Commands\{ Help, Make, Test, Format, Command };
 
 class Kernel implements KernelContract
 {
@@ -22,6 +19,7 @@ class Kernel implements KernelContract
      * @var string[]
      */
     protected array $commands = [
+        'help'   => Help::class,
         'make'   => Make::class,
         'test'   => Test::class,
         'format' => Format::class
@@ -78,7 +76,6 @@ class Kernel implements KernelContract
      * @param Input $input
      * @param Output|null $output
      * @return int
-     * @throws CommandNotFoundException
      */
     public function handle(Input $input, ?Output $output = null): int
     {

@@ -33,6 +33,9 @@ class Output
      * Dump some content out to the console; Dump the attempt of print into the print stack variable
      * so that we can refer back to what was outputted in a step by step of the command.
      *
+     * if specified that the new line is false, then the system will simply print out to the console
+     * over the previous line that used to be there.
+     *
      * @param string $printing
      * @param bool $newLine
      * @return void
@@ -47,7 +50,7 @@ class Output
             array_keys($printColourParsing),
             array_values($printColourParsing),
             $printing
-        ) . ($newLine ? PHP_EOL : '');
+        ) . ($newLine ? PHP_EOL : "\r");
 
         print $output;
     }
@@ -67,7 +70,7 @@ class Output
     }
 
     /**
-     * Dump some content out to the console; dump the attempt of print into the print stack varaible
+     * Dump some content out to the console; dump the attempt of print into the print stack variable
      * as the stated yellow text, upon doing so set the console output back to white.
      *
      * @param string $printing
@@ -92,6 +95,18 @@ class Output
         $this->printStack[] = $printing;
 
         print "{$this->errorOutputColour}$printing{$this->defaultOutputColour}" . PHP_EOL;
+    }
+
+    /**
+     * Create a progress br that will have the possibility to output to the terminal for the user
+     * along with the progress that they're currently at.
+     *
+     * @param int $total
+     * @return Progress
+     */
+    public function createProgress(int $total): Progress
+    {
+        return new Progress($this, $total);
     }
 
     /**

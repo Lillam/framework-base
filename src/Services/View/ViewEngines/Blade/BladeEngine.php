@@ -108,12 +108,9 @@ class BladeEngine implements Engine
      */
     private function compileExtends(string $template): string
     {
-        $template = preg_replace_callback('#@extends\(([^)]+)\)#', function ($matches) {
-            dd($matches[1]);
+        return preg_replace_callback('#@extends\(([^)]+)\)#', function ($matches) {
             return '<?php $this->extends(' . $matches[1] . '); ?>';
         }, $template);
-
-        return $template;
     }
 
     /**

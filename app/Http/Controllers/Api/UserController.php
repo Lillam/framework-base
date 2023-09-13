@@ -12,10 +12,15 @@ use App\Http\Controllers\Api\ApiController as Controller;
 
 class UserController extends Controller
 {
+    /**
+     * @param Request $request
+     * @return Response
+     */
     public function login(Request $request): Response
     {
         $email    = $request->get('email');
         $password = $request->get('password');
+
         $user = User::where('email', '=', 'liam.taylor@outlook.com')->first()->__toArray();
 
         // todo extract into a token service which can create access tokens, refresh tokens etc in a more simplified
@@ -30,6 +35,9 @@ class UserController extends Controller
         ]);
     }
 
+    /**
+     * @return void
+     */
     public function random()
     {
         $apiKey = str_replace(

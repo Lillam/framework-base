@@ -25,9 +25,9 @@ class Test extends Command
     /**
      * The path to the tests within the framework.
      *
-     * @var string
+     * @var string[]
      */
-    protected string $testsPath = '';
+    protected array $paths = [];
 
     /**
      * @var int
@@ -62,7 +62,7 @@ class Test extends Command
 
         $this->application = $application;
         $this->filesystem  = $filesystem;
-        $this->testsPath   = $this->application->getBasePath('/tests');
+        $this->paths[]     = $this->application->getBasePath('/tests');
         $this->tests       = new TestCollection;
     }
 
@@ -167,10 +167,18 @@ class Test extends Command
      */
     private function loadTests(): static
     {
+        $files = [];
+
         // acquire all the test files from the filesystem so that we can begin iterating over them and loading in the
         // classes and apply them into memory to later iterate over and begin running over the tests that reside within
         // each test class.
-        $files = $this->filesystem->files($this->testsPath, false);
+        foreach ($this->paths as $path) {
+            $files = array_merge($files, $this->filesystem->files($path, false));
+        }
+
+        $progress = $this->output->createProgress(count($files));
+
+        $this->output->print('loading files...');
 
         foreach ($files as $key => $file) {
             // Get the particular test files from the directory of the tests; this could potentially be placed within a
@@ -194,6 +202,8 @@ class Test extends Command
             catch (Throwable $exception) {
                 $this->output->printError("✗ failed to load $test [{$exception->getMessage()}]");
             }
+
+            $progress->advance();
         }
 
         return $this;

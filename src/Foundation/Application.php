@@ -2,7 +2,6 @@
 
 namespace Vyui\Foundation;
 
-use Vyui\Services\Auth\AuthService;
 use Vyui\Services\Service;
 use Vyui\Foundation\Container\Container;
 use Vyui\Contracts\Application as ApplicationContract;
@@ -75,7 +74,7 @@ class Application extends Container implements ApplicationContract
             \Vyui\Services\Routing\RoutingService::class,
             \Vyui\Services\View\ViewService::class,
             \Vyui\Services\Database\DatabaseService::class,
-            AuthService::class,
+            \Vyui\Services\Auth\AuthService::class,
         ] as $service) {
             $this->register(new $service($this), $service);
         }

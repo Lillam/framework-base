@@ -189,9 +189,9 @@ abstract class Model
      */
     public function newBaseQuery(): Builder
     {
-        return $this->getConnection()->query()->table(
-            $this->getTable()
-        )->forModel($this);
+        return $this->getConnection()->query()
+                                     ->table($this->getTable())
+                                     ->forModel($this);
     }
 
     /**
@@ -231,14 +231,14 @@ abstract class Model
         // dynamically get a property out of the attributes for the model in question, this will allow the developer to
         // be able to make magic calls to the model for acquiring some data out of the model in a method oriented way
         // i.e. getTitle() getProjectName() and more.
-        if (mb_strpos($method, 'get') !== false) {
+        if (str_starts_with($method, 'get') !== false) {
             return $this->handlePolymorphicGetter($method);
         }
 
-        // dynamically set a propety within the attributes for the model in question, this will allow the developer to
+        // dynamically set a property within the attributes for the model in question, this will allow the developer to
         // be able to make magic calls to the model for setting some data within the model in a method oriented way
         // i.e. setTitle('value') setProjectName('value') and more.
-        if (mb_strpos($method, 'set') !== false) {
+        if (str_starts_with($method, 'set') !== false) {
             return $this->handlePolymorphicSetter($method, $arguments);
         }
 

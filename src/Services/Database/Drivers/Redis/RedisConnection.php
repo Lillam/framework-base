@@ -4,6 +4,7 @@ namespace Vyui\Services\Database\Drivers\Redis;
 
 use PDO;
 use Vyui\Services\Database\Connection;
+use Vyui\Services\Database\Drivers\Redis\Query\RedisBuilder;
 
 class RedisConnection extends Connection
 {
@@ -26,5 +27,13 @@ class RedisConnection extends Connection
     public function pdo(): PDO
     {
         return $this->pdo;
+    }
+
+    /**
+     * @return RedisBuilder
+     */
+    public function query(): RedisBuilder
+    {
+        return new RedisBuilder($this);
     }
 }

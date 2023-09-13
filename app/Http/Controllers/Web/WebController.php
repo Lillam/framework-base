@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Web;
 
+use Vyui\Auth\JWT;
 use App\Models\Task;
 use App\Models\User;
-use Vyui\Auth\JWT;
 use Vyui\Foundation\Http\Request;
 use Vyui\Foundation\Http\Response;
 use Vyui\Foundation\Http\Controller;

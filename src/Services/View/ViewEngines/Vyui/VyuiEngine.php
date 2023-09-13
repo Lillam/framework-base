@@ -46,12 +46,13 @@ class VyuiEngine implements Engine
      */
     protected array $compilerRegex = [
         'yield'   => '/( *)#\[yield: (.*)\]/',
-        'extends' => '/#\[extends: (layouts\/master)\]/',
+        'extends' => '/#\[extends: (.*)\]/',
+        'include' => '/#\[include: (.*)\]/',
         'section' => '/(\#\[section: (.*)\])([\S\s]*?)(\#\[\/section\])/',
         'if'      => '/(\#\[if: (.*)\])([\S\s]*?)(\#\[\/if\])/',
         'for'     => '/(\#\[for: (.*)\])([\S\s]*?)(\#\[\/for\])/',
         'foreach' => '/(\#\[foreach: (.*)\])([\S\s]*?)(\#\[\/foreach\])/',
-        'echo'    => '/#\[echo: (.*)\]/'
+        'echo'    => '/#\[echo: (.*)\]/',
     ];
 
     /**
@@ -116,14 +117,38 @@ class VyuiEngine implements Engine
 
         $content = preg_replace_callback($this->compilerRegex['extends'], function ($matches) {
             // here we are going to look for a file that has been matched within the extends...
-            $extendContentPath = $this->getViewManager()
-                                      ->getResourcePath("$matches[1].vyui.php");
+            $extendContentPath = $this->getViewManager()->getResourcePath("$matches[1].vyui.php");
 
             $this->cacheComponents[$this->cache][] = $extendContentPath;
 
-            return $this->layouts[$matches[1]] = $this->getViewManager()
-                                                      ->getFilesystem()
-                                                      ->get($extendContentPath);
+            return $this->layouts[$matches[1]] = $this->getViewManager()->getFilesystem()->get($extendContentPath);
+        }, $content);
+
+        $content = preg_replace_callback($this->compilerRegex['include'], function ($matches) use ($content) {
+            $includeContentPath = $this->getViewManager()
+                                       ->getResourcePath("$matches[1].vyui.php");
+
+            $this->cacheComponents[$this->cache][] = $includeContentPath;
+
+            // get the content of the include file so that we can pull it in to the cache file.
+            $includeContent = $this->getViewManager()->getFilesystem()->get($includeContentPath);
+
+            // find the spaces that exist before the include so that this can be stored and applied later to each
+            // individual line in order for true indentation within the cache files.
+            $matchPiece = str_replace('/', '\/', $matches[1]);
+            $regex = "( +)(#\[include: $matchPiece\])";
+            preg_match("/$regex/", $content, $includeContentMatches);
+
+            // look for all line breaks and on each one apply the spacing that had been found within the initial
+            // so that when the cached file is created the right indentations are applied making the cache more
+            // readable should there ba any need for debugging errors.
+            return $this->layouts[$matches[1]] = preg_replace_callback(
+                '/\n(.*)/',
+                function ($matches) use ($includeContentMatches) {
+                    return str_replace("\n", "\n$includeContentMatches[1]", $matches[0]);
+                },
+                $includeContent
+            );
         }, $content);
 
         return preg_replace_callback_array([
@@ -131,7 +156,9 @@ class VyuiEngine implements Engine
                 if (! isset($this->yields[$matches[2]])) {
                     return '';
                 }
+
                 $space = $matches[1];
+
                 // here we are going to do a bit of jiggery pokery to sort out the layout of the created cached file,
                 // even though this is worthless, the presentation of files just... has to be right up there.
                 return preg_replace_callback('/(.*)[\s\S]/', function ($matches) use ($space) {
@@ -292,14 +319,15 @@ class VyuiEngine implements Engine
             return true;
         }
 
+        $exists = $this->getViewManager()->getFilesystem()->exists(
+            $path = $this->getViewManager()->getStoragePath("/builds/$this->cache.php")
+        );
+
         // todo -> Find a nicer way to write this because I hate the way that this is currently written and how it's
         //         looking; doesn't look the most intuitive.
-        if ($this->getViewManager()->getFilesystem()->exists(
-            $path = $this->getViewManager()->getStoragePath("/builds/{$this->cache}.php")
-        )) {
+        if ($exists) {
             foreach (include($path) as $file) {
                 if (filemtime($file) > filemtime($cache)) {
-                    var_dump('we remade it');
                     return true;
                 }
             }
