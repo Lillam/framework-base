@@ -189,7 +189,7 @@ class Route
         $this->parameters = array_combine(
             $this->parameters,
             array_values(array_map(fn ($match) => $match, $matches)) +
-                   array_fill(0, (count($this->parameters)), null)
+            array_fill(0, (count($this->parameters)), null)
         );
 
         return true;

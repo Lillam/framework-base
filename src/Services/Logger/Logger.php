@@ -36,16 +36,17 @@ class Logger implements LoggerContract
      *
      * @var string
      */
-    protected string $path = '/storage/framework/logs/vyui.log';
+    protected string $path;
 
     /**
      * @param Application $application
      * @param Filesystem $filesystem
      */
-    public function __construct(Application $application, Filesystem $filesystem)
+    public function __construct(Application $application, Filesystem $filesystem, string $path = '/storage/framework/logs/vyui.log')
     {
         $this->application = $application;
         $this->filesystem = $filesystem;
+        $this->path = $path;
     }
 
     /**
@@ -102,7 +103,7 @@ class Logger implements LoggerContract
     private function getLogFileContents(?string $output = null): string
     {
         return _String::fromString($output ?? $this->output)->prepend($this->getCurrentTimeStamp())
-                                                                   ->toString();
+                                                            ->toString();
     }
 
     /**

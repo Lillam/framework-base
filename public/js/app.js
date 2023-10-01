@@ -81,12 +81,53 @@
 //
 // console.log(val, get(), set('testing'), get());
 
-const InterestCalculator = () => ({
-    funds: 17000,
-    interest: 0.03,
-    predict: (monthlyDeposit) => {
+// const InterestCalculator = () => ({
+//     funds: 17000,
+//     interest: 0.03,
+//     predict: (monthlyDeposit) => {
+//
+//     }
+// });
 
+// console.log(17000 * 0.03);
+
+
+const currentImage = document.querySelector('#my-image');
+const remadeImageWrapper = document.querySelector('.swatch');
+
+const getImageData = (src) => new Promise((resolve, reject) => {
+    const canvas = document.createElement('canvas')
+    const context = canvas.getContext('2d')
+    const img = new Image
+
+    img.onload = () => {
+        canvas.height = img.height
+        canvas.width = img.width
+        context.drawImage(img, 0, 0)
+
+        const data = context.getImageData(0, 0, img.width, img.height).data
+
+        resolve(data)
     }
+    img.onerror = () => reject(Error('Image loading failed.'))
+    img.crossOrigin = ''
+    img.src = src
 });
 
-console.log(17000 * 0.03);
+// getImageData(currentImage.src).then(colours => {
+//     console.log(colours.length / 4);
+//     // for (let i = 0; i <= colours.length; i + 4) {
+//     //     let r = colours[i];
+//     //     let g = colours[i + 1];
+//     //     let b = colours[i + 2];
+//     //
+//     //     let pixel = document.createElement('div');
+//     //
+//     //     pixel.style.width = '1px';
+//     //     pixel.style.height = '1px';
+//     //     pixel.style.backgroundColour = `rgb(${r}, ${g}, ${b})`;
+//     //     remadeImageWrapper.append(pixel);
+//     //
+//     //     delete(pixel);
+//     // }
+// });

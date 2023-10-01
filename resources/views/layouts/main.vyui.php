@@ -3,7 +3,7 @@
     <head>
         <title>#[echo: env('APP_NAME', 'Random')]</title>
         <link href="#[echo: asset('vendor/fontawesome/all.css', 1)]" rel="stylesheet" type="text/css" />
-        <link href="#[echo: asset('css/app.css', 1)]" rel="stylesheet" type="text/css" />
+        <link href="#[echo: asset('css/app.css')]" rel="stylesheet" type="text/css" />
         <script src="#[echo: asset('js/app.js', 1)]" defer></script>
         <script src="#[echo: asset('js/test.js', 1)]" defer></script>
         <style>
@@ -82,46 +82,46 @@
     </head>
     <body>
         #[include: layouts/header]
-        <div class="banner">
-            <div class="entry">
-                <div></div>
-                <div class="entry-content">
-                    <div class="avatar">PHP</div>
-                </div>
-            </div>
-            <div class="entry">
-                <div></div>
-                <div class="entry-content">
-                    <div class="avatar">JS</div>
-                </div>
-            </div>
-            <div class="entry">
-                <div></div>
-                <div class="entry-content">
-                    <div class="avatar">CSS</div>
-                </div>
-            </div>
-            <div class="entry">
-                <div></div>
-                <div class="entry-content">
-                    <div class="avatar">HTML</div>
-                </div>
-            </div>
-            <div class="entry">
-                <div></div>
-                <div class="entry-content">
-                    <div class="avatar">SQL</div>
-                </div>
-            </div>
-            <div class="entry">
-                <div></div>
-                <div class="entry-content">
-                    <div class="avatar">C#</div>
-                    <h2>C#</h2>
-                    <p>Some random content about the language here, regarding how long experience one might have etc.</p>
-                </div>
-            </div>
-        </div>
+<!--        <div class="banner">-->
+<!--            <div class="entry">-->
+<!--                <div></div>-->
+<!--                <div class="entry-content">-->
+<!--                    <div class="avatar">PHP</div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="entry">-->
+<!--                <div></div>-->
+<!--                <div class="entry-content">-->
+<!--                    <div class="avatar">JS</div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="entry">-->
+<!--                <div></div>-->
+<!--                <div class="entry-content">-->
+<!--                    <div class="avatar">CSS</div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="entry">-->
+<!--                <div></div>-->
+<!--                <div class="entry-content">-->
+<!--                    <div class="avatar">HTML</div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="entry">-->
+<!--                <div></div>-->
+<!--                <div class="entry-content">-->
+<!--                    <div class="avatar">SQL</div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="entry">-->
+<!--                <div></div>-->
+<!--                <div class="entry-content">-->
+<!--                    <div class="avatar">C#</div>-->
+<!--                    <h2>C#</h2>-->
+<!--                    <p>Some random content about the language here, regarding how long experience one might have etc.</p>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
         <div class="h-screen flex justify-content-center align-items-center">
             <div>
                 #[yield: body]

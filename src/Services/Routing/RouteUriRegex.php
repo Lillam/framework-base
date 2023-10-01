@@ -18,6 +18,10 @@ class RouteUriRegex
     }
 
     /**
+     * Set the regex that will be used against Routes; when a route 
+     * has been found, this code will be executed in order for 
+     * extracting data from the uri {id} {something} etc.
+     *
      * @param Route $route
      * @return void
      */
