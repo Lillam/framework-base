@@ -69,7 +69,12 @@ class Request
         array $files = [],
         array $server = []
     ) {
-        $this->initialise($query, $request, $attributes, $cookies, $files, $server);
+        $this->query = new GetParameters($query);
+        $this->request = new PostParameters($request);
+        $this->attributes = new AttributeParameters($attributes);
+        $this->cookies = new CookieParameters($cookies);
+        $this->files = new FileParameters($files);
+        $this->server = new ServerParameters($server);
     }
 
     /**
@@ -88,31 +93,6 @@ class Request
     protected static function createFromGlobals(): static
     {
         return new static($_GET, $_POST, [], $_COOKIE, $_FILES, $_SERVER);
-    }
-
-    /**
-     * @param array $query  the GET parameters of the request
-     * @param array $request the POST parameters of the request
-     * @param array $attributes the request attributes (parameters parsed from PATH_INFO, ...)
-     * @param array $cookies the COOKIE parameters
-     * @param array $files  the FILES parameters
-     * @param array $server the SERVER parameters
-     * @return void
-     */
-    public function initialise(
-        array $query = [],
-        array $request = [],
-        array $attributes = [],
-        array $cookies = [],
-        array $files = [],
-        array $server = []
-    ): void {
-        $this->query = new GetParameters($query);
-        $this->request = new PostParameters($request);
-        $this->attributes = new AttributeParameters($attributes);
-        $this->cookies = new CookieParameters($cookies);
-        $this->files = new FileParameters($files);
-        $this->server = new ServerParameters($server);
     }
 
     /**
@@ -158,7 +138,11 @@ class Request
      */
     public function getUri(): string
     {
-        if (($uri = $this->getServer()->get('PHP_SELF')) !== '/index.php/') {
+        if (! in_array(($uri = $this->getServer()->get('PHP_SELF')), [
+            '/index.php/',
+            '/index.php',
+            'index.php'
+        ])) {
             return $uri;
         }
 
