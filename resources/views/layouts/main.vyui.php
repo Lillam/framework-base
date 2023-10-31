@@ -79,6 +79,7 @@
                 font-weight: bold;
             }
         </style>
+        #[yield: styles]
     </head>
     <body>
         #[include: layouts/header]
@@ -127,6 +128,7 @@
                 #[yield: body]
             </div>
         </div>
+        #[yield: scripts]
         #[include: layouts/footer]
     </body>
 </html>

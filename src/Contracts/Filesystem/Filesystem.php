@@ -19,9 +19,20 @@ interface Filesystem
      * Get the file object; we can begin iterating over the lines.
      *
      * @param string $path
+     * @param string $mode
      * @return SplFileObject
      */
-    public function open(string $path): SplFileObject;
+    public function open(string $path, string $mode = 'r'): SplFileObject;
+
+    /**
+     * Take in a SplFileObject and synthetically "close" it, passing in by reference and unset
+     * the particular value to null/unset as well to free up the memory no longer needing the
+     * file object.
+     *
+     * @param SplFileObject $file
+     * @return void
+     */
+    public function close(SplFileObject &$file): void;
 
     /**
      * Get the files of a directory.

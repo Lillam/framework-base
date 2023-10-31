@@ -277,3 +277,47 @@ html body {
     transform: rotate(90deg);
     white-space: nowrap;
 }
+
+.keyboard {
+    display: flex;
+    flex-direction: row;
+    column-gap: 10px;
+    row-gap: 5px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.keyboard > .key {
+    width: 60px;
+    height: 60px;
+    background-color: rgba(0,0,0,0.25);
+    border-radius: 8px;
+    color: rgba(255,255,255,0.75);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    border: solid 1px rgba(255,255,255,0.1);
+}
+
+.keyboard > .key.active {
+    background-color: #23e200;
+}
+
+.keyboard > div:not(.key) {
+    flex: 1;
+    flex-basis: auto;
+    width: 100%;
+}
+
+.keyboard [data-key="shift"],
+.keyboard [data-key="caps"],
+.keyboard [data-key="tab"],
+.keyboard [data-key="backspace"],
+.keyboard [data-key="esc"] {
+    width: 100px;
+}
+
+.keyboard [data-key=" "] {
+    width: 400px;
+}

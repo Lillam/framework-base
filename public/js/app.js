@@ -131,3 +131,38 @@ const getImageData = (src) => new Promise((resolve, reject) => {
 //     //     delete(pixel);
 //     // }
 // });
+
+// keyboardKeys.forEach(key => {
+//     document.createElement('')
+// })
+
+// document.addEventListener('keydown', function (event) {
+//     if (event.key === ' ' || event.key === 'Tab') {
+//         event.preventDefault();
+//         event.stopPropagation();
+//     }
+//
+//     console.log(event.key);
+//
+//     if (event.repeat) {
+//         return;
+//     }
+//
+//     const keyElement = document.querySelector(`[data-key="${event.key.toLowerCase()}"]`);
+//
+//     if (! keyElement) {
+//         return;
+//     }
+//
+//     keyElement.classList.add('active');
+// });
+//
+// document.addEventListener('keyup', function (event) {
+//     const keyElement = document.querySelector(`[data-key="${event.key.toLowerCase()}"]`);
+//
+//     if (! keyElement) {
+//         return;
+//     }
+//
+//     keyElement.classList.remove('active');
+// });

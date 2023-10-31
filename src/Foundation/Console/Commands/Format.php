@@ -104,7 +104,8 @@ class Format extends Command
     public function execute(): int
     {
         $this->loadAllProjectFiles();
-        $this->fixAllProjectFiles();
+        $this->sortImportOrder();
+        // $this->fixAllProjectFiles();
         $this->output->print(count($this->indentationErrors) . ' files have indentation errors fixed');
 
         return 1;
@@ -172,9 +173,14 @@ class Format extends Command
             preg_match($this->getIgnoredProjectFilesRegex(), $file, $fileMatches);
         }
 
+        preg_match('/.+[a-zA-Z0-9]/', $file, $isFile);
+
+        dd($isFile);
+
         return ! $directoryMatches &&
                ! $fileMatches &&
-               str_contains($file, '.php');
+               $isFile;
+//               str_contains($file, '.php');
     }
 
     /**
@@ -191,6 +197,14 @@ class Format extends Command
         }
 
         $this->indentationErrors[$file] += 1;
+    }
+
+    private function sortImportOrder(): void
+    {
+        foreach ($this->files as $file) {
+            $fo = $this->filesystem->open($file);
+            unset($fo);
+        }
     }
 
     /**

@@ -1,5 +1,7 @@
 #[extends: layouts/main]
-
+#[section: scripts]
+    <script src="#[echo: asset('js/playground.js')]" defer></script>
+#[/section]
 #[section: body]
     <style>
         html,
@@ -198,24 +200,24 @@
             overflow: hidden;
         }
     </style>
-    <div class="text">
-        sdflksjdfjsdfljsdfjsdflkjsdlkfjlksdjflksdjfkljsdklfljsdkfjlskdjfklsdjflkjskldjflksdjfkljsdfjdssdflksjdfjsdfljsdfjsdflkjsdlkfjlksdjflksdjfkljsdklfljsdkfjlskdjfklsdjflkjskldjflksdjfkljsdfjds
-        sdflksjdfjsdfljsdfjsdflkjsdlkfjlksdjflksdjfkljsdklfljsdkfjlskdjfklsdjflkjskldjflksdjfkljsdfjdssdflksjdfjsdfljsdfjsdflkjsdlkfjlksdjflksdjfkljsdklfljsdkfjlskdjfklsdjflkjskldjflksdjfkljsdfjds
-        sdflksjdfjsdfljsdfjsdflkjsdlkfjlksdjflksdjfkljsdklfljsdkfjlskdjfklsdjflkjskldjflksdjfkljsdfjdssdflksjdfjsdfljsdfjsdflkjsdlkfjlksdjflksdjfkljsdklfljsdkfjlskdjfklsdjflkjskldjflksdjfkljsdfjds
-        sdflksjdfjsdfljsdfjsdflkjsdlkfjlksdjflksdjfkljsdklfljsdkfjlskdjfklsdjflkjskldjflksdjfkljsdfjdssdflksjdfjsdfljsdfjsdflkjsdlkfjlksdjflksdjfkljsdklfljsdkfjlskdjfklsdjflkjskldjflksdjfkljsdfjds
-        sdflksjdfjsdfljsdfjsdflkjsdlkfjlksdjflksdjfkljsdklfljsdkfjlskdjfklsdjflkjskldjflksdjfkljsdfjdssdflksjdfjsdfljsdfjsdflkjsdlkfjlksdjflksdjfkljsdklfljsdkfjlskdjfklsdjflkjskldjflksdjfkljsdfjds
-        sdflksjdfjsdfljsdfjsdflkjsdlkfjlksdjflksdjfkljsdklfljsdkfjlskdjfklsdjflkjskldjflksdjfkljsdfjdssdflksjdfjsdfljsdfjsdflkjsdlkfjlksdjflksdjfkljsdklfljsdkfjlskdjfklsdjflkjskldjflksdjfkljsdfjds
-        sdflksjdfjsdfljsdfjsdflkjsdlkfjlksdjflksdjfkljsdklfljsdkfjlskdjfklsdjflkjskldjflksdjfkljsdfjdssdflksjdfjsdfljsdfjsdflkjsdlkfjlksdjflksdjfkljsdklfljsdkfjlskdjfklsdjflkjskldjflksdjfkljsdfjds
-        sdflksjdfjsdfljsdfjsdflkjsdlkfjlksdjflksdjfkljsdklfljsdkfjlskdjfklsdjflkjskldjflksdjfkljsdfjdssdflksjdfjsdfljsdfjsdflkjsdlkfjlksdjflksdjfkljsdklfljsdkfjlskdjfklsdjflkjskldjflksdjfkljsdfjds
-        sdflksjdfjsdfljsdfjsdflkjsdlkfjlksdjflksdjfkljsdklfljsdkfjlskdjfklsdjflkjskldjflksdjfkljsdfjdssdflksjdfjsdfljsdfjsdflkjsdlkfjlksdjflksdjfkljsdklfljsdkfjlskdjfklsdjflkjskldjflksdjfkljsdfjds
-        sdflksjdfjsdfljsdfjsdflkjsdlkfjlksdjflksdjfkljsdklfljsdkfjlskdjfklsdjflkjskldjflksdjfkljsdfjdssdflksjdfjsdfljsdfjsdflkjsdlkfjlksdjflksdjfkljsdklfljsdkfjlskdjfklsdjflkjskldjflksdjfkljsdfjds
-        sdflksjdfjsdfljsdfjsdflkjsdlkfjlksdjflksdjfkljsdklfljsdkfjlskdjfklsdjflkjskldjflksdjfkljsdfjdssdflksjdfjsdfljsdfjsdflkjsdlkfjlksdjflksdjfkljsdklfljsdkfjlskdjfklsdjflkjskldjflksdjfkljsdfjds
-        sdflksjdfjsdfljsdfjsdflkjsdlkfjlksdjflksdjfkljsdklfljsdkfjlskdjfklsdjflkjskldjflksdjfkljsdfjdssdflksjdfjsdfljsdfjsdflkjsdlkfjlksdjflksdjfkljsdklfljsdkfjlskdjfklsdjflkjskldjflksdjfkljsdfjds
-        sdflksjdfjsdfljsdfjsdflkjsdlkfjlksdjflksdjfkljsdklfljsdkfjlskdjfklsdjflkjskldjflksdjfkljsdfjdssdflksjdfjsdfljsdfjsdflkjsdlkfjlksdjflksdjfkljsdklfljsdkfjlskdjfklsdjflkjskldjflksdjfkljsdfjds
-        sdflksjdfjsdfljsdfjsdflkjsdlkfjlksdjflksdjfkljsdklfljsdkfjlskdjfklsdjflkjskldjflksdjfkljsdfjdssdflksjdfjsdfljsdfjsdflkjsdlkfjlksdjflksdjfkljsdklfljsdkfjlskdjfklsdjflkjskldjflksdjfkljsdfjds
-        sdflksjdfjsdfljsdfjsdflkjsdlkfjlksdjflksdjfkljsdklfljsdkfjlskdjfklsdjflkjskldjflksdjfkljsdfjdssdflksjdfjsdfljsdfjsdflkjsdlkfjlksdjflksdjfkljsdklfljsdkfjlskdjfklsdjflkjskldjflksdjfkljsdfjds
-
-    </div>
+<!--    <div class="text">-->
+<!--        sdflksjdfjsdfljsdfjsdflkjsdlkfjlksdjflksdjfkljsdklfljsdkfjlskdjfklsdjflkjskldjflksdjfkljsdfjdssdflksjdfjsdfljsdfjsdflkjsdlkfjlksdjflksdjfkljsdklfljsdkfjlskdjfklsdjflkjskldjflksdjfkljsdfjds-->
+<!--        sdflksjdfjsdfljsdfjsdflkjsdlkfjlksdjflksdjfkljsdklfljsdkfjlskdjfklsdjflkjskldjflksdjfkljsdfjdssdflksjdfjsdfljsdfjsdflkjsdlkfjlksdjflksdjfkljsdklfljsdkfjlskdjfklsdjflkjskldjflksdjfkljsdfjds-->
+<!--        sdflksjdfjsdfljsdfjsdflkjsdlkfjlksdjflksdjfkljsdklfljsdkfjlskdjfklsdjflkjskldjflksdjfkljsdfjdssdflksjdfjsdfljsdfjsdflkjsdlkfjlksdjflksdjfkljsdklfljsdkfjlskdjfklsdjflkjskldjflksdjfkljsdfjds-->
+<!--        sdflksjdfjsdfljsdfjsdflkjsdlkfjlksdjflksdjfkljsdklfljsdkfjlskdjfklsdjflkjskldjflksdjfkljsdfjdssdflksjdfjsdfljsdfjsdflkjsdlkfjlksdjflksdjfkljsdklfljsdkfjlskdjfklsdjflkjskldjflksdjfkljsdfjds-->
+<!--        sdflksjdfjsdfljsdfjsdflkjsdlkfjlksdjflksdjfkljsdklfljsdkfjlskdjfklsdjflkjskldjflksdjfkljsdfjdssdflksjdfjsdfljsdfjsdflkjsdlkfjlksdjflksdjfkljsdklfljsdkfjlskdjfklsdjflkjskldjflksdjfkljsdfjds-->
+<!--        sdflksjdfjsdfljsdfjsdflkjsdlkfjlksdjflksdjfkljsdklfljsdkfjlskdjfklsdjflkjskldjflksdjfkljsdfjdssdflksjdfjsdfljsdfjsdflkjsdlkfjlksdjflksdjfkljsdklfljsdkfjlskdjfklsdjflkjskldjflksdjfkljsdfjds-->
+<!--        sdflksjdfjsdfljsdfjsdflkjsdlkfjlksdjflksdjfkljsdklfljsdkfjlskdjfklsdjflkjskldjflksdjfkljsdfjdssdflksjdfjsdfljsdfjsdflkjsdlkfjlksdjflksdjfkljsdklfljsdkfjlskdjfklsdjflkjskldjflksdjfkljsdfjds-->
+<!--        sdflksjdfjsdfljsdfjsdflkjsdlkfjlksdjflksdjfkljsdklfljsdkfjlskdjfklsdjflkjskldjflksdjfkljsdfjdssdflksjdfjsdfljsdfjsdflkjsdlkfjlksdjflksdjfkljsdklfljsdkfjlskdjfklsdjflkjskldjflksdjfkljsdfjds-->
+<!--        sdflksjdfjsdfljsdfjsdflkjsdlkfjlksdjflksdjfkljsdklfljsdkfjlskdjfklsdjflkjskldjflksdjfkljsdfjdssdflksjdfjsdfljsdfjsdflkjsdlkfjlksdjflksdjfkljsdklfljsdkfjlskdjfklsdjflkjskldjflksdjfkljsdfjds-->
+<!--        sdflksjdfjsdfljsdfjsdflkjsdlkfjlksdjflksdjfkljsdklfljsdkfjlskdjfklsdjflkjskldjflksdjfkljsdfjdssdflksjdfjsdfljsdfjsdflkjsdlkfjlksdjflksdjfkljsdklfljsdkfjlskdjfklsdjflkjskldjflksdjfkljsdfjds-->
+<!--        sdflksjdfjsdfljsdfjsdflkjsdlkfjlksdjflksdjfkljsdklfljsdkfjlskdjfklsdjflkjskldjflksdjfkljsdfjdssdflksjdfjsdfljsdfjsdflkjsdlkfjlksdjflksdjfkljsdklfljsdkfjlskdjfklsdjflkjskldjflksdjfkljsdfjds-->
+<!--        sdflksjdfjsdfljsdfjsdflkjsdlkfjlksdjflksdjfkljsdklfljsdkfjlskdjfklsdjflkjskldjflksdjfkljsdfjdssdflksjdfjsdfljsdfjsdflkjsdlkfjlksdjflksdjfkljsdklfljsdkfjlskdjfklsdjflkjskldjflksdjfkljsdfjds-->
+<!--        sdflksjdfjsdfljsdfjsdflkjsdlkfjlksdjflksdjfkljsdklfljsdkfjlskdjfklsdjflkjskldjflksdjfkljsdfjdssdflksjdfjsdfljsdfjsdflkjsdlkfjlksdjflksdjfkljsdklfljsdkfjlskdjfklsdjflkjskldjflksdjfkljsdfjds-->
+<!--        sdflksjdfjsdfljsdfjsdflkjsdlkfjlksdjflksdjfkljsdklfljsdkfjlskdjfklsdjflkjskldjflksdjfkljsdfjdssdflksjdfjsdfljsdfjsdflkjsdlkfjlksdjflksdjfkljsdklfljsdkfjlskdjfklsdjflkjskldjflksdjfkljsdfjds-->
+<!--        sdflksjdfjsdfljsdfjsdflkjsdlkfjlksdjflksdjfkljsdklfljsdkfjlskdjfklsdjflkjskldjflksdjfkljsdfjdssdflksjdfjsdfljsdfjsdflkjsdlkfjlksdjflksdjfkljsdklfljsdkfjlskdjfklsdjflkjskldjflksdjfkljsdfjds-->
+<!---->
+<!--    </div>-->
 <!--    <div class="image-wrapper">-->
 <!--        <div class="current">-->
 <!--            <img id="my-image" src="./images/me.jpg" alt="testing..." />-->
@@ -268,4 +270,79 @@
 <!--            </div>-->
 <!--        </div>-->
 <!--    </div>-->
+    <div class="keyboard">
+        <div class="key" data-key="esc">ESC</div>
+        <div class="key" data-key="f1">F1</div>
+        <div class="key" data-key="f2">F2</div>
+        <div class="key" data-key="f3">F3</div>
+        <div class="key" data-key="f4">F4</div>
+        <div class="key" data-key="f5">F5</div>
+        <div class="key" data-key="f6">F6</div>
+        <div class="key" data-key="f7">F7</div>
+        <div class="key" data-key="f8">F8</div>
+        <div class="key" data-key="f9">F9</div>
+        <div class="key" data-key="f10">F10</div>
+        <div class="key" data-key="f11">F11</div>
+        <div class="key" data-key="f12">F12</div>
+        <div class="key" data-key="power">Power</div>
+        <div></div>
+        <div class="key" data-key="§">§</div>
+        <div class="key" data-key="1">1</div>
+        <div class="key" data-key="2">2</div>
+        <div class="key" data-key="3">3</div>
+        <div class="key" data-key="4">4</div>
+        <div class="key" data-key="5">5</div>
+        <div class="key" data-key="6">6</div>
+        <div class="key" data-key="7">7</div>
+        <div class="key" data-key="8">8</div>
+        <div class="key" data-key="9">9</div>
+        <div class="key" data-key="0">0</div>
+        <div class="key" data-key="-">-</div>
+        <div class="key" data-key="1">=</div>
+        <div class="key" data-key="backspace">Backspace</div>
+        <div></div>
+        <div class="key" data-key="tab">Tab</div>
+        <div class="key" data-key="q">Q</div>
+        <div class="key" data-key="w">W</div>
+        <div class="key" data-key="e">E</div>
+        <div class="key" data-key="r">R</div>
+        <div class="key" data-key="t">T</div>
+        <div class="key" data-key="y">Y</div>
+        <div class="key" data-key="u">U</div>
+        <div class="key" data-key="i">I</div>
+        <div class="key" data-key="o">O</div>
+        <div class="key" data-key="p">P</div>
+        <div class="key" data-key="[">[</div>
+        <div class="key" data-key="]">]</div>
+        <div></div>
+        <div class="key" data-key="caps">Caps</div>
+        <div class="key" data-key="a">A</div>
+        <div class="key" data-key="s">S</div>
+        <div class="key" data-key="d">D</div>
+        <div class="key" data-key="f">F</div>
+        <div class="key" data-key="g">G</div>
+        <div class="key" data-key="h">h</div>
+        <div class="key" data-key="j">J</div>
+        <div class="key" data-key="k">K</div>
+        <div class="key" data-key="l">L</div>
+        <div class="key" data-key=";">;</div>
+        <div class="key" data-key="'">'</div>
+        <div class="key" data-key="\">\</div>
+        <div></div>
+        <div class="key" data-key="shift">LShift</div>
+        <div class="key" data-key="`">`</div>
+        <div class="key" data-key="z">Z</div>
+        <div class="key" data-key="x">X</div>
+        <div class="key" data-key="c">C</div>
+        <div class="key" data-key="v">V</div>
+        <div class="key" data-key="b">B</div>
+        <div class="key" data-key="n">N</div>
+        <div class="key" data-key="m">M</div>
+        <div class="key" data-key=",">,</div>
+        <div class="key" data-key=".">.</div>
+        <div class="key" data-key="/">/</div>
+        <div class="key" data-key="shift">RShift</div>
+        <div></div>
+        <div class="key" data-key=" ">Space</div>
+    </div>
 #[/section]

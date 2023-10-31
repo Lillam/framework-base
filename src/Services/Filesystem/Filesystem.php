@@ -29,11 +29,25 @@ class Filesystem implements FilesystemContract
 
     /**
      * @param string $path
+     * @param string $mode
      * @return SplFileObject
      */
-    public function open(string $path): SplFileObject
+    public function open(string $path, string $mode = 'r'): SplFileObject
     {
-        return new SplFileObject($path);
+        return new SplFileObject($path, $mode);
+    }
+
+    /**
+     * Pass in an SplFileObject and synthetically destroy it by unsetting it - which *should* theoretically have a
+     * tear down process and close the open file in memory - which should free up the next process on a file.
+     *
+     * @param SplFileObject $file
+     * @return void
+     */
+    public function close(SPLFileObject &$file): void
+    {
+        $file = null;
+        unset($file);
     }
 
     /**

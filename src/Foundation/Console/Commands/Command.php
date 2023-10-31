@@ -2,10 +2,13 @@
 
 namespace Vyui\Foundation\Console\Commands;
 
+use Vyui\Foundation\Application;
 use Vyui\Foundation\Console\Output;
 
 abstract class Command
 {
+    protected Application $application;
+
     /**
      * The arguments in which will be passed with the command.
      *
@@ -21,10 +24,12 @@ abstract class Command
     protected Output $output;
 
     /**
+     * @param Application $application
      * @param array $arguments
      */
-    public function __construct(array $arguments = [])
+    public function __construct(Application $application, array $arguments = [])
     {
+        $this->application = $application;
         $this->arguments = $arguments;
     }
 

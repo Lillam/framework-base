@@ -10,7 +10,7 @@
     </head>
     <body>
         <div class="h-screen flex justify-content-center align-items-center">
-            <div class="graph"></div>
+<!--            <div class="graph"></div>-->
 <!--            <div>-->
 <!--                <div class="navigation navigation-horizontal flex">-->
 <!--                    <ul class="flex">-->

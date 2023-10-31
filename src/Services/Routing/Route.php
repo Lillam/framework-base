@@ -41,11 +41,6 @@ class Route
     protected array $action;
 
     /**
-     * @var RouteParameters
-     */
-    // protected RouteParameters $routeParameters;
-
-    /**
      * @var array
      */
     protected array $parameters = [];

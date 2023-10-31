@@ -4,7 +4,7 @@ namespace Vyui\Foundation\Console;
 
 use Vyui\Foundation\Application;
 use Vyui\Contracts\Console\Kernel as KernelContract;
-use Vyui\Foundation\Console\Commands\{ Help, Make, Test, Format, Command };
+use Vyui\Foundation\Console\Commands\{File, Help, Make, Test, Format, Command};
 
 class Kernel implements KernelContract
 {
@@ -22,7 +22,8 @@ class Kernel implements KernelContract
         'help'   => Help::class,
         'make'   => Make::class,
         'test'   => Test::class,
-        'format' => Format::class
+        'format' => Format::class,
+        'file'   => File::class,
     ];
 
     /**
@@ -66,7 +67,9 @@ class Kernel implements KernelContract
             throw new CommandNotFoundException;
         }
 
-        return $this->application->make($this->commands[$key], ['arguments' => $arguments]);
+        return $this->application->make($this->commands[$key], [
+            'arguments' => $arguments
+        ]);
     }
 
     /**
