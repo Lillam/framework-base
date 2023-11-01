@@ -22,11 +22,11 @@ class Make extends Command
      * @var string[]
      */
     protected array $makes = [
-        'request' => '/app/Http/Requests/',
-        'model' => '/app/Models/',
-        'command' => '/app/Console/',
+        'request'    => '/app/Http/Requests/',
+        'model'      => '/app/Models/',
+        'command'    => '/app/Console/',
         'controller' => '/app/Http/Controllers/',
-        'service' => '/app/Services/'
+        'service'    => '/app/Services/'
     ];
 
     /**
@@ -61,10 +61,10 @@ class Make extends Command
         $this->application = $application;
         $this->filesystem = $filesystem;
 
-        parent::__construct([$making, $class] = $arguments);
+        parent::__construct($this->application, [$making, $class] = $arguments);
 
         $this->setMaking($making)
-               ->setNamespace($class)
+             ->setNamespace($class)
              ->setClass($class);
     }
 

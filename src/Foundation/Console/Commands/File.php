@@ -56,13 +56,8 @@ class File extends Command
 
         for ($h = 0; $h < $this->headers; $h++) {
             $this->content .= "Header $h";
-            if ($h !== $this->headers - 1) {
-                // add a spacer after each header just to make the content look better...
-                $this->content .= ', ';
-            } else {
-                $this->content .= "\n";
-            }
-
+            // add a spacer after each header just to make the content look better...
+            $this->content .= ($h !== $this->headers - 1) ? ', ' : "\n";
             $this->output->print("preparing headers $h/{$this->headers}", false);
         }
 
@@ -88,7 +83,6 @@ class File extends Command
             // current content to a file; this is to prevent $this->content from getting out of hand.
             if ($this->bufferCount === $this->bufferMax || $r === $this->rows - 1) {
                 $this->bufferCount = 0;
-                // $this->filesystem->put($this->storagePath, $this->content);
                 $file->fwrite($this->content);
                 $this->content = '';
             }

@@ -58,7 +58,7 @@ class Test extends Command
      */
     public function __construct(Application $application, FileSystem $filesystem, array $arguments = [])
     {
-        parent::__construct($arguments);
+        parent::__construct($application, $arguments);
 
         $this->application = $application;
         $this->filesystem  = $filesystem;
