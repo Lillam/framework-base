@@ -2,19 +2,24 @@
 
 namespace Vyui\Foundation\Console\Commands;
 
+use Vyui\Contracts\Console\Kernel;
+
 class Help extends Command
 {
+    /**
+     * The console kernel.
+     *
+     * @var Kernel
+     */
+    protected Kernel $kernel;
+
     public function execute(): int
     {
-        $this->output->print("you have ran conjure help");
-        $progress = $this->output->createProgress(100);
+        // get the current console kernel that resides in the memory of the application when instantiated.
+        $this->kernel = $this->application->make(Kernel::class);
 
-        for ($i = 0; $i < 100; $i++) {
-            $progress->advance();
-            usleep(5000);
-        }
-
-        $this->output->printSuccess("we helping?");
+        // print out the available commands that reside within the kernel's commands array...
+        $this->output->print(join("\n", $this->kernel->getCommands()));
 
         return 1;
     }

@@ -4,7 +4,7 @@ namespace Vyui\Foundation\Console;
 
 use Vyui\Foundation\Application;
 use Vyui\Contracts\Console\Kernel as KernelContract;
-use Vyui\Foundation\Console\Commands\{File, Help, Make, Test, Format, Command};
+use Vyui\Foundation\Console\Commands\{File, Help, Make, Migrate, Test, Format, Command};
 
 class Kernel implements KernelContract
 {
@@ -16,14 +16,17 @@ class Kernel implements KernelContract
     protected Application $application;
 
     /**
+     * The commands that are currently supported by the application
+     *
      * @var string[]
      */
     protected array $commands = [
-        'help'   => Help::class,
-        'make'   => Make::class,
-        'test'   => Test::class,
-        'format' => Format::class,
-        'file'   => File::class,
+        'help'    => Help::class,
+        'make'    => Make::class,
+        'test'    => Test::class,
+        'format'  => Format::class,
+        'file'    => File::class,
+        'migrate' => Migrate::class,
     ];
 
     /**
@@ -70,6 +73,16 @@ class Kernel implements KernelContract
         return $this->application->make($this->commands[$key], [
             'arguments' => $arguments
         ]);
+    }
+
+    /**
+     * Return the keys of the commands that can currently be run in the console.
+     *
+     * @return string[]
+     */
+    public function getCommands(): array
+    {
+        return array_keys($this->commands);
     }
 
     /**
