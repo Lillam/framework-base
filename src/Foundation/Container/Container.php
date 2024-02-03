@@ -9,7 +9,6 @@ use ReflectionParameter;
 use ReflectionException;
 use Vyui\Support\Helpers\_Reflect;
 use Vyui\Contracts\Container as ContainerContract;
-use Vyui\Exceptions\Container\BindingResolutionException;
 
 class Container implements ContainerContract
 {

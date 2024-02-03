@@ -54,6 +54,13 @@ class Request
     protected ServerParameters $server;
 
     /**
+    * The request body
+    *
+    * @var string | null
+    */
+    protected ?string $content = null;
+
+    /**
      * @param array $query The GET parameters of the request.
      * @param array $request The POST parameters of the request.
      * @param array $attributes The request attributes (parameters of which are passed from the PATH_INFO, ...)
@@ -75,6 +82,7 @@ class Request
         $this->cookies = new CookieParameters($cookies);
         $this->files = new FileParameters($files);
         $this->server = new ServerParameters($server);
+        $this->content = $this->getContent();
     }
 
     /**
@@ -108,6 +116,23 @@ class Request
     }
 
     /**
+    * get variables from the request (_GET) super global
+    *
+    * @param array $keys
+    * @return array
+    */
+    public function all(...$keys): array
+    {
+        $result = [];
+
+        foreach ($keys as $key) {
+            $result[$key] = $this->input($key);
+        }
+
+        return $result;
+    }
+
+    /**
      * Get an input from the request (_POST)
      *
      * @param string $key
@@ -116,7 +141,7 @@ class Request
      */
     public function input(string $key, $default = null): mixed
     {
-        return $this->request->get($key, $default);
+        return $this->{$this->getMethodParameterHandler()}->get($key, $default);
     }
 
     /**
@@ -131,6 +156,29 @@ class Request
     }
 
     /**
+    * A utility method for the request to figure out where the input wants to be coming from.
+    *
+    * @return string query|request (GET parameters or POST parameters)
+    */
+    private function getMethodParameterHandler(): string
+    {
+        return $this->isMethod('HEAD') || $this->ismethod('GET')
+            ? 'query'
+            : 'request';
+    }
+
+    /**
+    * Check to see whether this method is the method we're expected or not.ß
+    *
+    * @param string $method -> the method in which we are checking against
+    * @return bool
+    */
+    public function isMethod(string $method): bool
+    {
+        return $this->getMethod() === $method;
+    }
+
+    /**
      * get the url of the application, we are going to acquire this from the PHP_SELF otherwise; if this ends up being
      * index.php we are instead going to acquire it from the REQUEST_URI instead.
      *
@@ -138,11 +186,7 @@ class Request
      */
     public function getUri(): string
     {
-        if (! in_array(($uri = $this->getServer()->get('PHP_SELF')), [
-            '/index.php/',
-            '/index.php',
-            'index.php'
-        ])) {
+        if (! str_contains($uri = $this->getServer()->get('PHP_SELF'), 'index.php')) {
             return $uri;
         }
 
@@ -249,5 +293,23 @@ class Request
             ...$this->getServer()->all(),
             ...$this->getCookies()->all(),
         ];
+    }
+
+    /**
+    * At the point a request is made, Get the content of the request body.
+    *
+    * @return string
+    */
+    public function getContent(): string
+    {
+        if (! $this->content) {
+            $this->content = file_get_contents('php://input');
+        }
+
+        if (! $this->isMethod('GET') && ! $this->isMethod('HEAD')) {
+            $this->request->merge(json_decode($this->content, true));
+        }
+
+        return $this->content;
     }
 }

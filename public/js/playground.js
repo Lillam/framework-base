@@ -1,4 +1,4 @@
-let toEncode = 'WWWWWWWWBBWWWWWWWWBBBBBBBWWW';
+// let toEncode = 'WWWWWWWWBBWWWWWWWWBBBBBBBWWW';
 
 // const rte = () => {
 //     const handlers = {
@@ -25,17 +25,17 @@ let toEncode = 'WWWWWWWWBBWWWWWWWWBBBBBBBWWW';
 
 // console.log(rte().encode('XXXXXXXXXXXXAABBBY'));
 
-const rle = () => ({
-    encode: s => s.replace(/(.)\1+/g, ({ length }, c) => length + c),
-    decode: s => s.replace(/(\d+)(.)/g, (_, l, c) => c.repeat(l))
-});
-
-console.log(
-    rle().encode('XXXXXXBBYYA'),
-    rle().decode('6X2B2YA')
-    // rle().encode('  XXXYYB ') === '  3X2YB ',
-    // rle().decode(' 3X2YB '),
-);
+// const rle = () => ({
+//     encode: s => s.replace(/(.)\1+/g, ({ length }, c) => length + c),
+//     decode: s => s.replace(/(\d+)(.)/g, (_, l, c) => c.repeat(l))
+// });
+//
+// console.log(
+//     rle().encode('XXXXXXBBYYA'),
+//     rle().decode('6X2B2YA')
+//     // rle().encode('  XXXYYB ') === '  3X2YB ',
+//     // rle().decode(' 3X2YB '),
+// );
 
 // const newEncode = (s) => {
 //     let cc = 0, ns = '';

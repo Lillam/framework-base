@@ -13,6 +13,9 @@ class Help extends Command
      */
     protected Kernel $kernel;
 
+    /**
+     * @return int
+     */
     public function execute(): int
     {
         // get the current console kernel that resides in the memory of the application when instantiated.

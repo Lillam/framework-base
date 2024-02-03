@@ -41,6 +41,18 @@ abstract class Command
     abstract public function execute(): int;
 
     /**
+     * @return string|null
+     */
+    public function getCommandArgument(): ?string
+    {
+        if (! str_contains($this->arguments[0], ':')) {
+            return null;
+        }
+
+        return explode(':', $this->arguments[0])[1];
+    }
+
+    /**
      * @param Output $output
      * @return $this
      */

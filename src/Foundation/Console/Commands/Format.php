@@ -93,7 +93,7 @@ class Format extends Command
      */
     public function __construct(Application $application, FileSystem $filesystem, array $arguments = [])
     {
-        parent::__construct($arguments);
+        parent::__construct($application, $arguments);
         $this->filesystem = $filesystem;
         $this->application = $application;
     }

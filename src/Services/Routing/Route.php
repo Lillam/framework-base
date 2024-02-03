@@ -111,6 +111,11 @@ class Route
         return $this->uri;
     }
 
+    public function getFullUri(): string
+    {
+        return env('APP_URL') . $this->uri;
+    }
+
     /**
      * @return RouteUriRegex
      */

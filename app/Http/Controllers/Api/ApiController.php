@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
-use Vyui\Auth\JWT;
+use Vyui\Auth\Token;
 use Vyui\Foundation\Http\Response;
 use Vyui\Foundation\Http\Controller;
 
@@ -16,10 +16,10 @@ class ApiController extends Controller
     ];
 
     /**
-     * @param JWT $token
+     * @param Token $token
      * @return Response
      */
-    public function getToken(JWT $token): Response
+    public function getToken(Token $token): Response
     {
         return response()->json($token->encode([
             'access_token' => 'abcde12345',

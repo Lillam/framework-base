@@ -74,6 +74,8 @@ expect(actual).toBeCloseTo(expected, DIFFERENCE_PRECISION_IN_DIGITS);
 //           ->setAnagramMin(4)
 //           ->setAnagramMax(7);
 //
+//dd($dictionary->findWordsFromAnagram());
+//
 //$dictionary->addWords([
 //
 //]);
@@ -147,7 +149,7 @@ expect(actual).toBeCloseTo(expected, DIFFERENCE_PRECISION_IN_DIGITS);
 //);
 
 
-//$token = (new \Vyui\Auth\JWT)->encode([
+//$token = (new \Vyui\Auth\Token)->encode([
 //    'id' => 1,
 //    'name' => 'liam taylor',
 //    'exp' => time() + 20,
@@ -161,7 +163,7 @@ expect(actual).toBeCloseTo(expected, DIFFERENCE_PRECISION_IN_DIGITS);
 
 // dd(json_decode(base64_decode('eyJpZCI6MSwibmFtZSI6ImxpYW0gdGF5bG9yIn0'), true));
 
-//$parsedToken = (new \Vyui\Contracts\Auth\JWT)->decode($token);
+//$parsedToken = (new \Vyui\Contracts\Auth\Token)->decode($token);
 //
 //dd($token, $parsedToken);
 
@@ -640,76 +642,160 @@ $string = "#header\n* Item 1\n* Item 2\nhello";
 //dd((new Robot([0,0], 'north'))->instructions('LAL'));
 
 
-class InterestCalculator {
-    /**
-     * @var float
-     */
-    protected float $funds = 0;
-
-    /**
-     * @var float
-     */
-    protected float $interestRate = 0.05;
-
-    /**
-     * @var float
-     */
-    protected float $monthlyDeposit = 1000;
-
-    /**
-     * @var int
-     */
-    protected int $monthsSaving = 180;
-
-    /**
-     * @var array
-     */
-    protected array $growth = [];
-
-    /**
-     * @param float $startingFunds
-     */
-    public function __construct(float $startingFunds)
-    {
-        $this->funds = $startingFunds;
-    }
-
-    /**
-     * @return $this
-     */
-    public function grow(): static
-    {
-        $this->funds = $this->funds +
-                       $this->monthlyDeposit;
-
-        return $this;
-    }
-
-    /**
-     * @return $this
-     */
-    public function addInterest(): static
-    {
-        $this->funds = $this->funds + floor(($this->funds * $this->interestRate) / 12);
-
-        return $this;
-    }
-
-    public function predict()
-    {
-        for ($i = 1; $i <= $this->monthsSaving; ++$i) {
-            $current = $this->funds;
-            $this->addInterest();
-            $added = "£" . $this->funds - $current;
-            $this->grow();
-            $totalAdded = $this->funds - $current;
-            $this->growth[$i] = "Month $i: £$this->funds +$added - total added: £$totalAdded";
-        }
-
-        dd($this->growth);
-    }
-}
+//class InterestCalculator {
+//    /**
+//     * @var float
+//     */
+//    protected float $funds = 0;
+//
+//    /**
+//     * @var float
+//     */
+//    protected float $interestRate = 0.05;
+//
+//    /**
+//     * @var float
+//     */
+//    protected float $monthlyDeposit = 1000;
+//
+//    /**
+//     * @var int
+//     */
+//    protected int $monthsSaving = 180;
+//
+//    /**
+//     * @var array
+//     */
+//    protected array $growth = [];
+//
+//    /**
+//     * @param float $startingFunds
+//     */
+//    public function __construct(float $startingFunds)
+//    {
+//        $this->funds = $startingFunds;
+//    }
+//
+//    /**
+//     * @return $this
+//     */
+//    public function grow(): static
+//    {
+//        $this->funds = $this->funds +
+//                       $this->monthlyDeposit;
+//
+//        return $this;
+//    }
+//
+//    /**
+//     * @return $this
+//     */
+//    public function addInterest(): static
+//    {
+//        $this->funds = $this->funds + floor(($this->funds * $this->interestRate) / 12);
+//
+//        return $this;
+//    }
+//
+//    public function predict()
+//    {
+//        for ($i = 1; $i <= $this->monthsSaving; ++$i) {
+//            $current = $this->funds;
+//            $this->addInterest();
+//            $added = "£" . $this->funds - $current;
+//            $this->grow();
+//            $totalAdded = $this->funds - $current;
+//            $this->growth[$i] = "Month $i: £$this->funds +$added - total added: £$totalAdded";
+//        }
+//
+//        dd($this->growth);
+//    }
+//}
 
 //$interest = new InterestCalculator(17000);
 //
 //$interest->predict();
+
+
+//function isIsogram(string $string): bool {
+//    $string = mb_str_split(mb_strtolower(str_replace([' ', '-'], '', $string)));
+//
+//    for ($i = 0; $i < ($sl = count($string)); $i++) {
+//        // begin iterating backwards to see if this particular string
+//        // occurs earlier on in the string.
+//        for ($r = ($i - 1); $r >= 0; $r--) {
+//            if ($string[$i] === $string[$r]) {
+//                return false;
+//            }
+//        }
+//
+//        // begin iterating forward to see if this particular string
+//        // occurs later on in the strings.
+//        for ($n = ($i + 1); $n < $sl; $n++) {
+//            if ($string[$i] === $string[$n]) {
+//                return false;
+//            }
+//        }
+//    }
+//
+//    return true;
+//}
+//
+//dd(isIsogram('Emily Jung Schwartzkopf'));
+
+class Interpreter
+{
+    public function __construct(
+        protected string $input
+    ) {}
+
+    public function validate(): self
+    {
+        if (! str_starts_with($this->input, 'What is') || str_contains($this->input, 'cubed')) {
+            throw new \InvalidArgumentException(
+                "Input is either missing the question, or too advanced with cubed."
+            );
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function process(): self
+    {
+        $this->input = preg_replace_callback_array([
+            '/(What is |\?)/'                 => fn () => '',
+            '/divided by/'                    => fn () => '/',
+            '/multiplied by/'                 => fn () => '*',
+            '/plus/'                          => fn () => '+',
+            '/minus/'                         => fn () => '-',
+            '/(\d+|-\d+).*(\d+|-\d+)/'        => fn ($matches) => "($matches[0])",
+            '/(\d+|-\d+) (\-|\+) (\d+|-\d+)/' => fn ($matches) => "($matches[0])"
+        ], $this->input);
+
+        return $this;
+    }
+
+    /**
+     * This particular function is going to eval the string that we've parsed to be a mathematical
+     * equation; however this leaves the system open to vulnerabilities as the input could be
+     * valid syntax php such as passing in phpinfo()...
+     *
+     * This is a security flaw, acknowledged but not fixed. (out of scope).
+     *
+     * @return float
+     */
+    public function answer(): float
+    {
+        return (float) eval("return $this->input;");
+    }
+}
+
+function calculate(string $input): float
+{
+    return (new Interpreter($input))->validate()->process()->answer();
+}
+
+// dd(calculate('What is 53 plus 2?'));

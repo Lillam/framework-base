@@ -2,11 +2,11 @@
 
 namespace Vyui\Services\Facades;
 
-use RuntimeException;
 use ReflectionException;
+use RuntimeException;
 use Vyui\Contracts\Container;
 use Vyui\Foundation\Application;
-use Vyui\Exceptions\Container\BindingResolutionException;
+use Vyui\Foundation\Container\BindingResolutionException;
 
 abstract class Facade
 {

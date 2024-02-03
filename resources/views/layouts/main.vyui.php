@@ -128,6 +128,9 @@
                 #[yield: body]
             </div>
         </div>
+        #[foreach([1,2,3] as $number]
+            {{ $number }}
+        #endforeach
         #[yield: scripts]
         #[include: layouts/footer]
     </body>

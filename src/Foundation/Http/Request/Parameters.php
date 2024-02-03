@@ -56,6 +56,17 @@ class Parameters
     }
 
     /**
+    * Merge some data into the parameter bag.
+    *
+    * @param array $data
+    * @return array
+    */
+    public function merge(array $data): array
+    {
+        return $this->parameters = array_merge($this->parameters, $data);
+    }
+
+    /**
      * Remove an item that's bound by a key within the parameters of the object.
      *
      * @param string $key

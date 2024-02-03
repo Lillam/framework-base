@@ -7,9 +7,16 @@ class Input
     /**
      * The arguments that have been passed to the console application.
      *
-     * @var array|null
+     * @var array
      */
-    private ?array $tokens = [];
+    private array $tokens = [];
+
+    /**
+     * private variable that will be for creating an array of tokens.
+     *
+     * @var int
+     */
+    private int $currentTokenKey = 0;
 
     /**
      * @param array|null $argv
@@ -22,15 +29,29 @@ class Input
         // parsing of the passed arguments.
         array_shift($argv);
 
-        $this->tokens = $argv;
+        $this->setupTokens($argv ?? []);
     }
 
     /**
-     * @return string|null
+     * @param array $tokens
+     * @return void
      */
-    public function getCommandName(): ?string
+    private function setupTokens(array $tokens): void
     {
-        return $this->tokens[0] ?? null;
+        for ($i = 0; $i < count($tokens); $i++) {
+            if (str_contains($tokens[$i], ':')) {
+                $tokensTokens = explode(':', $tokens[$i]);
+                for ($j = 0; $j < count($tokensTokens); $j++) {
+                    $this->tokens[$this->currentTokenKey] = $tokensTokens[$j];
+                    $this->currentTokenKey++;
+                }
+                continue;
+            }
+            $this->tokens[$this->currentTokenKey] = $tokens[$i];
+            $this->currentTokenKey++;
+        }
+
+        print_r($this->tokens);
     }
 
     /**
@@ -38,11 +59,7 @@ class Input
      */
     public function getTokens(): array
     {
-        return array_values(
-            array_filter($this->tokens, function ($token, $key) {
-                return $key !== 0;
-            }, ARRAY_FILTER_USE_BOTH)
-        );
+        return $this->tokens;
     }
 
     /**

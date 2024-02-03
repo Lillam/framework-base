@@ -13,6 +13,7 @@ use Vyui\Services\Routing\Router;
  * @method static Router patch(string $uri, array|string|Closure $action): void
  * @method static Router delete(string $uri, array|string|Closure $action): void
  * @method static Router all(string $uri, array|string|Closure $action): void
+ * @method static Router group(string $uri, Closure $closure): void
  * @method static Router allRoutes(): Route[]
  * @method static Router getRoutes(): Route[]
  * @method static Router postRoutes(): Route[]

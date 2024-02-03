@@ -1,6 +1,6 @@
 <?php
 
-namespace Vyui\Exceptions\Routing;
+namespace Vyui\Services\Routing;
 
 use Exception;
 

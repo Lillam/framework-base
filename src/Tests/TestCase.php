@@ -2,26 +2,28 @@
 
 namespace Vyui\Tests;
 
+use Vyui\Tests\Assertions\{
+    AssertInt,
+    AssertNull,
+    AssertTrue,
+    AssertCount,
+    AssertEmpty,
+    AssertArray,
+    AssertFalse,
+    AssertFloat,
+    AssertEquals,
+    AssertString,
+    AssertNotNull,
+    AssertNotEmpty,
+    AssertLessThan,
+    AssertInstanceOf,
+    AssertGreaterThan,
+    AssertLooseEquals,
+    AssertArrayHasKey,
+    AssertArrayNotHasKey
+};
 use Vyui\Support\Helpers\_String;
-use Vyui\Tests\Assertions\AssertInt;
-use Vyui\Tests\Assertions\AssertNull;
-use Vyui\Tests\Assertions\AssertTrue;
-use Vyui\Tests\Assertions\AssertArray;
-use Vyui\Tests\Assertions\AssertCount;
-use Vyui\Tests\Assertions\AssertEmpty;
-use Vyui\Tests\Assertions\AssertFalse;
-use Vyui\Tests\Assertions\AssertFloat;
-use Vyui\Tests\Assertions\AssertEquals;
-use Vyui\Tests\Assertions\AssertString;
-use Vyui\Tests\Assertions\AssertNotNull;
 use Vyui\Tests\Assertions\TestAssertion;
-use Vyui\Tests\Assertions\AssertLessThan;
-use Vyui\Tests\Assertions\AssertNotEmpty;
-use Vyui\Tests\Assertions\AssertInstanceOf;
-use Vyui\Tests\Assertions\AssertArrayHasKey;
-use Vyui\Tests\Assertions\AssertGreaterThan;
-use Vyui\Tests\Assertions\AssertLooseEquals;
-use Vyui\Tests\Assertions\AssertArrayNotHasKey;
 
 // todo | clean this class up wit the use of traits, meaning that the assertion of the type would be a trat that gets
 //      | applied to the class, which naturally would clean the above up; removing the needs of imports and more focuses
@@ -356,7 +358,7 @@ abstract class TestCase
 
     /**
      * Process the assertion that we're trying to make, this is so that we can begin accordingly map them to the correct
-     * places and log only once and minimalising the amount of code overall needed
+     * places and log only once and minimalistic with the amount of code overall needed
      *
      * @param TestAssertion $assertion
      * @return void

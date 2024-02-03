@@ -2,7 +2,7 @@
 
 namespace Vyui\Services\Auth;
 
-use Vyui\Auth\JWT;
+use Vyui\Auth\Token;
 use Vyui\Services\Service;
 
 class AuthService extends Service
@@ -12,7 +12,7 @@ class AuthService extends Service
      */
     public function register(): void
     {
-        $this->application->instance(JWT::class, new JWT);
+        $this->application->instance(Token::class, new Token);
     }
 
     public function bootstrap(): void

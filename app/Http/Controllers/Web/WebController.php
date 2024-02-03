@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Web;
 
-use Vyui\Auth\JWT;
+use Vyui\Auth\Token;
 use App\Models\Task;
 use Vyui\Foundation\Http\Request;
 use Vyui\Foundation\Http\Response;
@@ -47,7 +47,7 @@ class WebController extends Controller
     public function parseToken(Request $request): Response
     {
         try {
-            $decoded = (new JWT)->decode($request->get('token'));
+            $decoded = (new Token)->decode($request->get('token'));
         }
 
         catch (\Throwable $throwable) {

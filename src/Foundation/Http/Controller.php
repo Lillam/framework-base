@@ -42,7 +42,7 @@ abstract class Controller
     {
         return $this->middleware;
     }
-    
+
     public function throughMiddleware(Request $request): static
     {
         foreach ($this->middleware as $middleware) {

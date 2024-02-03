@@ -1,6 +1,6 @@
 <?php
 
-namespace Vyui\Exceptions\Container;
+namespace Vyui\Foundation\Container;
 
 use Exception;
 

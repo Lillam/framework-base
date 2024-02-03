@@ -1,6 +1,6 @@
 <?php
 
-namespace Vyui\Exceptions\Filesystem;
+namespace Vyui\Services\Filesystem;
 
 use Exception;
 

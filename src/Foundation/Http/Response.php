@@ -75,7 +75,7 @@ class Response implements ResponseContract
      */
     public function sendHeaders(): self
     {
-        if (! headers_sent()) {
+        if (!headers_sent()) {
             header('Access-Control-Allow-Origin: *');
             array_map(fn ($header) => header($header), $this->headers);
         }
@@ -92,7 +92,7 @@ class Response implements ResponseContract
     public function json(mixed $data): self
     {
         $this->content = json_encode(
-            ! is_array($data)
+            !is_array($data)
                 ? ['data' => $data]
                 : $data
         );

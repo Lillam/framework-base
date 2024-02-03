@@ -2,12 +2,12 @@
 
 namespace Vyui\Auth;
 
-class JWT
+class Token
 {
     /**
      * @var string
      */
-    protected string $type = 'JWT';
+    protected string $type = 'Token';
 
     /**
      * @var string
@@ -44,7 +44,7 @@ class JWT
     protected string $signature;
 
     /**
-     * Set the secret token for the JWT.
+     * Set the secret token for the Token.
      *
      * @param string $secret
      * @return $this
@@ -63,9 +63,9 @@ class JWT
     public function encode(array $payload): string
     {
         return $this->setHeader([
-                'typ' => $this->type,
-                'alg' => $this->algorithm,
-            ])
+            'typ' => $this->type,
+            'alg' => $this->algorithm,
+        ])
             ->setPayload($payload)
             ->setSignature()
             ->getEncoded();
@@ -94,7 +94,7 @@ class JWT
 
         ['header' => $header, 'payload' => $payload, 'signature' => $signature] = $matches;
 
-        if (! hash_equals(
+        if (!hash_equals(
             $this->prepareSignature($header, $payload),
             $this->base64urlDecode($signature)
         )) {
@@ -192,9 +192,9 @@ class JWT
      */
     private function validatePayload(array $payload): void
     {
-//        if ($payload['exp'] < time()) {
-//            throw new TokenExpiredException;
-//        }
+        //        if ($payload['exp'] < time()) {
+        //            throw new TokenExpiredException;
+        //        }
     }
 
     /**

@@ -4,7 +4,7 @@ namespace Vyui\Foundation\Console;
 
 use Vyui\Foundation\Application;
 use Vyui\Contracts\Console\Kernel as KernelContract;
-use Vyui\Foundation\Console\Commands\{File, Help, Make, Migrate, Test, Format, Command};
+use Vyui\Foundation\Console\Commands\{File, Help, Make, Migrate, Route, Test, Format, Command};
 
 class Kernel implements KernelContract
 {
@@ -27,6 +27,7 @@ class Kernel implements KernelContract
         'format'  => Format::class,
         'file'    => File::class,
         'migrate' => Migrate::class,
+        'routes'  => Route::class
     ];
 
     /**
@@ -86,16 +87,34 @@ class Kernel implements KernelContract
     }
 
     /**
+     * Get the name of the command, if the developer had provided an extra command operation such like
+     * routes:list; then we are going to want only the first part of this; the routes part.
+     *
+     * @param Input $input
+     * @return string
+     */
+    public function getCommandName(Input $input): string
+    {
+        return $input->getTokens()[0];
+    }
+
+    public function getCommandTokens(Input $input): array
+    {
+        return array_filter($input->getTokens(), fn ($key) => $key > 0, ARRAY_FILTER_USE_KEY);
+    }
+
+    /**
      * Take an input as well as output stream and buffer the output to the console. returning a success if the whole
      * process had been carried out successfully.
      *
      * @param Input $input
      * @param Output|null $output
      * @return int
+     * @throws CommandNotFoundException
      */
     public function handle(Input $input, ?Output $output = null): int
     {
-        $command = $this->getCommand($input->getCommandName(), $input->getTokens())
+        $command = $this->getCommand($this->getCommandName($input), $this->getCommandTokens($input))
                         ->setOutput($output);
 
         return $command->execute();

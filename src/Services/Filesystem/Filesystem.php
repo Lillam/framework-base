@@ -3,8 +3,6 @@
 namespace Vyui\Services\Filesystem;
 
 use SplFileObject;
-use Vyui\Exceptions\Filesystem\FileNotFoundException;
-use Vyui\Exceptions\Filesystem\DirectoryNotFoundException;
 use Vyui\Contracts\Filesystem\Filesystem as FilesystemContract;
 
 class Filesystem implements FilesystemContract

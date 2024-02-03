@@ -1,6 +1,6 @@
 <?php
 
-namespace Vyui\Exceptions\Database;
+namespace Vyui\Services\Database;
 
 use Exception;
 

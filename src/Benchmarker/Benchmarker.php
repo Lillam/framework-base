@@ -1,10 +1,10 @@
 <?php
 
-namespace Vyui\Debugger;
+namespace Vyui\Debug;
 
 use Closure;
 
-class Debugger
+class Benchmarker
 {
     /**
      * @var array

@@ -7,7 +7,6 @@ use Exception;
 use Vyui\Foundation\Application;
 use Vyui\Foundation\Http\Request;
 use Vyui\Foundation\Http\Response;
-use Vyui\Exceptions\Routing\RouteNotFoundException;
 
 class Router
 {
@@ -22,6 +21,11 @@ class Router
      * @var RouteCollection
      */
     protected RouteCollection $routes;
+
+    /**
+     * @var string
+     */
+    protected string $groupUri = '';
 
     /**
      * The current existing route.
@@ -42,12 +46,29 @@ class Router
 
     /**
      * @param string $uri
+     * @param Closure $closure
+     * @return $this
+     */
+    public function group(string $uri, Closure $closure): self
+    {
+        $this->groupUri .= $uri;
+
+        $closure($this);
+
+        // unset the group uri that has been set for this particular grouping instance.
+        $this->groupUri = str_replace($uri, '', $this->groupUri);
+
+        return $this;
+    }
+
+    /**
+     * @param string $uri
      * @param string|array|Closure $action
      * @return self
      */
     public function get(string $uri, string|array|Closure $action): self
     {
-        $this->routes->set('GET', $uri, $action);
+        $this->routes->set('GET', "{$this->groupUri}{$uri}", $action);
 
         return $this;
     }
@@ -59,7 +80,7 @@ class Router
      */
     public function post(string $uri, string|array|Closure $action): self
     {
-        $this->routes->set('POST', $uri, $action);
+        $this->routes->set('POST', "{$this->groupUri}{$uri}", $action);
 
         return $this;
     }
@@ -71,7 +92,7 @@ class Router
      */
     public function put(string $uri, string|array|Closure $action): self
     {
-        $this->routes->set('PUT', $uri, $action);
+        $this->routes->set('PUT', "{$this->groupUri}{$uri}", $action);
 
         return $this;
     }
@@ -83,7 +104,7 @@ class Router
      */
     public function patch(string $uri, string|array|Closure $action): void
     {
-        $this->routes->set('PATCH', $uri, $action);
+        $this->routes->set('PATCH', "{$this->groupUri}{$uri}", $action);
     }
 
     /**
@@ -93,7 +114,7 @@ class Router
      */
     public function delete(string $uri, string|array|Closure $action): void
     {
-        $this->routes->set('DELETE', $uri, $action);
+        $this->routes->set('DELETE', "{$this->groupUri}{$uri}", $action);
     }
 
     /**
