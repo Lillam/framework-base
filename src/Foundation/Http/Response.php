@@ -92,9 +92,8 @@ class Response implements ResponseContract
     public function json(mixed $data): self
     {
         $this->content = json_encode(
-            !is_array($data)
-                ? ['data' => $data]
-                : $data
+            !is_array($data) ? ['data' => $data]
+                             : $data
         );
 
         return $this;

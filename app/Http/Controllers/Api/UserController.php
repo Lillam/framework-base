@@ -20,8 +20,6 @@ class UserController extends Controller
     {
         ['email' => $email, 'password' => $password, 'id' => $id] = $request->all('email', 'password', 'id');
 
-        dd($email, $password, $id, $request, 'from the user controller');
-
         $user = User::where('email', '=', 'liam.taylor@outlook.com')->first()->__toArray();
 
         // todo extract into a token service which can create access tokens, refresh tokens etc in a more simplified

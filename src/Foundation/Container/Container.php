@@ -407,27 +407,6 @@ class Container implements ContainerContract
         }
 
         return $results;
-//        return array_map(function (ReflectionParameter $dependencyParameter) use ($dependencies) {
-//            if ($this->hasParameterOverride($dependencyParameter)) {
-//                return $this->getParameterOverride($dependencyParameter);
-//            }
-//
-//            // Run off and acquire the class, if this is null, then the dependency that we're dealing with is of course
-//            // a primitive type... if it's not a class, then we're not going to be able to resolve it, in which this
-//            // naturally would error out, to which we're then going to resolve the primitive type instead.
-//            $result = is_null(_Reflect::getParameterClassName($dependencyParameter))
-//                ? $this->resolvePrimitive($dependencyParameter)
-//                : $this->resolveClass($dependencyParameter);
-//
-//            // if the dependency had been marked as variadic, then we're going to want to pass the variable in as an
-//            // array of items and continue to the next variable, otherwise ignore this block all together and insert the
-//            // necessary dependency.
-//
-//            // if the dependency is variadic, then we're going to merge the variadic variable in with the dependencies.
-//            return $dependencyParameter->isVariadic()
-//                ? array_merge($dependencies, $result)
-//                : $result;
-//        }, $dependencies);
     }
 
     /**

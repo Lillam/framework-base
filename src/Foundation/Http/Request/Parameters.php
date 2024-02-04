@@ -61,7 +61,7 @@ class Parameters
     * @param array $data
     * @return array
     */
-    public function merge(array $data): array
+    public function merge(array $data = []): array
     {
         return $this->parameters = array_merge($this->parameters, $data);
     }

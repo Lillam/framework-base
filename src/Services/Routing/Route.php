@@ -14,6 +14,13 @@ use Vyui\Foundation\Http\Controller;
 class Route
 {
     /**
+    * @param Application $application -> belated creation, only exists after being passed through a kernel that
+    *                                    injects the application to the route in question; otherwise each route
+    *                                    in the application's lifecycle will be created with an application.
+    */
+    protected Application $application;
+
+    /**
      * The uri that has been defined.
      *
      * @var string
@@ -272,10 +279,9 @@ class Route
      */
     public function dispatch(Application $application, Request $request): Response
     {
-        [$controller, $action] = $this->getAction();
+        $this->application = $application;
 
-        // attach the request to the parameters of the route.
-        $this->parameters['request'] = $request;
+        [$controller, $action] = $this->getAction();
 
         // if we haven't defined a controller for this particular route then it means that
         // we're dealing with a closure meaning that we can just simply return here without
@@ -350,7 +356,8 @@ class Route
                 // if the type of the object is of the type Model; then we are safe to attempt to perform some operation
                 // that finds the particular model, and dumps the value into the controller; here we are capable of
                 // returning a 404 if the particular model cannot be found.
-                if (($model = new $type) instanceof Model) {
+                if ($type === Model::class) {
+                    $model = new $type;
                     $parameters[$parameterKey] = $model::query()->where($model->getPrimaryKey(), '=', $parameter)
                                                                 ->first();
                 }
@@ -359,14 +366,12 @@ class Route
 
         // if we still have any needed parameters left at this point, then we are going to be needing to build them out
         // and look to start auto wiring right there.
-        // todo -> this needs removing entirely because we are going to be needing to auto-wire this via the application
-        //         and if this still cannot be made then we're all good to just skip past it and call it a day.
         foreach ($neededParameters as $neededKey => $neededParameter) {
-            if (in_array($neededParameter['type'], ['int', 'string'])) {
+            if (in_array($neededParameter['type'], ['int', 'string', 'boolean'])) {
                 continue;
             }
 
-            $neededParameters[$neededKey] = new $neededParameter['type'];
+            $neededParameters[$neededKey] = $this->application->make($neededParameter['type']);
         }
 
         return array_merge($parameters, $neededParameters);

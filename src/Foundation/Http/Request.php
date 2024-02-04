@@ -60,6 +60,8 @@ class Request
     */
     protected ?string $content = null;
 
+    protected bool $constructedFromContainer;
+
     /**
      * @param array $query The GET parameters of the request.
      * @param array $request The POST parameters of the request.
@@ -74,7 +76,8 @@ class Request
         array $attributes = [],
         array $cookies = [],
         array $files = [],
-        array $server = []
+        array $server = [],
+        bool $constructedFromContainer = true
     ) {
         $this->query = new GetParameters($query);
         $this->request = new PostParameters($request);
@@ -82,6 +85,9 @@ class Request
         $this->cookies = new CookieParameters($cookies);
         $this->files = new FileParameters($files);
         $this->server = new ServerParameters($server);
+
+        $this->constructedFromContainer = $constructedFromContainer;
+
         $this->content = $this->getContent();
     }
 
@@ -100,7 +106,7 @@ class Request
      */
     protected static function createFromGlobals(): static
     {
-        return new static($_GET, $_POST, [], $_COOKIE, $_FILES, $_SERVER);
+        return new static($_GET, $_POST, [], $_COOKIE, $_FILES, $_SERVER, false);
     }
 
     /**
@@ -307,6 +313,19 @@ class Request
         }
 
         if (! $this->isMethod('GET') && ! $this->isMethod('HEAD')) {
+            // dd($this->constructedFromContainer, debug_backtrace());
+        //     // dd(
+        //     //     'here',
+        //     //     $this->isMethod('GET'),
+        //     //     $this->isMethod('HEAD'),
+        //     //     $this->getMethod(),
+        //     //     $this->getServer()->all(),
+        //     //     $this
+        //     // );
+        //     //
+        //     //
+        //     dd($this->constructedFromContainer);
+
             $this->request->merge(json_decode($this->content, true));
         }
 
