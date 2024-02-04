@@ -7,9 +7,12 @@ use App\Models\Task;
 use Vyui\Foundation\Http\Request;
 use Vyui\Foundation\Http\Response;
 use Vyui\Foundation\Http\Controller;
+use Vyui\Foundation\Http\Middleware\Authenticate;
 
 class WebController extends Controller
 {
+    protected array $middleware = [Authenticate::class];
+
     /**
      * @param Request $request
      * @param Task|null $task

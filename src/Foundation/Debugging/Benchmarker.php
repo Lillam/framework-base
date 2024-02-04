@@ -1,6 +1,6 @@
 <?php
 
-namespace Vyui\Debug;
+namespace Vyui\Foundation\Debugging;
 
 use Closure;
 
