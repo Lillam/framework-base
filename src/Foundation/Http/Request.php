@@ -60,8 +60,6 @@ class Request
     */
     protected ?string $content = null;
 
-    protected bool $constructedFromContainer;
-
     /**
      * @param array $query The GET parameters of the request.
      * @param array $request The POST parameters of the request.
