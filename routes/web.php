@@ -37,10 +37,6 @@ $router->group('/api/v1', function (Router $router) {
     $router->post('/login', [\App\Http\Controllers\Api\UserController::class, 'login']);
 });
 
-//Route::get('/yascreem/{test}', function (): \Vyui\Foundation\Http\Response {
-//    return view('home2');
-//});
-
 // Route::get('/yascreem/{test?}', fn ($test) => view('home2', ['test' => $test]));
 Route::get('/tests/{test}/{testing}', [\App\Http\Controllers\Web\WebController::class, 'test']);
 
@@ -48,11 +44,3 @@ Route::get('/', [WebController::class, 'index']);
 Route::get('/tasks/{task?}', [\App\Http\Controllers\Web\WebController::class, 'index']);
 
 Route::get('/parseToken', [WebController::class, 'parseToken']);
-
-//Route::get('/api/token',         [ApiController::class, 'getToken']);
-//Route::get('/api/token/refresh', [ApiController::class, 'refreshToken']);
-
-//Route::group('/group1', function (Router $route) {
-//    $route->get('/group2', fn () => view('home'));
-//    dd($route);
-//});

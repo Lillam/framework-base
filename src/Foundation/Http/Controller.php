@@ -43,6 +43,13 @@ abstract class Controller
         return $this->middleware;
     }
 
+    /**
+    * Send the request through the middleware that is currently attached to this particular
+    * controller
+    *
+    * @param Request $request
+    * @return static
+    */
     public function throughMiddleware(Request $request): static
     {
         foreach ($this->middleware as $middleware) {

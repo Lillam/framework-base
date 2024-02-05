@@ -2,12 +2,14 @@
 
 namespace Vyui\Foundation\Http;
 
-use Vyui\Foundation\Http\Request\GetParameters;
-use Vyui\Foundation\Http\Request\FileParameters;
-use Vyui\Foundation\Http\Request\PostParameters;
-use Vyui\Foundation\Http\Request\CookieParameters;
-use Vyui\Foundation\Http\Request\ServerParameters;
-use Vyui\Foundation\Http\Request\AttributeParameters;
+use Vyui\Foundation\Http\Request\{
+    GetParameters,
+    FileParameters,
+    PostParameters,
+    CookieParameters,
+    ServerParameters,
+    AttributeParameters
+};
 
 class Request
 {
@@ -227,6 +229,26 @@ class Request
     public function getHeader(string $header): mixed
     {
         return $this->getServer()->get($header);
+    }
+
+    /**
+    * get the authorization from the header...
+    *
+    * @return string | null
+    */
+    public function getAuthorization(?string $type = 'Bearer'): ?string
+    {
+        return str_replace("$type ", '', $this->getServer()->get('HTTP_AUTHORIZATION'));
+    }
+
+    /**
+    * Alias for getAuthorization
+    *
+    * @return string | null
+    */
+    public function getAuth(?string $type): ?string
+    {
+        return $this->getAuthorization($type);
     }
 
     /**

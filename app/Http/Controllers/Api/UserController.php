@@ -20,17 +20,20 @@ class UserController extends Controller
     {
         ['email' => $email, 'password' => $password, 'id' => $id] = $request->all('email', 'password', 'id');
 
-        $user = User::where('email', '=', $email)->where('password', '=', $password)->first()->__toArray();
+        // dd($request);
+
+        $user = User::where('email', '=', $email)->first()->__toArray();
 
         // todo extract into a token service which can create access tokens, refresh tokens etc in a more simplified
         //      more elegant manner that is more re-usable and easier to write than this.
         $token = (new Token)->encode([
-            'exp' => time() + 100,
+            'exp' => time() + 10000,
             'user' => $user
         ]);
 
         return response()->json([
-            'token' => $token
+            'token' => $token,
+            'header' => $request->getHeader('HTTP_AUTHORIZATION')
         ]);
     }
 
@@ -42,10 +45,10 @@ class UserController extends Controller
         $apiKey = str_replace(
             'api-key=',
             '',
-            request()->getHeader('http_authorization')
+            request()->getHeader('HTTP_AUTHORIZATION')
         );
 
-        if (! User::where('api_token', '=', $apiKey)->first()) {
+        if (!User::where('api_token', '=', $apiKey)->first()) {
             http_response_code(401);
             echo json_encode(['message' => 'Invalid api-key']);
             exit;
@@ -55,18 +58,14 @@ class UserController extends Controller
     public function index(Request $request): Response
     {
         try {
-            $token = $request->get('token') ??
-                     str_replace(['Bearer', ' '], '', $request->getHeader('http_authorization'));
+            $token = $request->getAuthorization('Bearer');
 
             (new Token)->decode($token);
-        }
 
-        catch (TokenExpiredException) {
+        } catch (TokenExpiredException) {
             return response()->json(['error' => 'token is expired']);
-        }
-
-        catch (Exception) {
-            return response()->json([ 'error' => 'token is invalid' ]);
+        } catch (Exception) {
+            return response()->json(['error' => 'token is invalid']);
         }
 
         return response()->json(array_map(function ($item) {
@@ -74,3 +73,16 @@ class UserController extends Controller
         }, User::all()));
     }
 }
+
+/**
+curl -H "Content-Type: application/json" \
+-H "Authorization: Bearer {}" \
+-X GET \
+https://framework.test/api/v1/users
+
+curl - "Content-Type: application/json" \
+-d '{ "email": "liam.taylor@outlook.com", password: "thisisapassword" }' \
+-X POST \
+https://framework.test/api/v1/login
+
+*/

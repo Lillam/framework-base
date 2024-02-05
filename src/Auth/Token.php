@@ -62,10 +62,7 @@ class Token
      */
     public function encode(array $payload): string
     {
-        return $this->setHeader([
-            'typ' => $this->type,
-            'alg' => $this->algorithm,
-        ])
+        return $this->setHeader(['typ' => $this->type, 'alg' => $this->algorithm])
             ->setPayload($payload)
             ->setSignature()
             ->getEncoded();
