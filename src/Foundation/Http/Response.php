@@ -88,6 +88,9 @@ class Response implements ResponseContract
      *
      * @param mixed $data
      * @return $this
+     * @note -> figure a means in which allows to set the default key for responding from the
+     *          api oriented style controllers; 'data' might not always be a desired key.
+     *          potential response format as (data.data.any)
      */
     public function json(mixed $data): self
     {

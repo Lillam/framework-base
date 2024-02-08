@@ -21,11 +21,13 @@ class ApiController extends Controller
      */
     public function getToken(Token $token): Response
     {
-        return response()->json($token->encode([
-            'access_token' => 'abcde12345',
-            'refresh_token' => 'abcdef12345',
-            'expiry' => 60 * 60 * 24
-        ]));
+        return $this->respond([
+            'token' => $token->encode([
+                'access_token' => 'abcde12345',
+                'refresh_token' => 'abcdef12345',
+                'expiry' => 60 * 60 * 24
+            ])
+        ]);
     }
 
     /**

@@ -60,6 +60,27 @@ abstract class Controller
     }
 
     /**
+    * Return a response from the controller as all controllers will want to return some kind of
+    * response to the invoker.
+    *
+    * @param mixed $data (string, number, array, object | class...)
+    * @param int $code
+    * @return Response
+    * @node -> object might not be the best to handle (json_encode) and can possibly
+    *          create an interface (JsonSerializable) or just (Serializable)
+    */
+    public function respond(mixed $data, int $code = 200): Response
+    {
+        $response = match(gettype($data)) {
+            "array", "object" => json_encode($data),
+            "int" => (string) $data,
+            default => $data
+        };
+
+        return new Response($response, $code);
+    }
+
+    /**
      *
      * @param string $method
      * @param array $parameters
