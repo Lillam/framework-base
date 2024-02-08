@@ -81,7 +81,7 @@ curl -H "Content-Type: application/json" \
 https://framework.test/api/v1/users
 
 curl - "Content-Type: application/json" \
--d '{ "email": "liam.taylor@outlook.com", password: "thisisapassword" }' \
+-d '{ "email": "name@name.email.com", password: "thisisapassword" }' \
 -X POST \
 https://framework.test/api/v1/login
 
