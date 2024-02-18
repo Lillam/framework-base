@@ -61,7 +61,7 @@ class Filesystem implements FilesystemContract
     {
         // if the directory doesn't exist; then there's no point attempting to do anything else here so we're going to
         // return a DirectoryNotFoundException so we can return early.
-        if (! $this->exists($path)) {
+        if (!$this->exists($path)) {
             throw new DirectoryNotFoundException("Directory not found");
         }
 
@@ -111,7 +111,7 @@ class Filesystem implements FilesystemContract
         if ($this->exists($path)) {
             $files = array_diff($this->scanDirectory($path), $this->ignoredFiles);
             foreach ($files as $file) {
-                if (! str_contains($file, '.')) {
+                if (!str_contains($file, '.')) {
                     $return = array_merge($return, $this->filesRecursively("$path/$file"));
                     continue;
                 }
@@ -127,13 +127,15 @@ class Filesystem implements FilesystemContract
      * @param string $path
      * @return array
      */
-    public function scanDirectory(string $path): array
+    public function scanDirectory(string $path, bool $withIgnored = true): array
     {
-        if (! is_dir($path)) {
+        if (!is_dir($path)) {
             return [];
         }
 
-        return scandir($path);
+        return $withIgnored
+            ? scandir($path)
+            : array_filter(scandir($path), fn ($file) => !in_array($file, $this->ignoredFiles));
     }
 
     /**
@@ -146,7 +148,7 @@ class Filesystem implements FilesystemContract
     {
         $lines = [];
 
-        while (! $file->eof()) {
+        while (!$file->eof()) {
             $lines[] = new Line($file->current());
             $file->next();
         }
@@ -193,12 +195,12 @@ class Filesystem implements FilesystemContract
         // if the directory already exists, then there's no real need to continue here. exit early and return false
         // to indicate that directory had not been made. If force has been specified then this is going to be ignored
         // and the directory will forcefully be made.
-        if (! $force && $this->exists($path)) {
+        if (!$force && $this->exists($path)) {
             return false;
         }
 
         return $force ? @mkdir($path, $mode, $recursive)
-                      : mkdir($path, $mode, $recursive);
+            : mkdir($path, $mode, $recursive);
     }
 
     /**

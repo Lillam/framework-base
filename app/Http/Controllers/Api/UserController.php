@@ -33,14 +33,14 @@ class UserController extends Controller
 
         return response()->json([
             'token' => $token,
-            'header' => $request->getHeader('HTTP_AUTHORIZATION')
+            'header' => $request->getAuthorization()
         ]);
     }
 
     /**
      * @return void
      */
-    public function random()
+    public function random(): void
     {
         $apiKey = str_replace(
             'api-key=',
@@ -61,7 +61,6 @@ class UserController extends Controller
             $token = $request->getAuthorization('Bearer');
 
             (new Token)->decode($token);
-
         } catch (TokenExpiredException) {
             return response()->json(['error' => 'token is expired']);
         } catch (Exception) {
@@ -80,9 +79,15 @@ curl -H "Content-Type: application/json" \
 -X GET \
 https://framework.test/api/v1/users
 
-curl - "Content-Type: application/json" \
--d '{ "email": "name@name.email.com", password: "thisisapassword" }' \
+curl -H "Content-Type: application/json" \
+-d '{ "email": "name@name.email.com", "password": "thisisapassword" }' \
 -X POST \
 https://framework.test/api/v1/login
 
-*/
+
+curl -H "Content-Type: application/json" \≤
+-H "Authorization: Bearer eyJ0eXAiOiJUb2tlbiIsImFsZyI6IkhTMjU2In0.eyJhY2Nlc3NfdG9rZW4iOiJhYmNkZTEyMzQ1IiwicmVmcmVzaF90b2tlbiI6ImFiY2RlZjEyMzQ1IiwiZXhwaXJ5Ijo4NjQwMH0.iRKaFskQ0Qa1Zz-hR2zRiYJGrHT6neFmJcwTqvpI4i4" \
+-d '{ "email": "name@name.email.com", "password": "this is a password" }' \
+-X POST \
+https://framework.test/api/v1/login
+ */

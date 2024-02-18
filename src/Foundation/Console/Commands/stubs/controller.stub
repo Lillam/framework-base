@@ -21,4 +21,53 @@ class {{ class }} extends Controller
     {
         return view('home');
     }
+
+    /**
+     * @param Request $request
+     * @param $id
+     * @return Response
+     */
+    public function show(Request $request, $id): Response
+    {
+        return view('home');
+    }
+
+    /**
+     * @param Request $request
+     * @return Response
+     */
+    public function create(Request $request): Response
+    {
+        return view('home');
+    }
+
+    /**
+     * @param Request $request
+     * @param $id
+     * @return Response
+     */
+    public function store(Request $request $id = null): Response
+    {
+        return view('home');
+    }
+
+    /**
+     * @param Request $request
+     * @param $id
+     * @return Response
+     */
+    public function destroy(Request $request, $id): Response
+    {
+        return view('home');
+    }
+
+    /**
+     * @param Request $request
+     * @param $id
+     * @return Response
+     */
+    public function search(Request $request): Response
+    {
+        return view('home');
+    }
 }

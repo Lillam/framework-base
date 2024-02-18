@@ -1,3 +1,3 @@
-<?php return [ 
-    'xenophobia' => '', 
+<?php return [
+    'xenophobia' => '',
  ];

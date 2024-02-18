@@ -1,10 +1,10 @@
-<?php return [ 
-    'zig' => '', 
-    'zag' => '', 
-    'zoo' => '', 
-    'zoology' => '', 
-    'zoom' => '', 
-    'zooming' => '', 
-    'zooms' => '', 
-    'zebra' => '', 
+<?php return [
+    'zig' => '',
+    'zag' => '',
+    'zoo' => '',
+    'zoology' => '',
+    'zoom' => '',
+    'zooming' => '',
+    'zooms' => '',
+    'zebra' => '',
  ];

@@ -4,12 +4,13 @@ namespace Vyui\Foundation\Events;
 
 use Closure;
 
-class EventDispatcher {
+class EventDispatcher
+{
     /**
-    * The events that the dispatcher will be accessing.
-    *
-    * @param array<string, Closure> $events
-    */
+     * The events that the dispatcher will be accessing.
+     *
+     * @param array<string, Closure> $events
+     */
     protected array $subscribers = [];
 
     public function subscribe(string $event, Closure $handler): void
@@ -19,7 +20,7 @@ class EventDispatcher {
 
     public function dispatch($event): void
     {
-        if (! $this->subscribers[$event->getName()]) {
+        if (!$this->subscribers[$event->getName()]) {
             return;
         }
 

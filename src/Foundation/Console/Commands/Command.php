@@ -45,7 +45,7 @@ abstract class Command
      */
     public function getCommandArgument(): ?string
     {
-        if (! str_contains($this->arguments[0], ':')) {
+        if (!str_contains($this->arguments[0], ':')) {
             return null;
         }
 

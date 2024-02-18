@@ -177,10 +177,10 @@ class Format extends Command
 
         dd($isFile);
 
-        return ! $directoryMatches &&
-               ! $fileMatches &&
-               $isFile;
-//               str_contains($file, '.php');
+        return !$directoryMatches &&
+            !$fileMatches &&
+            $isFile;
+        //               str_contains($file, '.php');
     }
 
     /**
@@ -191,7 +191,7 @@ class Format extends Command
      */
     private function incrementIndentationErrors(string $file): void
     {
-        if (! isset($this->indentationErrors[$file])) {
+        if (!isset($this->indentationErrors[$file])) {
             $this->indentationErrors[$file] = 1;
             return;
         }
