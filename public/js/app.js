@@ -166,4 +166,3 @@ const getImageData = (src) => new Promise((resolve, reject) => {
 //
 //     keyElement.classList.remove('active');
 // });
-

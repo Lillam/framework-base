@@ -4,6 +4,7 @@
         <title>#[echo: env('APP_NAME', 'Random')]</title>
         <link href="#[echo: asset('vendor/fontawesome/all.css', 1)]" rel="stylesheet" type="text/css" />
         <link href="#[echo: asset('css/app.css')]" rel="stylesheet" type="text/css" />
+        <script src="#[echo: asset('js/domly.js', 1)]" defer></script>
         <script src="#[echo: asset('js/app.js', 1)]" defer></script>
         <script src="#[echo: asset('js/test.js', 1)]" defer></script>
         <style>
