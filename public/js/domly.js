@@ -1,4 +1,11 @@
-const domlyObserverHandlers = {};
+const domlyObserverHandlers = {
+    '#': {},
+    '.': {}
+};
+
+const getObserverHandler = (selector) => {
+    return domlyObserverHandlers[selector] ?? null;
+}
 
 const domlyObserver = new MutationObserver((mutations) => {
     mutations.forEach(mutation => {
@@ -8,6 +15,10 @@ const domlyObserver = new MutationObserver((mutations) => {
                 // class list
                 // id
                 // and so on and so forth.
+                for (let attribute of node.attributes) {
+
+                }
+
                 node.classList.forEach(className => {
                     if (domlyObserverHandlers[`.${className}`]) {
                         const { method, methodHandler } = domlyObserverHandlers[`.${className}`];
@@ -22,13 +33,13 @@ const domlyObserver = new MutationObserver((mutations) => {
 const domly = (s) => {
     const element = document.querySelector(s);
 
+    // if we don't have an element then we can simply return null and not worry further.
     if (! element) {
         return null;
     }
 
     // if the type of s is an array, then we can return an array of document nodes
     // otherwise if this is a simple string, then we can return a single document node.
-    //
     return {
         element,
         on: (method, selectorOrMethodHandler, methodHandler = null) => {
@@ -47,22 +58,14 @@ const domly = (s) => {
                 // element finally gets created within the node... which means we can add an event listener
                 // to check for node changes and if that node change contains the selector we are looking for
                 // then immediately apply that to the element.
+                // we're going to need this to be more specific with the domly observer... we
                 if (! onElement) {
-                    console.log('we should be here???');
                     domlyObserver.observe(element, { childList: true, subtree: true, attributes: true });
+
                     domlyObserverHandlers[selectorOrMethodHandler] = {
                         method,
                         methodHandler
                     };
-
-                    // element.addEventListener('DOMNodeInserted', function (event) {
-                    //     console.log('was inserted???');
-                    //     // we are going to want to check classList or ID or attributes alike, however obviously
-                    //     // the more we look to check the more resource we're going to use up.
-                    //     if (event.target.classList.includes(selectorOrMethodHandler.replace('.'))) {
-                    //         event.target.addEventListener(method, methodHandler);
-                    //     }
-                    // });
                 }
             }
         }
@@ -71,11 +74,32 @@ const domly = (s) => {
 
 const addElementToFooter = () => {
     const ele = document.createElement('h2');
+    const ele2 = document.createElement('span');
+    const ele3 = document.createElement('a');
+    ele3.innerHTML = 'yeet';
     ele.innerHTML = 'Hello, world!';
-    ele.classList.add('titled');
+
+    ele2.append(ele3);
+    ele.append(ele2);
+    // ele.classList.add('titled');
+    // ele.classList.add('test-again');
+    // ele.setAttribute('data-test', 'test');
+    ele.id = 'test';
     document.querySelector('.app-footer').appendChild(ele);
 };
 
 domly('.app-footer').on('click', '.titled', (e) => {
-    console.log(e, 'from the button we added to footer, later...');
+    console.log(e);
+});
+
+// @todo -> suppport the ability to add the same event on an identifier rather than a class.
+domly('.app-footer').on('click', '#test', (e) => {
+    console.log(e);
+});
+
+// @todo -> support the ability to add the event on a chained set of nodes... this would recursively
+// need to create an observer to check for the updates that happen within (app-footer) that then listens for changes within (.titled) and
+// then listens to span and then finally... a (if this anchor is inserted into the chain then we can decide to add this event onto it.)
+domly('.app-footer').on('click', '.titled span a', (e) => {
+    console.log(e);
 });

@@ -59,7 +59,6 @@ class UserController extends Controller
             $token = $request->getAuthorization('Bearer');
 
             (new Token)->decode($token);
-            (new Token)->decode($token);
         } catch (TokenExpiredException) {
             return response()->json(['error' => 'token is expired']);
         } catch (Exception) {
@@ -79,7 +78,7 @@ curl -H "Content-Type: application/json" \
 https://framework.test/api/v1/users
 
 curl -H "Content-Type: application/json" \
--d '{ "email": "name@name.email.com", "password": "thisisapassword" }' \
+-d '{ "email": "name@name.email.com", "password": "this is a password" }' \
 -X POST \
 https://framework.test/api/v1/login
 
