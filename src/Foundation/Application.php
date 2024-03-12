@@ -13,7 +13,7 @@ class Application extends Container implements ApplicationContract
      *
      * @var string
      */
-    protected string $basePath = '';
+    protected string $basePath = "";
 
     /**
      * The services of the application.
@@ -37,7 +37,7 @@ class Application extends Container implements ApplicationContract
     /**
      * @param string $basePath
      */
-    public function __construct(string $basePath = '')
+    public function __construct(string $basePath = "")
     {
         $this->setBasePath($basePath);
         $this->registerBaseBindings();
@@ -63,19 +63,22 @@ class Application extends Container implements ApplicationContract
      */
     public function registerBaseServices(): void
     {
-        foreach ([
-            \Vyui\Services\Environment\EnvironmentService::class,
-            \Vyui\Services\Config\ConfigService::class,
-            \Vyui\Services\Filesystem\FilesystemService::class,
-            \Vyui\Services\Logger\LogService::class,
-            \Vyui\Services\Translation\TranslatorService::class,
-            \Vyui\Services\Facades\FacadeService::class,
-            \Vyui\Services\Exceptions\ExceptionService::class,
-            \Vyui\Services\Routing\RoutingService::class,
-            \Vyui\Services\View\ViewService::class,
-            \Vyui\Services\Database\DatabaseService::class,
-            \Vyui\Services\Auth\AuthService::class,
-        ] as $service) {
+        foreach (
+            [
+                \Vyui\Services\Environment\EnvironmentService::class,
+                \Vyui\Services\Config\ConfigService::class,
+                \Vyui\Services\Filesystem\FilesystemService::class,
+                \Vyui\Services\Logger\LogService::class,
+                \Vyui\Services\Translation\TranslatorService::class,
+                \Vyui\Services\Facades\FacadeService::class,
+                \Vyui\Services\Exceptions\ExceptionService::class,
+                \Vyui\Services\Routing\RoutingService::class,
+                \Vyui\Services\View\ViewService::class,
+                \Vyui\Services\Database\DatabaseService::class,
+                \Vyui\Services\Auth\AuthService::class,
+            ]
+            as $service
+        ) {
             $this->register(new $service($this), $service);
         }
     }

@@ -11,9 +11,7 @@ class ApiController extends Controller
     /**
      * @var array|string[]
      */
-    protected array $middleware = [
-        \Vyui\Foundation\Http\Middleware\Authenticate::class
-    ];
+    protected array $middleware = [\Vyui\Foundation\Http\Middleware\Authenticate::class];
 
     /**
      * @param Token $token
@@ -22,11 +20,11 @@ class ApiController extends Controller
     public function getToken(Token $token): Response
     {
         return $this->respond([
-            'token' => $token->encode([
-                'access_token' => 'abcde12345',
-                'refresh_token' => 'abcdef12345',
-                'expiry' => 60 * 60 * 24
-            ])
+            "token" => $token->encode([
+                "access_token" => "abcde12345",
+                "refresh_token" => "abcdef12345",
+                "expiry" => 60 * 60 * 24,
+            ]),
         ]);
     }
 
@@ -35,6 +33,6 @@ class ApiController extends Controller
      */
     public function refreshToken(): Response
     {
-        return new Response('refresh token');
+        return new Response("refresh token");
     }
 }

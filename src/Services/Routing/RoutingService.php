@@ -46,14 +46,14 @@ class RoutingService extends Service
     {
         // if there is no directory for the routes, we are going to want to make the directory; this directory
         // is pertinent in order for adding routes into the application for a view to be bound to a route.
-        if (! is_dir($directory = $this->application->getBasePath("/routes"))) {
+        if (!is_dir($directory = $this->application->getBasePath("/routes"))) {
             mkdir($directory);
         }
 
-        $files = array_diff(scandir($directory), ['.', '..']);
+        $files = array_diff(scandir($directory), [".", ".."]);
 
         foreach ($files as $fileKey => $file) {
-            $fileName = str_replace('.php', '', $file);
+            $fileName = str_replace(".php", "", $file);
 
             require_once "$directory/$file";
         }

@@ -16,13 +16,13 @@ class Authenticate extends Middleware
     public function handle(Request $request): void
     {
         // token based authorization
-        if ($request->get('token')) {
-            var_dump($request->get('token'));
+        if ($request->get("token")) {
+            var_dump($request->get("token"));
         }
 
         // beader based authorization
-        if ($request->getHeader('http_authorization')) {
-            var_dump($request->getHeader('http_authorization'));
+        if ($request->getHeader("http_authorization")) {
+            var_dump($request->getHeader("http_authorization"));
         }
     }
 }
