@@ -52,9 +52,7 @@ class RoutingService extends Service
 
         $files = array_diff(scandir($directory), [".", ".."]);
 
-        foreach ($files as $fileKey => $file) {
-            $fileName = str_replace(".php", "", $file);
-
+        foreach ($files as $file) {
             require_once "$directory/$file";
         }
     }

@@ -91,28 +91,28 @@
 
 // console.log(17000 * 0.03);
 
+const currentImage = document.querySelector("#my-image");
+const remadeImageWrapper = document.querySelector(".swatch");
 
-const currentImage = document.querySelector('#my-image');
-const remadeImageWrapper = document.querySelector('.swatch');
+const getImageData = (src) =>
+    new Promise((resolve, reject) => {
+        const canvas = document.createElement("canvas");
+        const context = canvas.getContext("2d");
+        const img = new Image();
 
-const getImageData = (src) => new Promise((resolve, reject) => {
-    const canvas = document.createElement('canvas')
-    const context = canvas.getContext('2d')
-    const img = new Image
+        img.onload = () => {
+            canvas.height = img.height;
+            canvas.width = img.width;
+            context.drawImage(img, 0, 0);
 
-    img.onload = () => {
-        canvas.height = img.height
-        canvas.width = img.width
-        context.drawImage(img, 0, 0)
+            const data = context.getImageData(0, 0, img.width, img.height).data;
 
-        const data = context.getImageData(0, 0, img.width, img.height).data
-
-        resolve(data)
-    }
-    img.onerror = () => reject(Error('Image loading failed.'))
-    img.crossOrigin = ''
-    img.src = src
-});
+            resolve(data);
+        };
+        img.onerror = () => reject(Error("Image loading failed."));
+        img.crossOrigin = "";
+        img.src = src;
+    });
 
 // getImageData(currentImage.src).then(colours => {
 //     console.log(colours.length / 4);
