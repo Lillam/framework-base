@@ -17,11 +17,9 @@ const router = () => {
 const app = () => {
     const router = router();
 
-    const watch = (dom) => {
-
-    };
+    const watch = (dom) => {};
 
     return {
-        watch
+        watch,
     };
 };

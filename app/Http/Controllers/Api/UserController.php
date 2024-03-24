@@ -55,9 +55,13 @@ class UserController extends Controller
             $token = $request->getAuthorization("Bearer");
 
             (new Token())->decode($token);
-        } catch (TokenExpiredException) {
+        }
+
+        catch (TokenExpiredException) {
             return response()->json(["error" => "token is expired"]);
-        } catch (Exception) {
+        }
+
+        catch (Exception) {
             return response()->json(["error" => "token is invalid"]);
         }
 

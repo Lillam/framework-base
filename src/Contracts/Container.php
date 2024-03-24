@@ -57,4 +57,16 @@ interface Container
      * @return array
      */
     public function resolved(bool $withCount): array;
+
+    /**
+     * Resolve a particular Type from the container.
+     *
+     * @param string $abstract
+     * @param array $parameters
+     * @return mixed
+     *
+     * @throws BindingResolutionException
+     * @throws ReflectionException
+     */
+    public function make(string $abstract, array $parameters = []): mixed;
 }

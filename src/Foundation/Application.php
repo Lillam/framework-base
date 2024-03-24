@@ -35,7 +35,7 @@ class Application extends Container implements ApplicationContract
     protected array $events = [];
 
     /**
-     * @param string $basePath
+     * @param string $basePath  -> where the application is installed and where the root directory lies.
      */
     public function __construct(string $basePath = "")
     {
@@ -67,7 +67,9 @@ class Application extends Container implements ApplicationContract
             \Vyui\Services\Environment\EnvironmentService::class,
             \Vyui\Services\Config\ConfigService::class,
             \Vyui\Services\Filesystem\FilesystemService::class,
+            // could possibly take this out into a service that's added later by the user's desire.
             \Vyui\Services\Logger\LogService::class,
+            // could probably take this out into a service that's added later by the user's desire.
             \Vyui\Services\Translation\TranslatorService::class,
             \Vyui\Services\Facades\FacadeService::class,
             \Vyui\Services\Exceptions\ExceptionService::class,
@@ -139,18 +141,6 @@ class Application extends Container implements ApplicationContract
     {
         return $this->buildTime() < $buildTime;
     }
-
-    // /**
-    //  * Give control to the container in order to make the abstraction.
-    //  *
-    //  * @param string $abstract
-    //  * @param array $parameters
-    //  * @return mixed
-    //  */
-    // public function make(string $abstract, array $parameters = []): mixed
-    // {
-    //     return parent::make($abstract, $parameters);
-    // }
 
     /**
      * When this method runs; the object has destructed at this point we can find out whether or not the entire life

@@ -1,5 +1,5 @@
 // the simplest test suite mechanism ever... this is basically how it's done.
-const success = () => console.log(`     %c Pass`, 'color: green');
+const success = () => console.log(`     %c Pass`, "color: green");
 
 const successOrError = (is, { expected, actual }, error = null) => {
     if (is) {
@@ -8,34 +8,26 @@ const successOrError = (is, { expected, actual }, error = null) => {
 
     const errorMessage = error
         ? `Fail - ${expected} ${error} ${actual}`
-        : `Fail - Actual: ${actual}, Expected: ${expected}`
+        : `Fail - Actual: ${actual}, Expected: ${expected}`;
 
     throw new Error(errorMessage);
 };
 
 const expect = (expected) => {
     return {
-        toBe: (actual) => successOrError(
-            expected === actual, { expected, actual }
-        ),
-        toBeNumber: () => successOrError(
-            typeof expected === 'number', { expected }, 'Is not a number'
-        ),
-        toBeString: () => successOrError(
-            typeof expected === 'string', { expected }, 'Is not a string'
-        ),
-        toBeGreaterThan: (actual) => successOrError(
-            expected > actual, { expected, actual }, 'Is less than or equal to'
-        ),
-        toBeLessThan: (actual) => successOrError(
-            expected < actual, { expected, actual }, 'Is greater than or equal to'
-        ),
+        toBe: (actual) => successOrError(expected === actual, { expected, actual }),
+        toBeNumber: () => successOrError(typeof expected === "number", { expected }, "Is not a number"),
+        toBeString: () => successOrError(typeof expected === "string", { expected }, "Is not a string"),
+        toBeGreaterThan: (actual) =>
+            successOrError(expected > actual, { expected, actual }, "Is less than or equal to"),
+        toBeLessThan: (actual) =>
+            successOrError(expected < actual, { expected, actual }, "Is greater than or equal to"),
     };
 };
 
 const describe = (suiteName, callback) => {
     try {
-        console.log(`Suite: %c ${suiteName}`, 'color: yellow');
+        console.log(`Suite: %c ${suiteName}`, "color: yellow");
         callback();
     } catch (error) {
         console.error(`\n ${error}`);
@@ -44,11 +36,11 @@ const describe = (suiteName, callback) => {
 
 const it = (testName, callback) => {
     try {
-        console.log(`   test: %c ${testName}`, 'color: yellow');
+        console.log(`   test: %c ${testName}`, "color: yellow");
         callback();
     } catch (error) {
         console.error(`     ${error} \n`);
-        throw new Error('test run failed');
+        throw new Error("test run failed");
     }
 };
 
