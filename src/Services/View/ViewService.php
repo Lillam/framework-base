@@ -10,6 +10,10 @@ use Vyui\Services\Filesystem\FilesystemContract as Filesystem;
 
 class ViewService extends Service
 {
+    // @todo -> add a view precedence system so that the system will know what view to search
+    //          for first as it stands, the precedence is in the means in which they are
+    //          registered.
+
     public function register(): void
     {
         // todo - right now this is tightly coupled with the file system of the application; meaning this can't be self
@@ -26,9 +30,9 @@ class ViewService extends Service
             ->registerStoragePath($this->application->getBasePath('/storage/framework/views/'), true)
             // Register the following engines, these particular engines is what the system supports as it currently
             // stands...
+            ->registerEngine('vyui.php', new VyuiEngine)
             ->registerEngine('basic.php', new BasicEngine)
             ->registerEngine('blade.php', new BladeEngine)
-            ->registerEngine('vyui.php', new VyuiEngine)
         );
     }
 
