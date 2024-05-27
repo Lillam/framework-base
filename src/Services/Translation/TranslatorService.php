@@ -3,10 +3,23 @@
 namespace Vyui\Services\Translation;
 
 use Vyui\Services\Service;
-use Vyui\Contracts\Translation\Translator as TranslatorContract;
 
 class TranslatorService extends Service
 {
+    /**
+     * The languages that are available for the application.
+     *
+     * @var string[]
+     */
+    static array $languages = [];
+
+    /**
+     * The currencies that are available for the application.
+     *
+     * @var string[]
+     */
+    static array $currencies = [];
+
     /**
      * the location in which the path for translations will be located.
      *

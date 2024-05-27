@@ -17,7 +17,10 @@ use Vyui\Support\Facades\Route;
 use Vyui\Services\Routing\Router;
 use App\Http\Controllers\Web\WebController;
 
-router()->get('/test', fn() => view('home'));
+router()->get('/test', fn() => view(
+    'home',
+    ['d1' => 1, 'd2' => 2, 'd3' => 3]
+));
 
 // /** @var Router $router */
 // $router = app(Router::class);

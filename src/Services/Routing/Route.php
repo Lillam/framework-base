@@ -69,7 +69,6 @@ class Route
              ->setAction($action);
 
         $this->uriRegex = new RouteUriRegex($this);
-        // $this->routeParameters = new RouteParameters($this);
     }
 
     /**
