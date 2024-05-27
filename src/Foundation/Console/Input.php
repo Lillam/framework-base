@@ -50,8 +50,6 @@ class Input
             $this->tokens[$this->currentTokenKey] = $tokens[$i];
             $this->currentTokenKey++;
         }
-
-        print_r($this->tokens);
     }
 
     /**

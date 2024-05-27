@@ -14,10 +14,10 @@ class Route extends Command
      * @param Router $router
      * @param array $arguments
      */
-    public function __construct(Application $application, Router $router, array $arguments = [])
+    public function __construct(Application $application, array $arguments = [])
     {
         parent::__construct($application, $arguments);
-        $this->router = $router;
+        $this->router = $application->make(Router::class);
     }
 
     /**

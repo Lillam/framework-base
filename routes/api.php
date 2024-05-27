@@ -20,16 +20,16 @@ use App\Http\Controllers\Api\UserController;
 /** @var Router $router */
 $router = app(Router::class);
 
-$router->group("/api/v1", function (Router $router) {
-    $router->get("/testing", function () {
-        die("here again");
-    });
+// $router->group("/api/v1", function (Router $router) {
+//     $router->get("/testing", function () {
+//         die("here again");
+//     });
 
-    $router->group("/token", function (Router $router) {
-        $router->get("", [ApiController::class, "getToken"]);
-        $router->get("/refresh", [ApiController::class, "refreshToken"]);
-    });
+//     $router->group("/token", function (Router $router) {
+//         $router->get("", [ApiController::class, "getToken"]);
+//         $router->get("/refresh", [ApiController::class, "refreshToken"]);
+//     });
 
-    $router->get("/users", [UserController::class, "index"]);
-    $router->post("/login", [UserController::class, "login"]);
-});
+//     $router->get("/users", [UserController::class, "index"]);
+//     $router->post("/login", [UserController::class, "login"]);
+// });

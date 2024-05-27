@@ -47,6 +47,19 @@ if (! function_exists('dd')) {
     }
 }
 
+if (! function_exists('d')) {
+    /**
+     * An alias of "dump" which will be be utilised for dumping variables on the
+     * page.
+     *
+     * @param ...$variables
+     * @return void
+     */
+    function d(...$variables): void {
+        dump($variables);
+    }
+}
+
 if (! function_exists('dump')) {
     /**
      * A method which will be utilised for dumping variables on a page.
