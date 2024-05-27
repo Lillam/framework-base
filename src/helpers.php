@@ -5,7 +5,7 @@ use Vyui\Foundation\Http\Request;
 use Vyui\Foundation\Http\Response;
 use Vyui\Services\View\ViewManager;
 use Vyui\Foundation\Container\Container;
-use Vyui\Services\Config\ConfigContract;
+use Vyui\Services\Config\ConfigContract as Config;
 use Vyui\Services\Environment\EnvironmentContract as Environment;
 
 if (! function_exists('app')) {
@@ -102,7 +102,7 @@ if (! function_exists('config')) {
      * @return mixed
      */
     function config(string $key, mixed $default = null): mixed {
-        return app(ConfigContract::class)->get($key, $default);
+        return app(Config::class)->get($key, $default);
     }
 }
 
