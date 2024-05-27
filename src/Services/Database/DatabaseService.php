@@ -3,10 +3,10 @@
 namespace Vyui\Services\Database;
 
 use Vyui\Services\Service;
+use Vyui\Services\Database\ConnectionManagerContract;
 use Vyui\Services\Database\Drivers\Mysql\MysqlConnection;
 use Vyui\Services\Database\Drivers\Redis\RedisConnection;
 use Vyui\Services\Database\Drivers\Sqlite\SqliteConnection;
-use Vyui\Contracts\Database\ConnectionManager as ConnectionManagerContract;
 
 class DatabaseService extends Service
 {

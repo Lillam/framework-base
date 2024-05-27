@@ -1,8 +1,8 @@
 <?php
 
-namespace Vyui\Contracts\Logger;
+namespace Vyui\Services\Logger;
 
-interface Logger
+interface LoggerContract
 {
     public function log(string $contents): static;
 }

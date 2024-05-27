@@ -3,7 +3,6 @@
 namespace Vyui\Services\Logger;
 
 use Vyui\Services\Service;
-use Vyui\Contracts\Logger\Logger as LoggerContract;
 
 class LogService extends Service
 {

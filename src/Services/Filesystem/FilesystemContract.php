@@ -1,11 +1,11 @@
 <?php
 
-namespace Vyui\Contracts\Filesystem;
+namespace Vyui\Services\Filesystem;
 
 use SplFileObject;
 use Vyui\Services\Filesystem\Line;
 
-interface Filesystem
+interface FilesystemContract
 {
     /**
      * Get the contents of a file.

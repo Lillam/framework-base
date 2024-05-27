@@ -2,8 +2,6 @@
 
 namespace Vyui\Foundation\Http;
 
-use Vyui\Contracts\Http\Response as ResponseContract;
-
 class Response implements ResponseContract
 {
     /**

@@ -4,7 +4,7 @@ namespace Vyui\Foundation\Console\Commands;
 
 use Exception;
 use Vyui\Foundation\Application;
-use Vyui\Contracts\Filesystem\Filesystem;
+use Vyui\Services\Filesystem\FilesystemContract as Filesystem;
 
 class Make extends Command
 {

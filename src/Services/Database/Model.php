@@ -7,7 +7,7 @@ use Exception;
 use Vyui\Support\Helpers\_String;
 use Vyui\Support\Helpers\_Reflect;
 use Vyui\Services\Database\Query\Builder;
-use Vyui\Contracts\Database\ConnectionManager;
+use Vyui\Services\Database\ConnectionManagerContract as ConnectionManager;
 
 abstract class Model
 {

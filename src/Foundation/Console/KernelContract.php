@@ -1,12 +1,12 @@
 <?php
 
-namespace Vyui\Contracts\Console;
+namespace Vyui\Foundation\Console;
 
 use Vyui\Foundation\Console\Input;
 use Vyui\Foundation\Console\Output;
 use Vyui\Foundation\Console\CommandNotFoundException;
 
-interface Kernel
+interface KernelContract
 {
     /**
      * Get the commands that are available by the Console.

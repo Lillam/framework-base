@@ -5,7 +5,7 @@ namespace Vyui\Foundation\Console\Commands;
 use Vyui\Foundation\Application;
 use Vyui\Foundation\Console\Output;
 
-abstract class Command
+abstract class Command implements CommandContract
 {
     protected Application $application;
 

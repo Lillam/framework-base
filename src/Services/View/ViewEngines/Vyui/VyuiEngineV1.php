@@ -3,12 +3,12 @@
 namespace Vyui\Services\View\ViewEngines\Vyui;
 
 use Vyui\Services\View\View;
-use Vyui\Contracts\View\Engine;
 use Vyui\Support\Helpers\_String;
 use Vyui\Foundation\Http\Response;
 use Vyui\Services\View\HasViewManager;
+use Vyui\Services\View\ViewEngines\EngineContract;
 
-class VyuiEngineV1 implements Engine
+class VyuiEngineV1 implements EngineContract
 {
     use HasViewManager;
 

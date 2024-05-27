@@ -1,12 +1,12 @@
 <?php
 
-namespace Vyui\Contracts\Http;
+namespace Vyui\Foundation\Http;
 
 use Exception;
 use Vyui\Foundation\Http\Request;
 use Vyui\Foundation\Http\Response;
 
-interface Kernel
+interface KernelContract
 {
     /**
      * @param Request $request

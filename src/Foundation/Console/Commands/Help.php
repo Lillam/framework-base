@@ -2,7 +2,7 @@
 
 namespace Vyui\Foundation\Console\Commands;
 
-use Vyui\Contracts\Console\Kernel;
+use Vyui\Foundation\Console\KernelContract as Kernel;
 
 class Help extends Command
 {

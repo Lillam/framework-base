@@ -44,4 +44,4 @@ $application = require_once __DIR__ . '/bootstrap/application.php';
 /** @var Kernel $kernel */
 $kernel = $application->make(Kernel::class);
 
-$kernel->handle(new Input, new Output);
+$kernel->handle($input = new Input, $output = new Output);

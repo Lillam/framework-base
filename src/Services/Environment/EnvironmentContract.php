@@ -1,8 +1,8 @@
 <?php
 
-namespace Vyui\Contracts\Environment;
+namespace Vyui\Services\Environment;
 
-interface Environment
+interface EnvironmentContract
 {
     /**
      * Set the name of the environment file which will be loaded into memory.

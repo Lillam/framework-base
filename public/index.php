@@ -1,6 +1,6 @@
 <?php
 
-use Vyui\Contracts\Http\Kernel;
+use Vyui\Foundation\Http\Kernel;
 use Vyui\Foundation\Application;
 use Vyui\Foundation\Http\Request;
 
@@ -39,7 +39,7 @@ $application = require_once '../bootstrap/application.php';
 |
 */
 
-if (env('APP_ENV') === 'dev') {
+if (env('APP_ENV') === 'dev' && env('APP_PLAYGROUND') === true) {
     require_once './playground.php';
 }
 

@@ -4,13 +4,13 @@ namespace Vyui\Services\Facades;
 
 use ReflectionException;
 use RuntimeException;
-use Vyui\Contracts\Container;
 use Vyui\Foundation\Application;
+use Vyui\Foundation\Container\ContainerContract;
 use Vyui\Foundation\Container\BindingResolutionException;
 
 abstract class Facade
 {
-    protected static Container $application;
+    protected static ContainerContract $application;
 
     /**
      * Set the application's instance to the Facade wrapper.

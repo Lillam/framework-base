@@ -1,11 +1,12 @@
 <?php
 
-use Vyui\Contracts\Config\Config;
+use Vyui\Services\Routing\Router;
 use Vyui\Foundation\Http\Request;
 use Vyui\Foundation\Http\Response;
 use Vyui\Services\View\ViewManager;
 use Vyui\Foundation\Container\Container;
-use Vyui\Contracts\Environment\Environment;
+use Vyui\Services\Config\ConfigContract;
+use Vyui\Services\Environment\EnvironmentContract as Environment;
 
 if (! function_exists('app')) {
     /**
@@ -18,6 +19,17 @@ if (! function_exists('app')) {
     function app(?string $abstract = null, array $parameters = []): mixed {
         return $abstract !== null ? Container::getInstance()->make($abstract, $parameters)
                                   : Container::getInstance();
+    }
+}
+
+if (! function_exists('router')) {
+    /**
+     * Acquire the router from the application.
+     *
+     * @return mixed
+     */
+    function router(): Router {
+        return app(Router::class);
     }
 }
 
@@ -77,7 +89,7 @@ if (! function_exists('config')) {
      * @return mixed
      */
     function config(string $key, mixed $default = null): mixed {
-        return app(Config::class)->get($key, $default);
+        return app(ConfigContract::class)->get($key, $default);
     }
 }
 

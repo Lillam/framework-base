@@ -5,7 +5,7 @@ namespace Vyui\Foundation\Console\Commands;
 use Vyui\Foundation\Application;
 use Vyui\Support\Helpers\_String;
 use Vyui\Services\Formatter\PhpFile;
-use Vyui\Contracts\Filesystem\Filesystem;
+use Vyui\Services\Filesystem\FilesystemContract as Filesystem;
 
 class Format extends Command
 {

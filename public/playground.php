@@ -37,7 +37,10 @@ expect(actual).toBeCloseTo(expected, DIFFERENCE_PRECISION_IN_DIGITS);
 //    )
 //);
 
-// dd(\Vyui\Support\Facades\DB::connection('mysql'), \Vyui\Support\Facades\DB::getConnections('mysql'));
+dd(
+    \Vyui\Support\Facades\DB::connection('mysql'),
+    \Vyui\Support\Facades\DB::getConnections('mysql')
+);
 
 // dd(\Vyui\Support\Facades\DB::getConnections());
 
@@ -64,24 +67,21 @@ expect(actual).toBeCloseTo(expected, DIFFERENCE_PRECISION_IN_DIGITS);
 //        ]
 //    ]
 //];
-//
+
 ///** @var \Vyui\Services\Filesystem\Filesystem $filesystem */
-//$filesystem = app(\Vyui\Contracts\Filesystem\Filesystem::class);
-//
-//$dictionary = (new \Vyui\Dictionary\Dictionary($filesystem))->load();
-//
-//$dictionary->setAnagram('ceygnur')
-//           ->setAnagramMin(4)
-//           ->setAnagramMax(7);
-//
-//dd($dictionary->findWordsFromAnagram());
-//
-//$dictionary->addWords([
-//
-//]);
-//
-//dd($dictionary->findWordsFromAnagram(), $dictionary->getWordsAdded());
-//
+$filesystem = app(\Vyui\Services\Filesystem\FilesystemContract::class);
+$dictionary = (new \Vyui\Dictionary\Dictionary($filesystem))->load();
+
+$dictionary->setAnagram('squashing')
+          ->setAnagramMin(3)
+          ->setAnagramMax(9);
+
+$dictionary->addWords([
+
+]);
+
+dd($dictionary->findWordsFromAnagram(), 'added words: ', $dictionary->getWordsAdded());
+
 //$dictionary->commitWordsAddedToStorage();
 //$dictionary->convertDictionaryFilesToPHPFiles();
 //
@@ -226,14 +226,14 @@ expect(actual).toBeCloseTo(expected, DIFFERENCE_PRECISION_IN_DIGITS);
 //
 //dd($bob->respondTo('WHAT THE HELL WERE YOU THINKING?'), $bob);
 
-$chosenLetter = 'p';
+// $chosenLetter = 'p';
 
-$alphabet = range('a', chr(ord($chosenLetter) - 1));
-$diamondAlphabet = [
-    ...$alphabet,
-    $chosenLetter,
-    ...array_reverse($alphabet)
-];
+// $alphabet = range('a', chr(ord($chosenLetter) - 1));
+// $diamondAlphabet = [
+//     ...$alphabet,
+//     $chosenLetter,
+//     ...array_reverse($alphabet)
+// ];
 
 //array_map(function ($letter) use ($chosenLetter) {
 //    $spaces = str_repeat(' ', ord($chosenLetter) - ord($letter));
@@ -449,7 +449,7 @@ $diamondAlphabet = [
 //dd(wordCount('This is Something that Something and that is something is good but good is not really good when really you are something else 1 1 2 3 4 5 6 9!!!!!!@£@£!$!@'));
 
 
-$string = "# Header!\n* __Bold Item__\n* _Italic Item_\nThis should just be a paragraph\n* this is a test\n* this is another test\ntesting...\n* and another list";
+// $string = "# Header!\n* __Bold Item__\n* _Italic Item_\nThis should just be a paragraph\n* this is a test\n* this is another test\ntesting...\n* and another list";
 
 //preg_replace_callback_array([
 //    '/(\*(.*)\n)|(\*(.*))/' => function ($matches ) {
@@ -457,7 +457,7 @@ $string = "# Header!\n* __Bold Item__\n* _Italic Item_\nThis should just be a pa
 //    }
 //], $string);
 
-$string = "#header\n* Item 1\n* Item 2\nhello";
+// $string = "#header\n* Item 1\n* Item 2\nhello";
 //
 //dd(htmlentities(preg_replace_callback_array([
 //    "/(^(\*+ ?.*+\n?){0,})/m"             => fn ($match) => ! empty($match[0]) ? "<ul>$match[0]</ul>" : '',
@@ -743,59 +743,59 @@ $string = "#header\n* Item 1\n* Item 2\nhello";
 //
 //dd(isIsogram('Emily Jung Schwartzkopf'));
 
-class Interpreter
-{
-    public function __construct(
-        protected string $input
-    ) {}
+// class Interpreter
+// {
+//     public function __construct(
+//         protected string $input
+//     ) {}
 
-    public function validate(): self
-    {
-        if (! str_starts_with($this->input, 'What is') || str_contains($this->input, 'cubed')) {
-            throw new \InvalidArgumentException(
-                "Input is either missing the question, or too advanced with cubed."
-            );
-        }
+//     public function validate(): self
+//     {
+//         if (! str_starts_with($this->input, 'What is') || str_contains($this->input, 'cubed')) {
+//             throw new \InvalidArgumentException(
+//                 "Input is either missing the question, or too advanced with cubed."
+//             );
+//         }
 
-        return $this;
-    }
+//         return $this;
+//     }
 
-    /**
-     * @return $this
-     */
-    public function process(): self
-    {
-        $this->input = preg_replace_callback_array([
-            '/(What is |\?)/'                 => fn () => '',
-            '/divided by/'                    => fn () => '/',
-            '/multiplied by/'                 => fn () => '*',
-            '/plus/'                          => fn () => '+',
-            '/minus/'                         => fn () => '-',
-            '/(\d+|-\d+).*(\d+|-\d+)/'        => fn ($matches) => "($matches[0])",
-            '/(\d+|-\d+) (\-|\+) (\d+|-\d+)/' => fn ($matches) => "($matches[0])"
-        ], $this->input);
+//     /**
+//      * @return $this
+//      */
+//     public function process(): self
+//     {
+//         $this->input = preg_replace_callback_array([
+//             '/(What is |\?)/'                 => fn () => '',
+//             '/divided by/'                    => fn () => '/',
+//             '/multiplied by/'                 => fn () => '*',
+//             '/plus/'                          => fn () => '+',
+//             '/minus/'                         => fn () => '-',
+//             '/(\d+|-\d+).*(\d+|-\d+)/'        => fn ($matches) => "($matches[0])",
+//             '/(\d+|-\d+) (\-|\+) (\d+|-\d+)/' => fn ($matches) => "($matches[0])"
+//         ], $this->input);
 
-        return $this;
-    }
+//         return $this;
+//     }
 
-    /**
-     * This particular function is going to eval the string that we've parsed to be a mathematical
-     * equation; however this leaves the system open to vulnerabilities as the input could be
-     * valid syntax php such as passing in phpinfo()...
-     *
-     * This is a security flaw, acknowledged but not fixed. (out of scope).
-     *
-     * @return float
-     */
-    public function answer(): float
-    {
-        return (float) eval("return $this->input;");
-    }
-}
+//     /**
+//      * This particular function is going to eval the string that we've parsed to be a mathematical
+//      * equation; however this leaves the system open to vulnerabilities as the input could be
+//      * valid syntax php such as passing in phpinfo()...
+//      *
+//      * This is a security flaw, acknowledged but not fixed. (out of scope).
+//      *
+//      * @return float
+//      */
+//     public function answer(): float
+//     {
+//         return (float) eval("return $this->input;");
+//     }
+// }
 
-function calculate(string $input): float
-{
-    return (new Interpreter($input))->validate()->process()->answer();
-}
+// function calculate(string $input): float
+// {
+//     return (new Interpreter($input))->validate()->process()->answer();
+// }
 
 // dd(calculate('What is 53 plus 2?'));

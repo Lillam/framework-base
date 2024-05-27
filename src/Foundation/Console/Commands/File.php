@@ -2,7 +2,7 @@
 
 namespace Vyui\Foundation\Console\Commands;
 
-use Vyui\Contracts\Filesystem\Filesystem;
+use Vyui\Services\Filesystem\FilesystemContract as Filesystem;
 
 class File extends Command
 {

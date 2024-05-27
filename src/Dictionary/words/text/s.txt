@@ -437,3 +437,11 @@ stained
 stains
 shrub
 shrubby
+squash
+squasher
+squashed
+squashing
+squish
+squished
+squishing
+squisher

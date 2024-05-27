@@ -2,8 +2,8 @@
 
 namespace Vyui\Services\Filesystem;
 
-use Vyui\Contracts\Filesystem\Filesystem as FilesystemContract;
 use Vyui\Services\Service;
+use Vyui\Services\Filesystem\FilesystemContract;
 
 class FilesystemService extends Service
 {

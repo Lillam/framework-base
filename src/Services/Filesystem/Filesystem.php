@@ -3,7 +3,6 @@
 namespace Vyui\Services\Filesystem;
 
 use SplFileObject;
-use Vyui\Contracts\Filesystem\Filesystem as FilesystemContract;
 
 class Filesystem implements FilesystemContract
 {

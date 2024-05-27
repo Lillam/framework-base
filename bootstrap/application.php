@@ -22,7 +22,7 @@ $application = new Vyui\Foundation\Application(
 |
 */
 
-$application->singleton(Vyui\Contracts\Http\Kernel::class, App\Http\Kernel::class);
+$application->singleton(Vyui\Foundation\Http\KernelContract::class, App\Http\Kernel::class);
 
 /*
 |-----------------------------------------------------------------------------------------------------------------------
@@ -33,7 +33,7 @@ $application->singleton(Vyui\Contracts\Http\Kernel::class, App\Http\Kernel::clas
 |
 */
 
-$application->singleton(Vyui\Contracts\Console\Kernel::class, App\Console\Kernel::class);
+$application->singleton(\Vyui\Foundation\Console\KernelContract::class, App\Console\Kernel::class);
 
 /*
 |-----------------------------------------------------------------------------------------------------------------------

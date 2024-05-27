@@ -1,11 +1,11 @@
 <?php
 
-namespace Vyui\Contracts;
+namespace Vyui\Foundation\Container;
 
 use Closure;
-use Vyui\Foundation\Container\Container as ApplicationContainer;
+use Vyui\Foundation\Container\Container;
 
-interface Container
+interface ContainerContract
 {
     /**
      * Set the global access to the available container.
@@ -13,14 +13,14 @@ interface Container
      * @param ApplicationContainer|null $container
      * @return ApplicationContainer|static|null
      */
-    public static function setInstance(ApplicationContainer $container = null): ApplicationContainer|static|null;
+    public static function setInstance(Container $container = null): Container|static|null;
 
     /**
      * Get the global access to the available container.
      *
      * @return ApplicationContainer|static|null
      */
-    public static function getInstance(): ApplicationContainer|static|null;
+    public static function getInstance(): Container|static|null;
 
     /**
      * Set up an abstract instance into the container that we can re-use later as a shared resources. using this will

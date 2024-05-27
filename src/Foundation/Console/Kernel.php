@@ -3,7 +3,6 @@
 namespace Vyui\Foundation\Console;
 
 use Vyui\Foundation\Application;
-use Vyui\Contracts\Console\Kernel as KernelContract;
 use Vyui\Foundation\Console\Commands\{File, Help, Make, Migrate, Route, Test, Format, Command};
 
 class Kernel implements KernelContract

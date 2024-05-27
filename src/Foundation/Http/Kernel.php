@@ -5,7 +5,6 @@ namespace Vyui\Foundation\Http;
 use Throwable;
 use Vyui\Foundation\Application;
 use Vyui\Services\Routing\Router;
-use Vyui\Contracts\Http\Kernel as KernelContract;
 
 class Kernel implements KernelContract
 {

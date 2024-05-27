@@ -8,7 +8,6 @@ use ReflectionClass;
 use ReflectionParameter;
 use ReflectionException;
 use Vyui\Support\Helpers\_Reflect;
-use Vyui\Contracts\Container as ContainerContract;
 
 class Container implements ContainerContract
 {

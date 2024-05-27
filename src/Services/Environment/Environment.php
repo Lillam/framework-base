@@ -2,8 +2,6 @@
 
 namespace Vyui\Services\Environment;
 
-use Vyui\Contracts\Environment\Environment as EnvironmentContract;
-
 class Environment implements EnvironmentContract
 {
     /**

@@ -8,7 +8,7 @@ use Vyui\Tests\TestCollection;
 use Vyui\Foundation\Application;
 use Vyui\Support\Helpers\_String;
 use Vyui\Support\Helpers\_Reflect;
-use Vyui\Contracts\Filesystem\Filesystem;
+use Vyui\Services\Filesystem\FilesystemContract as Filesystem;
 
 class Test extends Command
 {

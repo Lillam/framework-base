@@ -3,7 +3,6 @@
 namespace Vyui\Services\Config;
 
 use Vyui\Services\Service;
-use Vyui\Contracts\Config\Config as ConfigContract;
 
 class ConfigService extends Service
 {

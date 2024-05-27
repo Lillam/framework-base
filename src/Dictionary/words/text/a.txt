@@ -75,6 +75,7 @@ airing
 airs
 ail
 ails
+alas
 also
 art
 arts
@@ -147,3 +148,11 @@ acre
 amazing
 amazingly
 apt
+anchovy
+ahoy
+achy
+antique
+august
+arouse
+altogether
+atlas

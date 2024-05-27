@@ -5,8 +5,7 @@ namespace Vyui\Services\Logger;
 use DateTime;
 use Vyui\Foundation\Application;
 use Vyui\Support\Helpers\_String;
-use Vyui\Contracts\Filesystem\Filesystem;
-use Vyui\Contracts\Logger\Logger as LoggerContract;
+use Vyui\Services\Filesystem\FilesystemContract as Filesystem;
 
 class Logger implements LoggerContract
 {

@@ -118,6 +118,8 @@ class Router
     }
 
     /**
+     * Check whether or not the current uri route matches the route.
+     *
      * @param string $uri
      * @param string|array|Closure $action
      * @return void

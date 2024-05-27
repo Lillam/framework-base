@@ -2,8 +2,6 @@
 
 namespace Vyui\Services\Translation;
 
-use Vyui\Contracts\Translation\Translator as TranslatorContract;
-
 class Translator implements TranslatorContract
 {
     /**

@@ -82,6 +82,9 @@ expert
 experts
 export
 east
+easy
+easier
+easiest
 emit
 emits
 emitting
@@ -93,3 +96,15 @@ eek
 earl
 eerier
 eerie
+extra
+ember
+enter
+entered
+entering
+enters
+euro
+europe
+european
+europeans
+english
+england

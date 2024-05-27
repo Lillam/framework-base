@@ -15,7 +15,7 @@ abstract class Controller
      *
      * @var string
      */
-    protected static string $defaultInvocation = 'index';
+    protected static string $defaultInvocation = "index";
 
     /**
      * @var Middleware[]
@@ -29,7 +29,7 @@ abstract class Controller
     public function middleware(array $middleware)
     {
         foreach ($middleware as $m) {
-            $this->middleware[] = is_object($m) ? $m : new $m;
+            $this->middleware[] = is_object($m) ? $m : new $m();
         }
     }
 
@@ -44,37 +44,37 @@ abstract class Controller
     }
 
     /**
-    * Send the request through the middleware that is currently attached to this particular
-    * controller
-    *
-    * @param Request $request
-    * @return static
-    */
+     * Send the request through the middleware that is currently attached to this particular
+     * controller
+     *
+     * @param Request $request
+     * @return static
+     */
     public function throughMiddleware(Request $request): static
     {
         foreach ($this->middleware as $middleware) {
-            (new $middleware)->handle($request);
+            (new $middleware())->handle($request);
         }
 
         return $this;
     }
 
     /**
-    * Return a response from the controller as all controllers will want to return some kind of
-    * response to the invoker.
-    *
-    * @param mixed $data (string, number, array, object | class...)
-    * @param int $code
-    * @return Response
-    * @node -> object might not be the best to handle (json_encode) and can possibly
-    *          create an interface (JsonSerializable) or just (Serializable)
-    */
+     * Return a response from the controller as all controllers will want to return some kind of
+     * response to the invoker.
+     *
+     * @param mixed $data (string, number, array, object | class...)
+     * @param int $code
+     * @return Response
+     * @node -> object might not be the best to handle (json_encode) and can possibly
+     *          create an interface (JsonSerializable) or just (Serializable)
+     */
     public function respond(mixed $data, int $code = 200): Response
     {
-        $response = match(gettype($data)) {
+        $response = match (gettype($data)) {
             "array", "object" => json_encode($data),
             "int" => (string) $data,
-            default => $data
+            default => $data,
         };
 
         return new Response($response, $code);
@@ -100,9 +100,7 @@ abstract class Controller
      */
     public function __call(string $method, array $parameters)
     {
-        throw new BadMethodCallException(
-            'Method ' . static::class . '::' . $method . ' does not exist.'
-        );
+        throw new BadMethodCallException("Method " . static::class . "::" . $method . " does not exist.");
     }
 
     /**

@@ -3,9 +3,9 @@
 namespace Vyui\Services\View;
 
 use Exception;
-use Vyui\Contracts\View\Engine;
 use Vyui\Foundation\Http\Response;
-use Vyui\Contracts\Filesystem\Filesystem;
+use Vyui\Services\View\ViewEngines\EngineContract as Engine;
+use Vyui\Services\Filesystem\FilesystemContract as Filesystem;
 
 class ViewManager
 {

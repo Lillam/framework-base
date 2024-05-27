@@ -3,7 +3,6 @@
 namespace Vyui\Services\Database;
 
 use Closure;
-use Vyui\Contracts\Database\ConnectionManager as ConnectionManagerContract;
 
 class ConnectionManager implements ConnectionManagerContract
 {

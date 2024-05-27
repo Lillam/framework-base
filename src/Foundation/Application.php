@@ -4,7 +4,6 @@ namespace Vyui\Foundation;
 
 use Vyui\Services\Service;
 use Vyui\Foundation\Container\Container;
-use Vyui\Contracts\Application as ApplicationContract;
 
 class Application extends Container implements ApplicationContract
 {
@@ -57,19 +56,17 @@ class Application extends Container implements ApplicationContract
     }
 
     /**
-     * Register all the base providers that application's container will need by default.
+     * Set the base path for the application.
      *
-     * @return void
+     * @return Service[]
      */
-    public function registerBaseServices(): void
+    public function getBaseServices(): array
     {
-        foreach ([
+        return [
             \Vyui\Services\Environment\EnvironmentService::class,
             \Vyui\Services\Config\ConfigService::class,
             \Vyui\Services\Filesystem\FilesystemService::class,
-            // could possibly take this out into a service that's added later by the user's desire.
             \Vyui\Services\Logger\LogService::class,
-            // could probably take this out into a service that's added later by the user's desire.
             \Vyui\Services\Translation\TranslatorService::class,
             \Vyui\Services\Facades\FacadeService::class,
             \Vyui\Services\Exceptions\ExceptionService::class,
@@ -77,7 +74,17 @@ class Application extends Container implements ApplicationContract
             \Vyui\Services\View\ViewService::class,
             \Vyui\Services\Database\DatabaseService::class,
             \Vyui\Services\Auth\AuthService::class,
-        ] as $service) {
+        ];
+    }
+
+    /**
+     * Register all the base providers that application's container will need by default.
+     *
+     * @return void
+     */
+    public function registerBaseServices(): void
+    {
+        foreach ($this->getBaseServices() as $service) {
             $this->register(new $service($this), $service);
         }
     }

@@ -1,10 +1,10 @@
 <?php
 
-namespace Vyui\Contracts\Database;
+namespace Vyui\Services\Database;
 
 use Vyui\Services\Database\Connection;
 
-interface ConnectionManager
+interface ConnectionManagerContract
 {
     /**
      * @param string $connection

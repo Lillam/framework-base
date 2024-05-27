@@ -3,7 +3,6 @@
 namespace Vyui\Services\Environment;
 
 use Vyui\Services\Service;
-use Vyui\Contracts\Environment\Environment as EnvironmentContract;
 
 class EnvironmentService extends Service
 {

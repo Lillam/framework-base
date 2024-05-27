@@ -1,8 +1,8 @@
 <?php
 
-namespace Vyui\Contracts\Support;
+namespace Vyui\Support;
 
-interface ArrayAccess
+interface ArrayAccessContract
 {
     /**
      * @param int|string $key

@@ -1,8 +1,8 @@
 <?php
 
-namespace Vyui\Contracts\Http;
+namespace Vyui\Foundation\Http;
 
-interface Response
+interface ResponseContract
 {
     /**
      * Send both the HTTP Headers and Content and then wrap the request up.

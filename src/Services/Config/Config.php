@@ -3,7 +3,6 @@
 namespace Vyui\Services\Config;
 
 use Vyui\Support\Helpers\Arrayable;
-use Vyui\Contracts\Config\Config as ConfigContract;
 
 class Config implements ConfigContract
 {

@@ -2,9 +2,9 @@
 
 namespace Vyui\Support\Collection;
 
-use Vyui\Contracts\Support\ArrayAccess;
+use Vyui\Support\ArrayAccessContract;
 
-class Collection implements ArrayAccess
+class Collection implements ArrayAccessContract
 {
     /**
      * @var array

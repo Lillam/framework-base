@@ -1,8 +1,8 @@
 <?php
 
-namespace Vyui\Contracts\Config;
+namespace Vyui\Services\Config;
 
-interface Config
+interface ConfigContract
 {
     /**
      * Get a set config from the application's configuration bank.

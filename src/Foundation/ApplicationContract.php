@@ -1,10 +1,10 @@
 <?php
 
-namespace Vyui\Contracts;
+namespace Vyui\Foundation;
 
 use Vyui\Services\Service;
 
-interface Application
+interface ApplicationContract
 {
     /**
      * Set the base path for the application.

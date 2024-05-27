@@ -17,15 +17,17 @@ use Vyui\Support\Facades\Route;
 use Vyui\Services\Routing\Router;
 use App\Http\Controllers\Web\WebController;
 
-/** @var Router $router */
-$router = app(Router::class);
+router()->get('/test', fn() => view('home'));
 
-$router->get("/yascreem/{test?}", fn($test) => view("home3", ["test" => $test]));
+// /** @var Router $router */
+// $router = app(Router::class);
 
-// Route::get('/yascreem/{test?}', fn ($test) => view('home2', ['test' => $test]));
-Route::get("/tests/{test}/{testing}", [\App\Http\Controllers\Web\WebController::class, "test"]);
+// $router->get("/yascreem/{test?}", fn($test) => view("home3", ["test" => $test]));
 
-Route::get("/", [WebController::class, "index"]);
-Route::get("/tasks/{task?}", [\App\Http\Controllers\Web\WebController::class, "index"]);
+// // Route::get('/yascreem/{test?}', fn ($test) => view('home2', ['test' => $test]));
+// Route::get("/tests/{test}/{testing}", [\App\Http\Controllers\Web\WebController::class, "test"]);
 
-Route::get("/parseToken", [WebController::class, "parseToken"]);
+// Route::get("/", [WebController::class, "index"]);
+// Route::get("/tasks/{task?}", [\App\Http\Controllers\Web\WebController::class, "index"]);
+
+// Route::get("/parseToken", [WebController::class, "parseToken"]);

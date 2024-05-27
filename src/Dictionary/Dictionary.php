@@ -2,10 +2,9 @@
 
 namespace Vyui\Dictionary;
 
-use Vyui\Contracts\Filesystem\Filesystem;
-
 use Vyui\Dictionary\Concerns\Anagrams;
 use Vyui\Dictionary\Concerns\Conversion;
+use Vyui\Services\Filesystem\FilesystemContract as Filesystem;
 
 class Dictionary
 {

@@ -2,7 +2,7 @@
 
 namespace Vyui\Services\View;
 
-use Vyui\Contracts\View\Engine;
+use Vyui\Services\View\ViewEngines\EngineContract as Engine;
 
 class View
 {

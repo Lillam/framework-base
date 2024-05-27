@@ -4,7 +4,6 @@ namespace Vyui\Services\Exceptions;
 
 use Throwable;
 use Vyui\Foundation\Http\Response;
-use Vyui\Contracts\Exceptions\Handler as HandlerContract;
 
 class Handler implements HandlerContract
 {
