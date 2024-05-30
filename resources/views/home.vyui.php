@@ -31,25 +31,27 @@
                        <li style="--order: 4"><a><i class="fa fa-cog"></i><span>Settings</span></a></li>
                        <li class="indicator"></li>
                    </ul>
-               </div> -->
+                </div> -->
+
+              sum between all d's is: {{ ($d1 + $d2 + $d3) }}
 
                <div class="grid">
                    <div>
                        <div class="box">
                            <h2>01</h2>
-                           <p>#[echo: $d1]</p>
+                           <p>{{ $d1 }}</p>
                        </div>
                    </div>
                    <div>
                        <div class="box">
                            <h2>02</h2>
-                           <p>#[echo: $d2]</p>
+                           <p>{{ $d2 }}</p>
                        </div>
                    </div>
                    <div>
                        <div class="box">
                            <h2>03</h2>
-                           <p>#[echo: $d3]</p>
+                           <p>{{ $d3 }}</p>
                        </div>
                    </div>
                </div>
@@ -57,5 +59,3 @@
         </div>
     </body>
 </html>
-
-<h

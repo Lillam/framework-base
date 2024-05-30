@@ -74,6 +74,8 @@ class Kernel implements KernelContract
      */
     private function renderException(Request $request, Throwable $exception): Response
     {
-        return new Response("{$exception->getMessage()} from the render exception method");
+        return view('exceptions', [
+            'exception' => $exception
+        ]);
     }
 }

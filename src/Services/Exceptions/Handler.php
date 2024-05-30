@@ -15,6 +15,6 @@ class Handler implements HandlerContract
     {
         return view('exceptions', [
             'exception' => $exception
-        ])->send();
+        ]);
     }
 }

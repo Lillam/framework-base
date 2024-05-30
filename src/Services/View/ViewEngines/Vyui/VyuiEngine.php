@@ -52,7 +52,8 @@ class VyuiEngine implements EngineContract
         'if'      => '/(\#\[if: (.*)\])([\S\s]*?)(\#\[\/if\])/',
         'for'     => '/(\#\[for: (.*)\])([\S\s]*?)(\#\[\/for\])/',
         'foreach' => '/(\#\[foreach: (.*)\])([\S\s]*?)(\#\[\/foreach\])/',
-        'echo'    => '/#\[echo: (.*)\]/',
+        // 'echo'    => '/#\[echo:(.*)\]/',
+        'echo' => '/{{(.*)}}/'
     ];
 
     /**
@@ -179,7 +180,7 @@ class VyuiEngine implements EngineContract
             $this->compilerRegex['if']      => fn ($matches) => $this->compileIf($matches),
             $this->compilerRegex['for']     => fn ($matches) => $this->compileFor($matches),
             $this->compilerRegex['foreach'] => fn ($matches) => $this->compileForEach($matches),
-            $this->compilerRegex['echo']    => fn ($matches) => $this->compileEcho($matches)
+            $this->compilerRegex['echo']    => fn ($matches) => $this->compileEcho($matches),
         ], $content);
     }
 
@@ -223,6 +224,12 @@ class VyuiEngine implements EngineContract
                "<?php endforeach; ?>";
     }
 
+    /**
+     * A safe echo
+     *
+     * @param array $matches
+     * @return string
+     */
     protected function compileEcho(array $matches): string
     {
         return "<?php echo $matches[1]; ?>";

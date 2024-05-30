@@ -10,11 +10,12 @@
             html, body {
                 margin: 0;
                 padding: 0;
+                color: rgba(255,255,255,0.5);
             }
 
             body {
                 height: 100vh;
-                background-color: #f1f1f1;
+                background-color: #151f2b;
             }
 
             pre {
@@ -43,7 +44,7 @@
             .error-container .error-content {
                 min-height: 100%;
                 padding: 40px;
-                background-color: #ffffff;
+                background-color: rgba(255,255,255,0.05);
                 width: 70%;
             }
 
