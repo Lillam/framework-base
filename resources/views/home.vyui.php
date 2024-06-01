@@ -22,6 +22,9 @@
                    </ul>
                </div>
 
+               <p style="color: white">{{ "this is cool..." }} testing</p>
+               <p style="color: red">{!! "this is also cool... testin" !!}</p>
+
                <!-- <div class="navigation navigation-vertical flex" style="margin-top: 10px;">
                    <ul class="flex">
                        <li style="--order: 0"><a><i class="fa fa-home"></i><span>Home</span></a></li>
@@ -33,7 +36,7 @@
                    </ul>
                 </div> -->
 
-              sum between all d's is: {{ ($d1 + $d2 + $d3) }}
+              <!-- sum between all d's is: {{ ($d1 + $d2 + $d3) }}
 
                <div class="grid">
                    <div>
@@ -54,7 +57,7 @@
                            <p>{{ $d3 }}</p>
                        </div>
                    </div>
-               </div>
+               </div> -->
            </div>
         </div>
     </body>

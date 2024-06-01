@@ -45,15 +45,16 @@ class VyuiEngine implements EngineContract
      * @var string[]
      */
     protected array $compilerRegex = [
-        'yield'   => '/( *)#\[yield: (.*)\]/',
-        'extends' => '/#\[extends: (.*)\]/',
-        'include' => '/#\[include: (.*)\]/',
-        'section' => '/(\#\[section: (.*)\])([\S\s]*?)(\#\[\/section\])/',
-        'if'      => '/(\#\[if: (.*)\])([\S\s]*?)(\#\[\/if\])/',
-        'for'     => '/(\#\[for: (.*)\])([\S\s]*?)(\#\[\/for\])/',
+        'yield'   => '/( *)#\[yield:(.*)\]/',
+        'extends' => '/#\[extends:(.*)\]/',
+        'include' => '/#\[include:(.*)\]/',
+        'section' => '/(\#\[section:(.*)\])([\S\s]*?)(\#\[\/section\])/',
+        'if'      => '/(\#\[if:(.*)\])([\S\s]*?)(\#\[\/if\])/',
+        'for'     => '/(\#\[for:(.*)\])([\S\s]*?)(\#\[\/for\])/',
         'foreach' => '/(\#\[foreach: (.*)\])([\S\s]*?)(\#\[\/foreach\])/',
         // 'echo'    => '/#\[echo:(.*)\]/',
-        'echo' => '/{{(.*)}}/'
+        'echo' => '/{{(.*)}}/',
+        'uecho' => '/{!!(.*)!!})/',
     ];
 
     /**
@@ -181,6 +182,7 @@ class VyuiEngine implements EngineContract
             $this->compilerRegex['for']     => fn ($matches) => $this->compileFor($matches),
             $this->compilerRegex['foreach'] => fn ($matches) => $this->compileForEach($matches),
             $this->compilerRegex['echo']    => fn ($matches) => $this->compileEcho($matches),
+            // $this->compilerRegex['uecho']    => fn ($matches) => $this->compileUnescapedEcho($matches),
         ], $content);
     }
 
@@ -231,6 +233,11 @@ class VyuiEngine implements EngineContract
      * @return string
      */
     protected function compileEcho(array $matches): string
+    {
+        return "<?php echo htmlspecialchars($matches[1], ENT_QUOTES, 'UTF-8'); ?>";
+    }
+
+    protected function compileUnsafeEcho(array $matches): string
     {
         return "<?php echo $matches[1]; ?>";
     }

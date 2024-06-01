@@ -5,7 +5,6 @@ namespace Vyui\Services\View;
 use Vyui\Services\Service;
 use Vyui\Services\View\ViewEngines\Vyui\VyuiEngine;
 use Vyui\Services\View\ViewEngines\Basic\BasicEngine;
-use Vyui\Services\View\ViewEngines\Blade\BladeEngine;
 use Vyui\Services\Filesystem\FilesystemContract as Filesystem;
 
 class ViewService extends Service
@@ -32,7 +31,6 @@ class ViewService extends Service
             // stands...
             ->registerEngine('vyui.php', new VyuiEngine)
             ->registerEngine('basic.php', new BasicEngine)
-            ->registerEngine('blade.php', new BladeEngine)
         );
     }
 
