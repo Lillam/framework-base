@@ -4,14 +4,10 @@ namespace Vyui\Services\View\ViewEngines\Basic;
 
 use Vyui\Services\View\View;
 use Vyui\Foundation\Http\Response;
-use Vyui\Services\View\HasViewManager;
-use Vyui\Services\View\ViewEngines\Engine;
-use Vyui\Services\View\ViewEngines\EngineContract;
+use Vyui\Services\View\ViewEngines\Engine as BaseEngine;
 
-class BasicEngine extends Engine implements EngineContract
+class Engine extends BaseEngine
 {
-    use HasViewManager;
-
     /**
      * Render the template.
      *
@@ -20,12 +16,6 @@ class BasicEngine extends Engine implements EngineContract
      */
     public function render(View $view): Response
     {
-//        $contents = file_get_contents($view->template);
-//
-//        foreach ($view->data as $key => $datum) {
-//            $contents = str_replace('{' . $key . '}', $datum, $contents);
-//        }
-
         extract($view->getData());
         ob_start();
 

@@ -3,9 +3,9 @@
 namespace Vyui\Services\View;
 
 use Vyui\Services\Service;
-use Vyui\Services\View\ViewEngines\Vyui\VyuiEngine;
-use Vyui\Services\View\ViewEngines\Basic\BasicEngine;
+use Vyui\Services\View\ViewEngines\Vyui\Engine as VyuiEngine;
 use Vyui\Services\Filesystem\FilesystemContract as Filesystem;
+use Vyui\Services\View\ViewEngines\Basic\Engine as BasicEngine;
 
 class ViewService extends Service
 {

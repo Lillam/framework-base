@@ -5,12 +5,21 @@ namespace Vyui\Services\View\ViewEngines\Vyui;
 use Vyui\Services\View\View;
 use Vyui\Support\Helpers\_String;
 use Vyui\Foundation\Http\Response;
-use Vyui\Services\View\HasViewManager;
-use Vyui\Services\View\ViewEngines\EngineContract;
+use Vyui\Services\View\ViewEngines\Engine as BaseEngine;
 
-class VyuiEngine implements EngineContract
+class Engine extends BaseEngine
 {
-    use HasViewManager;
+    protected Compiler $compiler;
+
+    /**
+     * Construct the engine, along with the compiler it's gonna need.
+     *
+     * Engine constructor.
+     */
+    public function __construct()
+    {
+        $this->compiler = new Compiler();
+    }
 
     /**
      * The current cache of the view we're trying to render. This will be utilised for storing the name of the file and
