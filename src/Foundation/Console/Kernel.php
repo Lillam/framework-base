@@ -97,6 +97,12 @@ class Kernel implements KernelContract
         return $input->getTokens()[0];
     }
 
+    /**
+     * Get the tokens of the command.
+     *
+     * @param Input $input
+     * @return array
+     */
     public function getCommandTokens(Input $input): array
     {
         return array_filter($input->getTokens(), fn ($key) => $key > 0, ARRAY_FILTER_USE_KEY);

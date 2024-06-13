@@ -22,8 +22,13 @@
                    </ul>
                </div>
 
-               <p style="color: white">{{ "this is cool maybe?..." }} testing</p>
-               <p style="color: red">{!! "this is also cool... testin" !!}</p>
+               <p style="color: white">
+                   {{ "this is cool maybe?..." }} testing again
+               </p>
+
+               <p style="color: red">
+                   {!! "this is also cool... testin" !!}
+               </p>
 
                <!-- <div class="navigation navigation-vertical flex" style="margin-top: 10px;">
                    <ul class="flex">

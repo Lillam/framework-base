@@ -82,9 +82,9 @@ class Test extends Command
      */
     private function runTests(): int
     {
-        foreach ($this->tests->all() as $test) {
+        foreach ($this->tests->all() as $suite) {
             try {
-                $classMethods = _Reflect::fromClass($test)->filterMethodsWhereContains('test')
+                $tests = _Reflect::fromClass($suite)->filterMethodsWhereContains('test')
                                                           ->getMethods();
 
                 // print separator so that we know what we're working with, when talking about each particular test in
@@ -95,22 +95,22 @@ class Test extends Command
                 // Let the developer know which test is getting run; this would be the overall class file that's
                 // being run; so the developer would know which file the test has been run and if an error occurs
                 // limits the place where they need to look.
-                $this->output->printInfo("ⓘ Starting testing $test");
+                $this->output->printInfo("ⓘ Starting testing $suite");
 
-                foreach ($classMethods as $method) {
+                foreach ($tests as $test) {
                     // Here we could actually do $test->{$method}() which will call the method directly however; This
                     // has been done so that we can group a bunch of code together and not have to keep re-implementing
                     // acquiring the test name which would take the name of the method; however since we already have
                     // it within the $method variable; apply once and then fire the original code that was intended.
-                    $test->__call($method->getName());
+                    $suite->__call($test->getName());
 
                     // print to the developer that the specific test is being run, which if there happens to be an
                     // issue around this point then the developer will know exactly where to focus their efforts.
-                    $this->output->print("ⓘ {$test->getTestName()}");
+                    $this->output->print("ⓘ {$suite->getTestName()}");
 
                     // iterate over all the assertions and print out what the status of the assertion is, since we have
                     // knowledge of the assertion whether it was successful or not... we can dump out the message here
-                    foreach ($test->getAssertions($test->getTestName()) as $assertion) {
+                    foreach ($suite->getAssertions($suite->getTestName()) as $assertion) {
                         $this->output->print("├── ", false);
                         $assertion->getState() ? $this->output->printSuccess("✓ {$assertion->getMessage()}")
                                                : $this->output->printError("✗ {$assertion->getMessage()}");
@@ -124,8 +124,8 @@ class Test extends Command
 
                 // print to the user, depending on whether the particular assertion had passed or failed; if it had
                 // failed the developer would know exactly where to look.
-                $test->wasSuccessful() ? $this->output->printSuccess($this->getTotalTestAssertionMessage($test))
-                                       : $this->output->printError($this->getTotalTestAssertionMessage($test));
+                $suite->wasSuccessful() ? $this->output->printSuccess($this->getTotalTestAssertionMessage($test))
+                                        : $this->output->printError($this->getTotalTestAssertionMessage($test));
             }
 
             // If for some reason there was an issue in trying to reflect the class that we have (which there shouldn't

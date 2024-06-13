@@ -12,16 +12,6 @@ class Engine extends BaseEngine
     protected Compiler $compiler;
 
     /**
-     * Construct the engine, along with the compiler it's gonna need.
-     *
-     * Engine constructor.
-     */
-    public function __construct()
-    {
-        $this->compiler = new Compiler();
-    }
-
-    /**
      * The current cache of the view we're trying to render. This will be utilised for storing the name of the file and
      * the time in which the file had been built against the time that exists against the real file.
      *
@@ -67,6 +57,16 @@ class Engine extends BaseEngine
     ];
 
     /**
+     * Construct the engine, along with the compiler it's gonna need.
+     *
+     * Engine constructor.
+     */
+    public function __construct()
+    {
+        $this->compiler = new Compiler();
+    }
+
+    /**
      * Take a view, and look to see if we have a view in storage for this compilation otherwise compile it then load it
      * to display to the user.
      *
@@ -93,7 +93,7 @@ class Engine extends BaseEngine
             _String::fromString($view->getHashedTemplate())->append('.php')
         );
 
-        if ($this->shouldRecompile($cache, $view)) {
+        if ($this->shouldCompile($cache, $view)) {
             // Acquire the original content from the view that has been passed in.
             $originalContent = $this->getViewManager()->getFilesystem()->get($view->template);
             // Pre-compile the original content which will look for key-words, like yield, extends and begin stripping
@@ -336,7 +336,7 @@ class Engine extends BaseEngine
      * @param View $view
      * @return bool
      */
-    private function shouldRecompile(string $cache, View $view): bool
+    private function shouldCompile(string $cache, View $view): bool
     {
         if (! file_exists($cache) || filemtime($view->template) > filemtime($cache)) {
             return true;

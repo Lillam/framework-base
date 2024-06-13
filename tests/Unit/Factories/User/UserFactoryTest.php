@@ -11,6 +11,7 @@ class UserFactoryTest extends TestCase
     {
         $this->assertNull(null);
         $this->assertNotNull([]);
+        $this->assertEmpty([]);
 
         $user = new User();
 
