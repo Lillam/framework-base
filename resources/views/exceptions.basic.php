@@ -61,7 +61,15 @@
             <div class="error-content">
                 <h2>An Error Occurred</h2>
                 <p><?= $exception->getMessage(); ?></p>
-                <?php print_r($exception); ?>
+                <?php
+                    // print_r($backtrace);
+
+                    foreach ($backtrace as $item) {
+                        echo "<pre>";
+                            print_r($item);
+                        echo "</pre>";
+                    }
+                ?>
             </div>
         </div>
     </body>

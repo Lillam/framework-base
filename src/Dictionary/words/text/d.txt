@@ -243,3 +243,4 @@ decreases
 decrement
 decremented
 decrementing
+deft

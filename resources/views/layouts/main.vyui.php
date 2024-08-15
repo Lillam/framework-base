@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>#[echo: env('APP_NAME', 'Random')]</title>
-        <link href="#[echo: asset('vendor/fontawesome/all.css', 1)]" rel="stylesheet" type="text/css" />
-        <link href="#[echo: asset('css/app.css')]" rel="stylesheet" type="text/css" />
-        <script src="#[echo: asset('js/domly.js', 1)]" defer></script>
-        <script src="#[echo: asset('js/app.js', 1)]" defer></script>
-        <script src="#[echo: asset('js/test.js', 1)]" defer></script>
+        <title>{{ env('APP_NAME', 'Random') }}</title>
+        <link href="{{ asset('vendor/fontawesome/all.css', 1) }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('css/app.css') }}" rel="stylesheet" type="text/css" />
+        <script src="{{ asset('js/domly.js', 1) }}" defer></script>
+        <script src="{{ asset('js/app.js', 1) }}" defer></script>
+        <script src="{{ asset('js/test.js', 1) }}" defer></script>
         <style>
             .banner {
                 background-image:
@@ -80,59 +80,63 @@
                 font-weight: bold;
             }
         </style>
-        #[yield: styles]
+        @->yield(styles)
     </head>
     <body>
-        #[include: layouts/header]
-<!--        <div class="banner">-->
-<!--            <div class="entry">-->
-<!--                <div></div>-->
-<!--                <div class="entry-content">-->
-<!--                    <div class="avatar">PHP</div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="entry">-->
-<!--                <div></div>-->
-<!--                <div class="entry-content">-->
-<!--                    <div class="avatar">JS</div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="entry">-->
-<!--                <div></div>-->
-<!--                <div class="entry-content">-->
-<!--                    <div class="avatar">CSS</div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="entry">-->
-<!--                <div></div>-->
-<!--                <div class="entry-content">-->
-<!--                    <div class="avatar">HTML</div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="entry">-->
-<!--                <div></div>-->
-<!--                <div class="entry-content">-->
-<!--                    <div class="avatar">SQL</div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="entry">-->
-<!--                <div></div>-->
-<!--                <div class="entry-content">-->
-<!--                    <div class="avatar">C#</div>-->
-<!--                    <h2>C#</h2>-->
-<!--                    <p>Some random content about the language here, regarding how long experience one might have etc.</p>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-        <div class="h-screen flex justify-content-center align-items-center">
+       @->include(layouts/header)
+       <div class="banner">
+           <div class="entry">
+               <div></div>
+               <div class="entry-content">
+                   <div class="avatar">PHP</div>
+               </div>
+           </div>
+           <div class="entry">
+               <div></div>
+               <div class="entry-content">
+                   <div class="avatar">JS</div>
+               </div>
+           </div>
+           <div class="entry">
+               <div></div>
+               <div class="entry-content">
+                   <div class="avatar">CSS</div>
+               </div>
+           </div>
+           <div class="entry">
+               <div></div>
+               <div class="entry-content">
+                   <div class="avatar">HTML</div>
+               </div>
+           </div>
+           <div class="entry">
+               <div></div>
+               <div class="entry-content">
+                   <div class="avatar">SQL</div>
+               </div>
+           </div>
+           <div class="entry">
+               <div></div>
+               <div class="entry-content">
+                   <div class="avatar">C#</div>
+                   <h2>C#</h2>
+                   <p>Some random content about the language here, regarding how long experience one might have etc.</p>
+               </div>
+           </div>
+       </div>
+       <div class="h-screen flex justify-content-center align-items-center">
             <div>
-                #[yield: body]
+                @->yield(body)
             </div>
-        </div>
-        #[foreach([1,2,3] as $number]
-            {{ $number }}
-        #endforeach
-        #[yield: scripts]
-        #[include: layouts/footer]
+       </div>
+       @->foreach(["test", "testing", "testing again"] as $key => $number)
+        <p>{{$key}}</p>
+        <p>{{$number}}</p>
+       @->endforeach
+       @->yield(scripts)
+       @->include(layouts/footer)
+       @->if(1 === 1)
+           <h2>We be here because 1 is 1...</h2>
+       @->endif
     </body>
 </html>

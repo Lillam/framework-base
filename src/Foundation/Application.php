@@ -29,6 +29,13 @@ class Application extends Container implements ApplicationContract
     protected array $servicesRegistered = [];
 
     /**
+     * The paths that the application uses.
+     *
+     * @var array<string>
+     */
+    protected array $paths = [];
+
+    /**
      * @var array
      */
     protected array $events = [];
@@ -39,6 +46,7 @@ class Application extends Container implements ApplicationContract
     public function __construct(string $basePath = "")
     {
         $this->setBasePath($basePath);
+        $this->registerBasePaths();
         $this->registerBaseBindings();
         $this->registerBaseServices();
     }
@@ -55,14 +63,28 @@ class Application extends Container implements ApplicationContract
         $this->instance(self::class, $this);
     }
 
-    /**
-     * Set the base path for the application.
-     *
-     * @return Service[]
-     */
-    public function getBaseServices(): array
+    public function registerBasePaths(): void
     {
-        return [
+        $this->paths = [
+            'app'                  => $this->getBasePath('/app/'),
+            'config'               => $this->getBasePath('/config/'),
+            'public'               => $this->getBasePath('/public/'),
+            'resources'            => $this->getBasePath('/resources/'),
+            'routes'               => $this->getBasePath('/routes/'),
+            'storage.views'        => $this->getBasePath('/storage/framework/views/'),
+            'storage.views.builds' => $this->getBasePath('/storage/framework/views/builds/'),
+            'views'                => $this->getBasePath('/resources/views/'),
+        ];
+    }
+
+    /**
+     * Register all the base providers that application's container will need by default.
+     *
+     * @return void
+     */
+    public function registerBaseServices(): void
+    {
+        foreach ([
             \Vyui\Services\Environment\EnvironmentService::class,
             \Vyui\Services\Config\ConfigService::class,
             \Vyui\Services\Filesystem\FilesystemService::class,
@@ -74,19 +96,14 @@ class Application extends Container implements ApplicationContract
             \Vyui\Services\View\ViewService::class,
             \Vyui\Services\Database\DatabaseService::class,
             \Vyui\Services\Auth\AuthService::class,
-        ];
-    }
-
-    /**
-     * Register all the base providers that application's container will need by default.
-     *
-     * @return void
-     */
-    public function registerBaseServices(): void
-    {
-        foreach ($this->getBaseServices() as $service) {
+        ] as $service) {
             $this->register(new $service($this), $service);
         }
+    }
+
+    public function getPath(string $path): string
+    {
+        return $this->paths[$path] ?? "";
     }
 
     /**

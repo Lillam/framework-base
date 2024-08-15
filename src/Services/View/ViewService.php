@@ -18,20 +18,17 @@ class ViewService extends Service
         // todo - right now this is tightly coupled with the file system of the application; meaning this can't be self
         //        sufficiently sustained without the need of the whole application; potentially offer alternatives based
         //        on what the application has available ready to hand.
-        $viewManager = new ViewManager(
-            $this->application->make(Filesystem::class)
-        );
-
-        $this->application->instance(ViewManager::class, $viewManager
+        $viewManager = (new ViewManager($this->application->make(Filesystem::class)))
             // set the path of which the system knows where to begin looking for the files that it needs. all files will
             // be rendered from these location(s)
-            ->registerPath($this->application->getBasePath('/resources/views/'))
-            ->registerStoragePath($this->application->getBasePath('/storage/framework/views/'), true)
+            ->registerPath($this->application->getPath("views"))
+            ->registerStoragePath($this->application->getPath("storage.views"), true)
             // Register the following engines, these particular engines is what the system supports as it currently
             // stands...
             ->registerEngine('vyui.php', new VyuiEngine)
-            ->registerEngine('basic.php', new BasicEngine)
-        );
+            ->registerEngine('basic.php', new BasicEngine);
+
+        $this->application->instance(ViewManager::class, $viewManager);
     }
 
     /**

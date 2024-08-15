@@ -44,16 +44,25 @@ class Engine extends BaseEngine
      * @var string[]
      */
     protected array $compilerRegex = [
-        'yield'   => '/( *)#\[yield:(.*)\]/',
-        'extends' => '/#\[extends:(.*)\]/',
-        'include' => '/#\[include:(.*)\]/',
-        'section' => '/(\#\[section:(.*)\])([\S\s]*?)(\#\[\/section\])/',
-        'if'      => '/(\#\[if:(.*)\])([\S\s]*?)(\#\[\/if\])/',
+        'yield'   => '/( *)@->yield\((.*)\)/',
+        'extends' => '/( *)@->extends\((.*)\)/',
+        'include' => '/( *)@->include\((.*)\)/',
+        // 'section' => '/(\#\[section:(.*)\])([\S\s]*?)(\#\[\/section\])/',
+        'section' => '/(@->section\((.*)\))([\S\s]*?)(@->endsection)/',
+        'if'      => '/(@->if\((.*)\))([\S\s]*?)(@->endif)/',
         'for'     => '/(\#\[for:(.*)\])([\S\s]*?)(\#\[\/for\])/',
-        'foreach' => '/(\#\[foreach: (.*)\])([\S\s]*?)(\#\[\/foreach\])/',
+        'foreach' => '/(@->foreach\((.*)\))([\S\s]*?)(@->endforeach)/',
+        'echo'    => '/{{(.*)}}/',
+        'uecho'   => '/{!!(.*)!!}/',
+    ];
+
+    protected array $formerCompilerRegex = [
+        // 'if'      => '/(\#\[if:(.*)\])([\S\s]*?)(\#\[\/if\])/',
+        // 'yield'   => '/( *)#\[yield:(.*)\]/',
+        // 'extends' => '/#\[extends:(.*)\]/',
+        // 'include' => '/#\[include:(.*)\]/',
         // 'echo'    => '/#\[echo:(.*)\]/',
-        'echo' => '/{{(.*)}}/',
-        'uecho' => '/{!!(.*)!!})/',
+        // 'foreach' => '/(\#\[foreach:(.*)\])([\S\s]*?)(\#\[\/foreach\])/',
     ];
 
     /**
@@ -128,7 +137,7 @@ class Engine extends BaseEngine
 
         $content = preg_replace_callback($this->compilerRegex['extends'], function ($matches) {
             // here we are going to look for a file that has been matched within the extends...
-            $extendContentPath = $this->getViewManager()->getResourcePath("$matches[1].vyui.php");
+            $extendContentPath = $this->getViewManager()->getResourcePath("$matches[2].vyui.php");
 
             $this->cacheComponents[$this->cache][] = $extendContentPath;
 
@@ -137,7 +146,7 @@ class Engine extends BaseEngine
 
         $content = preg_replace_callback($this->compilerRegex['include'], function ($matches) use ($content) {
             $includeContentPath = $this->getViewManager()
-                                       ->getResourcePath("$matches[1].vyui.php");
+                                       ->getResourcePath("$matches[2].vyui.php");
 
             $this->cacheComponents[$this->cache][] = $includeContentPath;
 
@@ -147,16 +156,19 @@ class Engine extends BaseEngine
             // find the spaces that exist before the include so that this can be stored and applied later to each
             // individual line in order for true indentation within the cache files.
             $matchPiece = str_replace('/', '\/', $matches[1]);
-            $regex = "( +)(#\[include: $matchPiece\])";
+            $regex = "( +)(@->section\($matchPiece\))";
             preg_match("/$regex/", $content, $includeContentMatches);
+
+            $spaces = $matches[1];
 
             // look for all line breaks and on each one apply the spacing that had been found within the initial
             // so that when the cached file is created the right indentations are applied making the cache more
             // readable should there ba any need for debugging errors.
-            return $this->layouts[$matches[1]] = preg_replace_callback(
+            return $spaces . $this->layouts[$matches[1]] = preg_replace_callback(
                 '/\n(.*)/',
-                function ($matches) use ($includeContentMatches) {
-                    return str_replace("\n", "\n$includeContentMatches[1]", $matches[0]);
+                function ($matches) use ($includeContentMatches, $spaces) {
+                    $replacement = $includeContentMatches[1] ?? "";
+                    return $spaces . str_replace("\n", "\n{$spaces}{$replacement}", $matches[0]);
                 },
                 $includeContent
             );
@@ -186,12 +198,12 @@ class Engine extends BaseEngine
     public function compile(string $content): string
     {
         return preg_replace_callback_array([
-            $this->compilerRegex['section'] => fn ($matches) => $this->compileSection($matches),
-            $this->compilerRegex['if']      => fn ($matches) => $this->compileIf($matches),
-            $this->compilerRegex['for']     => fn ($matches) => $this->compileFor($matches),
-            $this->compilerRegex['foreach'] => fn ($matches) => $this->compileForEach($matches),
-            $this->compilerRegex['echo']    => fn ($matches) => $this->compileEcho($matches),
-            // $this->compilerRegex['uecho']    => fn ($matches) => $this->compileUnescapedEcho($matches),
+            $this->compilerRegex['section']  => fn ($matches) => $this->compileSection($matches),
+            $this->compilerRegex['if']       => fn ($matches) => $this->compileIf($matches),
+            $this->compilerRegex['for']      => fn ($matches) => $this->compileFor($matches),
+            $this->compilerRegex['foreach']  => fn ($matches) => $this->compileForEach($matches),
+            $this->compilerRegex['echo']     => fn ($matches) => $this->compileEcho($matches),
+            $this->compilerRegex['uecho']    => fn ($matches) => $this->compileUnsafeEcho($matches),
         ], $content);
     }
 
@@ -338,6 +350,8 @@ class Engine extends BaseEngine
      */
     private function shouldCompile(string $cache, View $view): bool
     {
+        return true;
+
         if (! file_exists($cache) || filemtime($view->template) > filemtime($cache)) {
             return true;
         }

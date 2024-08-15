@@ -1,5 +1,15 @@
 <?php
 
+// $expected = 1997;
+// $generateRandom = fn () => rand(1, 8000);
+// $attempts = 0;
+
+// while (($random = $generateRandom()) !== $expected) {
+//     $attempts += 1;
+// }
+
+// dd($attempts, $random);
+
 // dd(\Vyui\Support\Helpers\_Regex::acronise('Complementary metal-oxide semiconductor'));
 
 //$words = [
@@ -37,10 +47,10 @@ expect(actual).toBeCloseTo(expected, DIFFERENCE_PRECISION_IN_DIGITS);
 //    )
 //);
 
-dd(
-    \Vyui\Support\Facades\DB::connection('mysql'),
-    \Vyui\Support\Facades\DB::getConnections('mysql')
-);
+// dd(
+//     \Vyui\Support\Facades\DB::connection('mysql'),
+//     \Vyui\Support\Facades\DB::getConnections('mysql')
+// );
 
 // dd(\Vyui\Support\Facades\DB::getConnections());
 
@@ -72,13 +82,15 @@ dd(
 $filesystem = app(\Vyui\Services\Filesystem\FilesystemContract::class);
 $dictionary = (new \Vyui\Dictionary\Dictionary($filesystem))->load();
 
-$dictionary->setAnagram('squashing')
+$dictionary->setAnagram('farvou')
           ->setAnagramMin(3)
-          ->setAnagramMax(9);
+          ->setAnagramMax(7);
 
 $dictionary->addWords([
 
 ]);
+
+// $dictionary->commitWordsAddedToStorage();
 
 dd($dictionary->findWordsFromAnagram(), 'added words: ', $dictionary->getWordsAdded());
 

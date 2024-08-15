@@ -21,7 +21,6 @@
                        <li class="indicator"></li>
                    </ul>
                </div> -->
-
                <div class="navigation navigation-vertical flex" style="margin-top: 10px;">
                    <ul class="flex">
                        <li style="--order: 0"><a><i class="fa fa-home"></i><span>Home</span></a></li>

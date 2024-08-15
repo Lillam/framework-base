@@ -174,3 +174,8 @@ latex
 latch
 lost
 limo
+learn
+lane
+lave
+lean
+laver

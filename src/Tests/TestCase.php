@@ -53,7 +53,7 @@ abstract class TestCase
     protected int $failedAssertions = 0;
 
     /**
-     *
+     * The total number of assertions that have been run.
      *
      * @var int
      */

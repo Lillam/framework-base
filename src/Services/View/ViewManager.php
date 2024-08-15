@@ -65,7 +65,7 @@ class ViewManager
         // if we have told the system it should attempt to make the directory upon being instantiated, then we're going
         // to make the directory, providing that the directory hasn't already been made yet.
         if ($makeDirectory && ! is_dir($path)) {
-            mkdir($path);
+            @mkdir($path);
         }
 
         $this->storagePath = $path;
@@ -150,7 +150,7 @@ class ViewManager
      */
     public function getResourcePath(?string $file): string
     {
-        return $this->paths[0] . $file;
+        return $this->paths[0] . trim($file ?? "");
     }
 
     /**

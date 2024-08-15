@@ -74,8 +74,11 @@ class Kernel implements KernelContract
      */
     private function renderException(Request $request, Throwable $exception): Response
     {
+        $backtrace = debug_backtrace();
+
         return view('exceptions', [
-            'exception' => $exception
+            'exception' => $exception,
+            'backtrace' => $backtrace
         ]);
     }
 }

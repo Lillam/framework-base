@@ -1,12 +1,12 @@
-#[extends: layouts/main]
-#[section: scripts]
-    <script src="#[echo: asset('js/playground.js')]" defer></script>
-#[/section]
-#[section: body]
+@->extends(layouts/main)
+@->section(scripts)
+    <script src="{{ asset('js/playground.js') }}" defer></script>
+@->endsection
+@->section(body)
     <style>
         html,
         body {
-            background-color: #181818;
+            background-color: #f1f1f1;
         }
 
         .chart {
@@ -345,4 +345,4 @@
         <div></div>
         <div class="key" data-key=" ">Space</div>
     </div>
-#[/section]
+@->endsection

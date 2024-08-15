@@ -196,3 +196,6 @@ planked
 planking
 plead
 pleading
+pour
+poot
+poor

@@ -73,3 +73,5 @@ needy
 natty
 navy
 nacho
+nave
+navel

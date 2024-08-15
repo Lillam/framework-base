@@ -25,14 +25,17 @@ class Input
     {
         $argv = $argv ?? $_SERVER['argv'] ?? [];
 
-        // remove the caller from the arguments, we're not going to be needing the name of the caller within the
-        // parsing of the passed arguments.
+        // remove the caller from the arguments, we're not going to be needing the name
+        // of the caller within the parsing of the passed arguments.
         array_shift($argv);
 
         $this->setupTokens($argv ?? []);
     }
 
     /**
+     * Setup the tokens that the input is going to be utilising. This will determine how
+     * the input is going to be parsed and used.
+     *
      * @param array $tokens
      * @return void
      */

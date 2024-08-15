@@ -39,7 +39,7 @@ $application = require_once '../bootstrap/application.php';
 |
 */
 
-if (env('APP_ENV') === 'dev' && env('APP_PLAYGROUND') === true) {
+if (env('APP_ENV') === 'dev' && env('APP_PLAYGROUND') === "true") {
     require_once './playground.php';
 }
 

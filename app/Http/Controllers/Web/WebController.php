@@ -20,6 +20,15 @@ class WebController extends Controller
      */
     public function index(Request $request, ?Task $task = null): Response
     {
+        $tasks = array_map(function ($task) {
+            return [
+                'name' => $task->getName(),
+                'description' => $task->getDescription()
+            ];
+        }, Task::query()->limit(5)->get());
+
+        return response()->json(['tasks' => $tasks]);
+
         return view('home3');
 
 //        return response()->json(array_map(function ($user) use ($task) {
