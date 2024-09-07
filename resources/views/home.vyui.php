@@ -41,8 +41,6 @@
                    </ul>
                 </div> -->
 
-              <!-- sum between all d's is: {{ ($d1 + $d2 + $d3) }}
-
                <div class="grid">
                    <div>
                        <div class="box">
@@ -62,7 +60,7 @@
                            <p>{{ $d3 }}</p>
                        </div>
                    </div>
-               </div> -->
+               </div>
            </div>
         </div>
     </body>

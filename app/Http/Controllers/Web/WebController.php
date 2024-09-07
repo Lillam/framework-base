@@ -18,18 +18,18 @@ class WebController extends Controller
      * @param Task|null $task
      * @return Response
      */
-    public function index(Request $request, ?Task $task = null): Response
+    public function home(Request $request, ?Task $task = null): Response
     {
-        $tasks = array_map(function ($task) {
-            return [
-                'name' => $task->getName(),
-                'description' => $task->getDescription()
-            ];
-        }, Task::query()->limit(5)->get());
+        // $tasks = array_map(function ($task) {
+        //     return [
+        //         'name' => $task->getName(),
+        //         'description' => $task->getDescription()
+        //     ];
+        // }, Task::query()->limit(5)->get());
 
-        return response()->json(['tasks' => $tasks]);
+        // return response()->json(['tasks' => $tasks]);
 
-        return view('home3');
+        return view('home');
 
 //        return response()->json(array_map(function ($user) use ($task) {
 //            return [
@@ -46,6 +46,18 @@ class WebController extends Controller
                 'test' => "this is a trap",
                 'testing' => "right?"
             ]
+        ]);
+    }
+
+    public function giveToken(Request $request): Response
+    {
+        $token = (new Token)->encode([
+            'exp' => time() + 10000,
+            'user' => ['name' => 'John Doe']
+        ]);
+
+        return response()->json([
+            'token' => $token
         ]);
     }
 

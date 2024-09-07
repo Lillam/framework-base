@@ -36,4 +36,7 @@ router()->get('/test', fn() => view(
 // Route::get("/", [WebController::class, "test"]);
 // Route::get("/tasks/{task?}", [\App\Http\Controllers\Web\WebController::class, "index"]);
 
-// Route::get("/parseToken", [WebController::class, "parseToken"]);
+Route::get('/', [WebController::class, 'home']);
+
+Route::get("/giveToken", [WebController::class, 'giveToken']);
+Route::get("/parseToken", [WebController::class, "parseToken"]);

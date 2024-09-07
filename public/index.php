@@ -1,7 +1,7 @@
 <?php
 
-use Vyui\Foundation\Http\Kernel;
 use Vyui\Foundation\Application;
+use Vyui\Foundation\Http\Kernel;
 use Vyui\Foundation\Http\Request;
 
 define("FRAMEWORK_START", microtime(true));

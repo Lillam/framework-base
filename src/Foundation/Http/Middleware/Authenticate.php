@@ -13,7 +13,7 @@ class Authenticate extends Middleware
      * @param Request $request
      * @return void;
      */
-    public function handle(Request $request): void
+    public function handle(Request $request): Request
     {
         // token based authorization
         if ($request->get("token")) {
@@ -24,5 +24,7 @@ class Authenticate extends Middleware
         if ($request->getHeader("http_authorization")) {
             var_dump($request->getHeader("http_authorization"));
         }
+
+        return $request;
     }
 }
