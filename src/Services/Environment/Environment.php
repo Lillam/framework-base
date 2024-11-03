@@ -79,7 +79,7 @@ class Environment implements EnvironmentContract
      * @param mixed $value
      * @return void
      */
-    public function set(string $key, mixed $value): void
+    public function set(string $key, mixed $value = null): void
     {
         // if the key starts with a hash, aka a comment, then we are going to simply ignore this particular set and
         // move on from it as we will no longer want to do anything in particular with it.
