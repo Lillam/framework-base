@@ -30,7 +30,9 @@ abstract class Command implements CommandContract
     public function __construct(Application $application, array $arguments = [])
     {
         $this->application = $application;
-        $this->arguments = $arguments;
+        // at this point we should have the name of the command, but we need to reset
+        // the values of the array so it starts at 0.
+        $this->arguments = array_values($arguments);
     }
 
     /**

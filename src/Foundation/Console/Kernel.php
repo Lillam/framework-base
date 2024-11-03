@@ -35,17 +35,19 @@ class Kernel implements KernelContract
     public function __construct(Application $application)
     {
         $this->application = $application;
+        $this->onBoot();
     }
 
     /**
      * Implementing the ability to add a command to the console.
      *
      * @param string $key
-     * @param Command $command
+     * @param string $command
+     *
      * @return $this
      * @throws CommandAlreadyExistsException
      */
-    public function addCommand(string $key, Command $command): self
+    public function addCommand(string $key, string $command): self
     {
         if (isset($this->commands[$key])) {
             throw new CommandAlreadyExistsException;
@@ -123,5 +125,10 @@ class Kernel implements KernelContract
                         ->setOutput($output);
 
         return $command->execute();
+    }
+
+    public function onBoot(): void
+    {
+        // implement on the extension.
     }
 }
