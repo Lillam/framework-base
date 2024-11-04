@@ -4,25 +4,24 @@ namespace Vyui\Foundation\Console;
 
 class Output
 {
-    /**
-     * @var string
-     */
-    protected string $defaultOutputColour = "\e[97m";
+    protected array $printingColours = [
+        'info'    => "\e[93m",
+        'error'   => "\e[91m",
+        "success" => "\e[92m",
+        "default" => "\e[97m",
 
-    /**
-     * @var string
-     */
-    protected string $successOutputColour = "\e[92m";
-
-    /**
-     * @var string
-     */
-    protected string $infoOutputColour = "\e[93m";
-
-    /**
-     * @var string
-     */
-    protected string $errorOutputColour = "\e[91m";
+        // specific colouring options.
+        "green"   => "\e[92m",
+        "red"     => "\e[91m",
+        "orange"  => "\e[93m",
+        "cyan"    => "\e[96m",
+        "purple"  => "\e[95m",
+        "blue"    => "\e[94m",
+        "magenta" => "\e[35m",
+        "yellow"  => "\e[33m",
+        "black"   => "\e[97m",
+        "white"   => "\e[30m"
+    ];
 
     /**
      * @var string[]
@@ -66,7 +65,7 @@ class Output
     {
         $this->printStack[] = $printing;
 
-        print "{$this->successOutputColour}$printing{$this->defaultOutputColour}" . PHP_EOL;
+        print "{$this->getColour('success')}$printing{$this->getColour()}" . PHP_EOL;
     }
 
     /**
@@ -80,11 +79,11 @@ class Output
     {
         $this->printStack[] = $printing;
 
-        print "{$this->infoOutputColour}$printing{$this->defaultOutputColour}" . PHP_EOL;
+        print "{$this->getColour('info')}$printing{$this->getColour()}" . PHP_EOL;
     }
 
     /**
-     * Dump teh content out to the console; dump the attempt of print into the print stack variable
+     * Dump the content out to the console; dump the attempt of print into the print stack variable
      * as the stated red text, upon doing so set the console output back to white.
      *
      * @param string $printing
@@ -94,7 +93,33 @@ class Output
     {
         $this->printStack[] = $printing;
 
-        print "{$this->errorOutputColour}$printing{$this->defaultOutputColour}" . PHP_EOL;
+        print "{$this->getColour('error')}$printing{$this->getColour()}" . PHP_EOL;
+    }
+
+    /**
+     * Print to the console with a specific colour in mind.
+     *
+     * @param string $printing -> the message you want to print to the console
+     * @param string $colour   -> the colour you want to print the message in
+     * @return void
+     */
+    public function printColour(string $printing, string $colour = "default"): void
+    {
+        $this->printStack[] = $printing;
+
+        print "{$this->getColour($colour)}$printing{$this->getColour()}" . PHP_EOL;
+    }
+
+    /**
+     * Get the colour from the printing colours, if the colour can't be found then display a default
+     * colour in the terminal (white)
+     *
+     * @param $colour -> defaulted to white.
+     * @return string
+     */
+    public function getColour(string $colour = "default"): string
+    {
+        return $this->printingColours[$colour] ?? $this->printingColours['default'];
     }
 
     /**
@@ -115,10 +140,10 @@ class Output
     private function getPrintColours(): array
     {
         return [
-            ':end:'     => $this->defaultOutputColour,
-            ':success:' => $this->successOutputColour,
-            ':error:'   => $this->errorOutputColour,
-            ':info:'    => $this->infoOutputColour,
+            ':end:'     => $this->printingColours['default'],
+            ':success:' => $this->printingColours['success'],
+            ':error:'   => $this->printingColours['error'],
+            ':info:'    => $this->printingColours['info'],
         ];
     }
 }

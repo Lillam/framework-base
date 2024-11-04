@@ -26,10 +26,15 @@ class Dict extends Command
 
         parent::__construct($application, $arguments);
 
-        $this->setAction($this->arguments[0] ?? "anagram")
-             ->setAnagram($this->arguments[1] ?? "")
-             ->setMinLength($this->arguments[2] ?? 3)
-             ->setMaxLength($this->arguments[3] ?? 7);
+        foreach ($arguments as $argument) {
+            match (substr($argument, 0, 2)) {
+                "an" => $this->setAction("anagram"),
+                "wo" => $this->setAnagram(str_replace(["word=", "wo="], "", $argument)),
+                "mi" => $this->setMinLength((int) str_replace(["min=", "mi="], "", $argument)),
+                "ma" => $this->setMaxLength((int) str_replace(["max=", "ma="], "", $argument)),
+                default => null
+            };
+        }
     }
 
     public function setAction(string $action): self
@@ -69,7 +74,15 @@ class Dict extends Command
         $words = $this->dictionary->findWordsFromAnagram();
 
         foreach ($words as $word) {
-            $this->output->print($word);
+            match (strlen($word)) {
+                3 => $this->output->printColour("3[$word]", "red"),
+                4 => $this->output->printColour("4[$word]", "cyan"),
+                5 => $this->output->printColour("5[$word]", "green"),
+                6 => $this->output->printColour("6[$word]", "orange"),
+                7 => $this->output->printColour("7[$word]", "magenta"),
+                default => $this->output->printColour($word, "white")
+            };
+            // $this->output->printColour($word, "cyan");
         }
 
         return 1;
