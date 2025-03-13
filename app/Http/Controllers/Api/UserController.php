@@ -57,6 +57,10 @@ class UserController extends Controller
      */
     public function index(Request $request): Response
     {
+        // not the best of implementations here... this would be better behind it's own 
+        // middleware for the request... if the bearer exists within the headers then we 
+        // can map it to the request object instead of doing this dance. 
+        // for every single time we're wanting to extract the bearer.
         try {
             $token = $request->getAuthorization("Bearer");
 

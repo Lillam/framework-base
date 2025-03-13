@@ -2,11 +2,10 @@
 
 namespace Vyui\Services\Database\Query;
 
-use Exception;
 use PDO;
+use Exception;
 use PDOStatement;
 use Vyui\Services\Database\Connection;
-use Vyui\Services\Database\InvalidQueryOperatorException;
 use Vyui\Services\Database\Model;
 use Vyui\Services\Database\Query\Builds\Delete;
 use Vyui\Services\Database\Query\Builds\Group;
@@ -19,6 +18,7 @@ use Vyui\Services\Database\Query\Builds\Order;
 use Vyui\Services\Database\Query\Builds\Select;
 use Vyui\Services\Database\Query\Builds\Update;
 use Vyui\Services\Database\Query\Builds\Where;
+use Vyui\Services\Database\InvalidQueryOperatorException;
 
 abstract class Builder
 {

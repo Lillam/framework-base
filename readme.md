@@ -61,3 +61,86 @@ work needed.
     - assert float
     - assert instance of
     - ... and more to come
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+24500 
+14500
+
+mother 
+210 / month x 10 = 2100 (12600 - 2100 = 10500) 
+500 / month * 9  = 4540 (all the remains on the general loan)
+
+Kate 
+100 / month * 10 = 1000 (1230 - 1000 = 230)
+
+Sarah
+300 / month * 10 = 3000 (4200 - 3000 = 1200)
+
+Emma
+150 / month * 10 = 1500 (1950 - 1500 = 450)
+
+Liam
+1000 to savings / month * 10 = 10000 
+
+
+
+
+
+
+10 months 
+- 710 
+- 300 
+- 100
+- 150 
+
+
+
+
+12700 
+10000 
+
+

@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /*
     | ------------------------------------------------------------------------------------------------------------------
     | Application Name
@@ -42,5 +41,4 @@ return [
         'default' => env('APP_LANGUAGE', 'en'),
         'location' => __DIR__ . '../resources/languages/',
     ]
-
 ];

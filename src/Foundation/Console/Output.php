@@ -49,7 +49,7 @@ class Output
             array_keys($printColourParsing),
             array_values($printColourParsing),
             $printing
-        ) . ($newLine ? PHP_EOL : "\r");
+        ) . ($newLine ? PHP_EOL : " \r");
 
         print $output;
     }

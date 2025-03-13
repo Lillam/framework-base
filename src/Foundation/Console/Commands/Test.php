@@ -3,9 +3,9 @@
 namespace Vyui\Foundation\Console\Commands;
 
 use Throwable;
-use Vyui\Tests\TestCase;
 use Vyui\Tests\TestCollection;
 use Vyui\Foundation\Application;
+use Vyui\Tests\Test as TestCase;
 use Vyui\Support\Helpers\_String;
 use Vyui\Support\Helpers\_Reflect;
 use Vyui\Services\Filesystem\FilesystemContract as Filesystem;
@@ -29,20 +29,8 @@ class Test extends Command
      */
     protected array $paths = [];
 
-    /**
-     * @var int
-     */
-    protected int $passedAssertions = 0;
-
-    /**
-     * @var int
-     */
-    protected int $failedAssertions = 0;
-
-    /**
-     * @var int
-     */
-    protected int $totalAssertions = 0;
+    protected int $testsPassed = 0;
+    protected int $testsFailed = 0;
 
     /**
      * The TestCase collection which will contain all the test files that the developer is intending on having tested.
@@ -94,7 +82,7 @@ class Test extends Command
 
         $progress = $this->output->createProgress(count($files));
 
-        $this->output->print('loading files...');
+        $this->output->printColour('loading files...', 'yellow');
 
         foreach ($files as $key => $file) {
             // Get the particular test files from the directory of the tests; this could potentially be placed within a
@@ -140,12 +128,11 @@ class Test extends Command
                 // print separator so that we know what we're working with, when talking about each particular test in
                 // question. This is a way of knowing that the previous test assertions had ended now we're onto
                 // a new set.
-                $this->output->print("├──────────────────────────────────────────────────────────");
 
                 // Let the developer know which test is getting run; this would be the overall class file that's
                 // being run; so the developer would know which file the test has been run and if an error occurs
                 // limits the place where they need to look.
-                $this->output->printInfo("ⓘ Starting testing $test");
+                $this->output->printColour("ⓘ $test", "yellow");
 
                 foreach ($classMethods as $method) {
                     // Here we could actually do $test->{$method}() which will call the method directly however; This
@@ -156,26 +143,20 @@ class Test extends Command
 
                     // print to the developer that the specific test is being run, which if there happens to be an
                     // issue around this point then the developer will know exactly where to focus their efforts.
-                    $this->output->print("ⓘ {$test->getTestName()}");
+                    $this->output->print("   ⓘ {$test->getName()}");
 
                     // iterate over all the assertions and print out what the status of the assertion is, since we have
                     // knowledge of the assertion whether it was successful or not... we can dump out the message here
-                    foreach ($test->getAssertions($test->getTestName()) as $assertion) {
-                        $this->output->print("├── ", false);
-                        $assertion->getState() ? $this->output->printSuccess("✓ {$assertion->getMessage()}")
-                                               : $this->output->printError("✗ {$assertion->getMessage()}");
+                    foreach ($test->getAssertions()->all($test->getName()) as $assertion) {
+                        $assertion->hasPassed() ? $this->output->printSuccess($assertion->getMessage("      ✓ ") . $assertion->getDescription(" | "))
+                                                : $this->output->printError($assertion->getMessage("      ✗ ") . $assertion->getDescription(" | "));
                     }
                 }
 
-                // When having iterated over the tests assertions, we can begin counting the total number of assertions
-                // whether that would be passed or failed as well as counting towards the total number of assertions
-                // from all tests.
-                $this->countAssertions($test);
-
                 // print to the user, depending on whether the particular assertion had passed or failed; if it had
                 // failed the developer would know exactly where to look.
-                $test->wasSuccessful() ? $this->output->printSuccess($this->getTotalTestAssertionMessage($test))
-                                       : $this->output->printError($this->getTotalTestAssertionMessage($test));
+                $test->hasPassed() ? $this->output->printSuccess($this->getTotalTestAssertionMessage($test))
+                                   : $this->output->printError($this->getTotalTestAssertionMessage($test));
             }
 
             // If for some reason there was an issue in trying to reflect the class that we have (which there shouldn't
@@ -195,17 +176,6 @@ class Test extends Command
      */
     private function getTotalTestAssertionMessage(TestCase $test): string
     {
-        return "ⓘ $test [{$test->getPassedAssertions()}/{$test->getTotalAssertions()}]";
-    }
-
-    /**
-     * @param TestCase $test
-     * @return void
-     */
-    private function countAssertions(TestCase $test): void
-    {
-        $this->passedAssertions += $test->getPassedAssertions();
-        $this->failedAssertions += $test->getFailedAssertions();
-        $this->totalAssertions  += $test->getTotalAssertions();
+        return "ⓘ $test [{$test->passedAssertions()}/{$test->totalAssertions()}]";
     }
 }

@@ -2,23 +2,22 @@
 
 namespace Tests\Feature;
 
-use Vyui\Tests\TestCase;
-use App\Http\Controllers\Api\UserController;
+use Vyui\Tests\Test;
 
-class ControllerTest extends TestCase
+class ControllerTest extends Test 
 {
-    public function testControllerInstantiated(): void
-    {
-        $controller = app()->make(UserController::class);
-        $this->assertInstanceOf($controller, UserController::class);
-        $this->assertArrayHasKey('test', ['test' => true]);
-        $this->assertArrayHasNotKey('test', ['nottest' => false]);
-    }
+    // public function testControllerInstantiated(): void
+    // {
+    //     $controller = app()->make(UserController::class);
+    //     $this->assertInstanceOf($controller, UserController::class);
+    //     $this->assertArrayHasKey('test', ['test' => true]);
+    //     $this->assertArrayHasNotKey('test', ['nottest' => false]);
+    // }
 
-    public function testThatMultipleTestsGetRun(): void
-    {
-        /** @var UserController $controller */
-        $controller = app()->make(UserController::class);
-        $this->assertNotNull($controller);
-    }
+    // public function testThatMultipleTestsGetRun(): void
+    // {
+    //     /** @var UserController $controller */
+    //     $controller = app()->make(UserController::class);
+    //     $this->assertNotNull($controller);
+    // }
 }

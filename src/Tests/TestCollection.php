@@ -7,7 +7,7 @@ class TestCollection
     /**
      * The items within the collection
      *
-     * @var TestCase[]
+     * @var Test[]
      */
     protected array $items = [];
 
@@ -52,7 +52,7 @@ class TestCollection
     }
 
     /**
-     * @return TestCase[]
+     * @return Test[]
      */
     public function all(): array
     {

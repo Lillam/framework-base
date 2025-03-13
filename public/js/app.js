@@ -91,28 +91,28 @@
 
 // console.log(17000 * 0.03);
 
-const currentImage = document.querySelector("#my-image");
-const remadeImageWrapper = document.querySelector(".swatch");
+// const currentImage = document.querySelector("#my-image");
+// const remadeImageWrapper = document.querySelector(".swatch");
 
-const getImageData = (src) =>
-    new Promise((resolve, reject) => {
-        const canvas = document.createElement("canvas");
-        const context = canvas.getContext("2d");
-        const img = new Image();
+// const getImageData = (src) =>
+//     new Promise((resolve, reject) => {
+//         const canvas = document.createElement("canvas");
+//         const context = canvas.getContext("2d");
+//         const img = new Image();
 
-        img.onload = () => {
-            canvas.height = img.height;
-            canvas.width = img.width;
-            context.drawImage(img, 0, 0);
+//         img.onload = () => {
+//             canvas.height = img.height;
+//             canvas.width = img.width;
+//             context.drawImage(img, 0, 0);
 
-            const data = context.getImageData(0, 0, img.width, img.height).data;
+//             const data = context.getImageData(0, 0, img.width, img.height).data;
 
-            resolve(data);
-        };
-        img.onerror = () => reject(Error("Image loading failed."));
-        img.crossOrigin = "";
-        img.src = src;
-    });
+//             resolve(data);
+//         };
+//         img.onerror = () => reject(Error("Image loading failed."));
+//         img.crossOrigin = "";
+//         img.src = src;
+//     });
 
 // getImageData(currentImage.src).then(colours => {
 //     console.log(colours.length / 4);
@@ -167,155 +167,155 @@ const getImageData = (src) =>
 //     keyElement.classList.remove('active');
 // });
 
-const useState = (dv = null) => {
-    let _val = dv;
+// const useState = (dv = null) => {
+//     let _val = dv;
 
-    const set = (nv) => _val = nv;
-    const get = () => _val;
+//     const set = (nv) => _val = nv;
+//     const get = () => _val;
 
-    return [get, set];
-};
-
-
-const useRouter = () => {
-    const route = window.location.href;
-
-    const push = (route) => {
-        window.location.href = `${window.location.origin}/${route}`;
-
-    };
-
-    return {
-        push
-    };
-};
-
-const App = (container = document.querySelector('.app')) => {
-    // this state is remembered throughout the entire life-cycle whilst "App" exists...
-    const [getCount, setCount] = useState(0);
-
-    const { push } = useRouter();
-
-    // push('test');
-
-    console.log(getCount());
-    setCount(10);
-    console.log(getCount());
-};
-
-App(
-    document.querySelector(".app")
-);
-
-(new IntersectionObserver((entries, observer) => {
-    const adviewer = document.querySelector('.ytp-caption-window-container'),
-          muter = document.querySelector('.ytp-mute-button');
-
-    entries.forEach(entry => {
-        // In either scenario where the advert is visible or not, we are going to
-        // want to mute the video or unmute if the ad is no longer visible
-        // the aim here is to protect your beautiful brain from disgusting ad visuals and
-        // noises that you don't need to hear why would we bother with that.
-        muter.click();
-
-        // A rather simple way to just turn the ad screen black; you can let the
-        // Ad play out, but there's no point in you seeing it, I mean; you want
-        // Ads gone, you don't care for them, you're not gonna go out your way
-        // and buy a refrigerator because google decided to push it in your face
-        // are you? - I mean you probably already have a fridge; the audacity to
-        // even assume you want another one. Ads are the crux of the internet
-        // read a book whilst you wait or something; something better than this
-        // god forsaken filth.
-        if (entry.isIntersecting) {
-            adviewer.style.backgroundColor = "black";
-            adviewer.style.zIndex = 10;
-        } else {
-            adviewer.style.backgroundColor = "transparent";
-            adviewer.style.zIndex = 0;
-        }
-    });
-}, {
-    root: null,
-    threshold: 0.05
-})).observe(document.querySelector('.ytp-ad-persistent-progress-bar-container'));
+//     return [get, set];
+// };
 
 
+// const useRouter = () => {
+//     const route = window.location.href;
+
+//     const push = (route) => {
+//         window.location.href = `${window.location.origin}/${route}`;
+
+//     };
+
+//     return {
+//         push
+//     };
+// };
+
+// const App = (container = document.querySelector('.app')) => {
+//     // this state is remembered throughout the entire life-cycle whilst "App" exists...
+//     const [getCount, setCount] = useState(0);
+
+//     const { push } = useRouter();
+
+//     // push('test');
+
+//     console.log(getCount());
+//     setCount(10);
+//     console.log(getCount());
+// };
+
+// App(
+//     document.querySelector(".app")
+// );
+
+// (new IntersectionObserver((entries, observer) => {
+//     const adviewer = document.querySelector('.ytp-caption-window-container'),
+//           muter = document.querySelector('.ytp-mute-button');
+
+//     entries.forEach(entry => {
+//         // In either scenario where the advert is visible or not, we are going to
+//         // want to mute the video or unmute if the ad is no longer visible
+//         // the aim here is to protect your beautiful brain from disgusting ad visuals and
+//         // noises that you don't need to hear why would we bother with that.
+//         muter.click();
+
+//         // A rather simple way to just turn the ad screen black; you can let the
+//         // Ad play out, but there's no point in you seeing it, I mean; you want
+//         // Ads gone, you don't care for them, you're not gonna go out your way
+//         // and buy a refrigerator because google decided to push it in your face
+//         // are you? - I mean you probably already have a fridge; the audacity to
+//         // even assume you want another one. Ads are the crux of the internet
+//         // read a book whilst you wait or something; something better than this
+//         // god forsaken filth.
+//         if (entry.isIntersecting) {
+//             adviewer.style.backgroundColor = "black";
+//             adviewer.style.zIndex = 10;
+//         } else {
+//             adviewer.style.backgroundColor = "transparent";
+//             adviewer.style.zIndex = 0;
+//         }
+//     });
+// }, {
+//     root: null,
+//     threshold: 0.05
+// })).observe(document.querySelector('.ytp-ad-persistent-progress-bar-container'));
 
 
 
 
-const Observe = (selector, opt, callback) => {
-    const Obs = new MutationObserver((m) => [...m].forEach(callback));
-    Obs.observe(document.querySelector(selector), opt);
-};
 
-Observe(".ytp-ad-persistent-progress-bar-container", {
-    attributesList: ["style"], // Only the "style" attribute
-    attributeOldValue: true,   // Report also the oldValue
-}, (mutation) => {
-    const adviewer = document.querySelector('.ytp-caption-window-container'),
-          muter = document.querySelector('.ytp-mute-button');
 
-    if (mutation.attributeName === "style") {
-        const element = mutation.target;
-        const isVisible = element.style.display !== "none";
-        const interval = setInterval(() => {
-            document.querySelector('.ytp-skip-ad-button')?.click();
-        }, [1000]);
+// const Observe = (selector, opt, callback) => {
+//     const Obs = new MutationObserver((m) => [...m].forEach(callback));
+//     Obs.observe(document.querySelector(selector), opt);
+// };
 
-        // In either scenario where the advert is visible or not, we are going to
-        // want to mute the video or unmute if the ad is no longer visible
-        // the aim here is to protect your beautiful brain from disgusting ad visuals and
-        // noises that you don't need to hear why would we bother with that.
-        if (muter) {
-            muter.click();
-        }
+// Observe(".ytp-ad-persistent-progress-bar-container", {
+//     attributesList: ["style"], // Only the "style" attribute
+//     attributeOldValue: true,   // Report also the oldValue
+// }, (mutation) => {
+//     const adviewer = document.querySelector('.ytp-caption-window-container'),
+//           muter = document.querySelector('.ytp-mute-button');
 
-        // if we don't have an adviewer; something wen't wrong, though this should
-        // be in the document.
-        if (!adviewer) {
-            return;
-        }
+//     if (mutation.attributeName === "style") {
+//         const element = mutation.target;
+//         const isVisible = element.style.display !== "none";
+//         const interval = setInterval(() => {
+//             document.querySelector('.ytp-skip-ad-button')?.click();
+//         }, [1000]);
 
-        // A rather simple way to just turn the ad screen black; you can let the
-        // Ad play out, but there's no point in you seeing it, I mean; you want
-        // Ads gone, you don't care for them, you're not gonna go out your way
-        // and buy a refrigerator because google decided to push it in your face
-        // are you? - I mean you probably already have a fridge; the audacity to
-        // even assume you want another one. Ads are the crux of the internet
-        // read a book whilst you wait or something; something better than this
-        // god forsaken filth.
-        if (isVisible) {
-            adviewer.style.backgroundColor = "black";
-            adviewer.style.zIndex = 10;
-            return;
-        } else {
-            clearInterval(interval);
-        }
+//         // In either scenario where the advert is visible or not, we are going to
+//         // want to mute the video or unmute if the ad is no longer visible
+//         // the aim here is to protect your beautiful brain from disgusting ad visuals and
+//         // noises that you don't need to hear why would we bother with that.
+//         if (muter) {
+//             muter.click();
+//         }
 
-        adviewer.style.backgroundColor = "transparent";
-    }
-});
+//         // if we don't have an adviewer; something wen't wrong, though this should
+//         // be in the document.
+//         if (!adviewer) {
+//             return;
+//         }
+
+//         // A rather simple way to just turn the ad screen black; you can let the
+//         // Ad play out, but there's no point in you seeing it, I mean; you want
+//         // Ads gone, you don't care for them, you're not gonna go out your way
+//         // and buy a refrigerator because google decided to push it in your face
+//         // are you? - I mean you probably already have a fridge; the audacity to
+//         // even assume you want another one. Ads are the crux of the internet
+//         // read a book whilst you wait or something; something better than this
+//         // god forsaken filth.
+//         if (isVisible) {
+//             adviewer.style.backgroundColor = "black";
+//             adviewer.style.zIndex = 10;
+//             return;
+//         } else {
+//             clearInterval(interval);
+//         }
+
+//         adviewer.style.backgroundColor = "transparent";
+//     }
+// });
 
 
 
 
 
 // Select the element you want to observe
-const targetElement = document.querySelector('#yourElement');
+// const targetElement = document.querySelector('#yourElement');
 
-// Create a callback function that will be called when the element's visibility changes
-const observerCallback = (entries, observer) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      // The element is visible
-      console.log('Element is visible');
-    } else {
-      // The element is not visible
-      console.log('Element is not visible');
-    }
-  });
-};
+// // Create a callback function that will be called when the element's visibility changes
+// const observerCallback = (entries, observer) => {
+//   entries.forEach(entry => {
+//     if (entry.isIntersecting) {
+//       // The element is visible
+//       console.log('Element is visible');
+//     } else {
+//       // The element is not visible
+//       console.log('Element is not visible');
+//     }
+//   });
+// };
 
 // Create a new IntersectionObserver instance
 // const observer = new IntersectionObserver(observerCallback, {
@@ -326,36 +326,63 @@ const observerCallback = (entries, observer) => {
 // // Start observing the target element
 // observer.observe(targetElement);
 
-const observer = new MutationObserver(function (mutations) {
-    mutations.forEach(function (mutation) {
-        // if the mutation we're dealing with isn't the fact that
-        // youtube has added a class ".ad-showing" to the chosen
-        // element then we're going to ignore it... we only care
-        // about protecting our eyes and ears from the disgusting
-        // adverts forced upon us.
-        if (mutation.attributeName !== "class") {
-            return;
-        }
+// const observer = new mutationobserver(function (mutations) {
+//     mutations.forEach(function (mutation) {
+//         // if the mutation we're dealing with isn't the fact that
+//         // youtube has added a class ".ad-showing" to the chosen
+//         // element then we're going to ignore it... we only care
+//         // about protecting our eyes and ears from the disgusting
+//         // adverts forced upon us.
+//         if (mutation.attributeName !== "class") {
+//             return;
+//         }
 
-        const adPlaying = mutation.target.classList.contains('ad-showing');
+//         const adPlaying = mutation.target.classList.contains('ad-showing');
 
-        document.querySelector('.html5-main-video').style.display = adPlaying ? "none" : "block";
+//         document.querySelector('.html5-main-video').style.display = adPlaying ? "none" : "block";
 
-        if (adPlaying) {
-            // if the mute button is enabled, then we wanna disable it.
+//         if (adPlaying) {
+//             // if the mute button is enabled, then we wanna disable it.
 
-        } else {
-            // if the mute button is disabled, then we wanna re-enable it.
-        }
+//         } else {
+//             // if the mute button is disabled, then we wanna re-enable it.
+//         }
 
-        document.querySelector('.html5-main-video').style.display = "none";
-        // if ($(mutation.target).hasClass('passed')){
-        //     alert("passed class was added");
-        //     fill();
-        // }
-    });
-});
+//         document.querySelector('.html5-main-video').style.display = "none";
+//         // if ($(mutation.target).hasClass('passed')){
+//         //     alert("passed class was added");
+//         //     fill();
+//         // }
+//     });
+// });
 
-observer.observe(document.querySelector('.html5-video-player'), {
-    attributes: true
-});
+// observer.observe(document.querySelector('.html5-video-player'), {
+//     attributes: true
+// });
+
+// this is the only way in which my brain can comprehend something like this
+// even being possible... I'm not too sure what happens under the hood behind
+// react and would love to see it though when looking through the code you
+// don't actually have insight into these things, instead
+// you only get to see the interfaces instead - which does make me wonder where
+// is the code situated when installing these things in node modules? they've got
+// to be there somewhere right?
+const useState = (val) => {
+    const state = {
+        value: val
+    };
+
+    const set = (newVal) => state.value = newVal;
+
+    return [ state, set];
+};
+
+const [state, setState] = useState(0);
+
+
+console.log(state.value);
+
+setState(100);
+
+// should be 100..
+console.log(state.value);

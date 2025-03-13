@@ -73,8 +73,11 @@ class TestAssertionCollection
      */
     public function all(int|string $key = null): array
     {
-        return $key ? $this->items[$key]
-                    : $this->items;
+        if ($key && isset($this->items[$key])) {
+            return $this->items[$key];
+        }
+
+        return $this->items;
     }
 
     /**

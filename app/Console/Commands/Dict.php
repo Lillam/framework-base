@@ -5,12 +5,10 @@ namespace App\Console\Commands;
 use Vyui\Dictionary\Dictionary;
 use Vyui\Foundation\Application;
 use Vyui\Foundation\Console\Commands\Command;
-use Vyui\Services\Filesystem\Filesystem;
 
 class Dict extends Command
 {
     protected Application $application;
-    protected Filesystem $filesystem;
     protected Dictionary $dictionary;
 
     protected string $action;
@@ -18,12 +16,10 @@ class Dict extends Command
     protected int $maxLength = 7;
     protected int $minLength = 3;
 
-    public function __construct(Application $application, Filesystem $filesystem, array $arguments = [])
+    public function __construct(Application $application, Dictionary $dictionary, array $arguments = [])
     {
         $this->application = $application;
-        $this->filesystem = $filesystem;
-        $this->dictionary = (new Dictionary($filesystem))->load();
-
+        $this->dictionary = $dictionary;
         parent::__construct($application, $arguments);
 
         foreach ($arguments as $argument) {
@@ -67,22 +63,29 @@ class Dict extends Command
 
     public function execute(): int
     {
+        if (! isset($this->anagram)) {
+            return $this->output->printColour("missing arguments", "red") ?? 0;
+        }
+
         $this->dictionary->setAnagram($this->anagram)
                          ->setAnagramMin($this->minLength)
                          ->setAnagramMax($this->maxLength);
 
         $words = $this->dictionary->findWordsFromAnagram();
 
+        usort($words, function (string $a, string $b) {
+            return strlen($a) - strlen($b);
+        });
+
         foreach ($words as $word) {
             match (strlen($word)) {
-                3 => $this->output->printColour("3[$word]", "red"),
-                4 => $this->output->printColour("4[$word]", "cyan"),
-                5 => $this->output->printColour("5[$word]", "green"),
-                6 => $this->output->printColour("6[$word]", "orange"),
-                7 => $this->output->printColour("7[$word]", "magenta"),
+                3 => $this->output->printColour("3[$word]", "cyan"),
+                4 => $this->output->printColour("4[$word]", "green"),
+                5 => $this->output->printColour("5[$word]", "orange"),
+                6 => $this->output->printColour("6[$word]", "magenta"),
+                7 => $this->output->printColour("7[$word]", "blue"),
                 default => $this->output->printColour($word, "white")
             };
-            // $this->output->printColour($word, "cyan");
         }
 
         return 1;

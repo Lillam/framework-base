@@ -2,6 +2,7 @@
 
 namespace Vyui\Tests;
 
+use BadMethodCallException;
 use Vyui\Tests\Assertions\{
     AssertInt,
     AssertNull,
@@ -31,6 +32,8 @@ use Vyui\Tests\Assertions\TestAssertion;
 
 abstract class TestCase
 {
+    protected string $testName;
+
     /**
      * The tests in which have passed.
      *
@@ -62,19 +65,13 @@ abstract class TestCase
     /**
      * Upon object instantiation we're going to construct this particular item with the necessary collection items.
      *
+     * @param TestAssertionCollection|null $assertions
      * @return void
      */
-    public function __construct()
+    public function __construct(?TestAssertionCollection $assertions)
     {
-        $this->assertions = new TestAssertionCollection;
+        $this->assertions = $assertions ?? new TestAssertionCollection();
     }
-
-    /**
-     * The name of the test that we're running, which would be the name of the testing method running at the time.
-     *
-     * @var string
-     */
-    protected string $testName = '';
 
     /**
      * Assert the two passed values equate to being one another.
@@ -351,6 +348,12 @@ abstract class TestCase
         // Test Something Is Actually True -> 3 assertions 3 passes check mark or
         // Test Something Is Actually True -> 3 assertions 2 passes and 1 fail cross mark.
         $this->testName = _String::fromString($method)->convertCamelCaseToSentence();
+
+        // if we're attempting to call a method that doesn't exist within the class then we're going to want to throw an
+        // exception to the developer so that they can see that they're trying to call a method that doesn't exist.
+        if (! method_exists($this, $method)) {
+            throw new BadMethodCallException("Method [$method] does not exist within " . static::class);
+        }
 
         // call the expected method that the developer had originally intended.
         $this->{$method}(...$parameters);

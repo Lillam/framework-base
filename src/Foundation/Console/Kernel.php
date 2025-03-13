@@ -96,7 +96,18 @@ class Kernel implements KernelContract
      */
     public function getCommandName(Input $input): string
     {
-        return $input->getTokens()[0];
+        return $input->getTokens()[0] ?? $this->getDefaultCommandName();
+    }
+
+    /**
+     * Get the defawult command name you would like to run if there are no commands that have been
+     * provided.
+     *
+     * @return string
+     */
+    public function getDefaultCommandName(): string
+    {
+        return "help";
     }
 
     /**
@@ -121,10 +132,17 @@ class Kernel implements KernelContract
      */
     public function handle(Input $input, ?Output $output = null): int
     {
-        $command = $this->getCommand($this->getCommandName($input), $this->getCommandTokens($input))
-                        ->setOutput($output);
+        try {
+            $command = $this->getCommand(
+                $this->getCommandName($input),
+                $this->getCommandTokens($input)
+            )->setOutput($output);
 
-        return $command->execute();
+            return $command->execute();
+        } catch (CommandNotFoundException $e) {
+            $output = (new Output)->printError("Command doesn't exist.");
+            return 0;
+        }
     }
 
     public function onBoot(): void
