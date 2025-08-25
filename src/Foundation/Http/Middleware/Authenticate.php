@@ -15,6 +15,8 @@ class Authenticate extends Middleware
      */
     public function handle(Request $request): Request
     {
+        dd('here fresh from the middleware...');
+
         // token based authorization
         if ($request->get("token")) {
             var_dump($request->get("token"));

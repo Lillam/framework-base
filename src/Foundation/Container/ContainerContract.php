@@ -3,7 +3,8 @@
 namespace Vyui\Foundation\Container;
 
 use Closure;
-use Vyui\Foundation\Container\Container;
+use ReflectionException;
+use Vyui\Foundation\Container\Container as ApplicationContainer;
 
 interface ContainerContract
 {
@@ -13,14 +14,14 @@ interface ContainerContract
      * @param ApplicationContainer|null $container
      * @return ApplicationContainer|static|null
      */
-    public static function setInstance(Container $container = null): Container|static|null;
+    public static function setInstance(?ApplicationContainer $container = null): ApplicationContainer|static|null;
 
     /**
      * Get the global access to the available container.
      *
      * @return ApplicationContainer|static|null
      */
-    public static function getInstance(): Container|static|null;
+    public static function getInstance(): ApplicationContainer|static|null;
 
     /**
      * Set up an abstract instance into the container that we can re-use later as a shared resources. using this will
@@ -40,15 +41,6 @@ interface ContainerContract
      * @return bool
      */
     public function isBuildable(string $abstract, string|Closure|null $concrete): bool;
-
-    /**
-     * Confirm if a given concrete against an abstraction is not buildable.
-     *
-     * @param string $abstract
-     * @param string|Closure $concrete
-     * @return bool
-     */
-    public function isNotBuildable(string $abstract, string|Closure $concrete): bool;
 
     /**
      * Get all the abstractions that have been resolved in the container.

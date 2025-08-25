@@ -42,11 +42,11 @@ class UserController extends Controller
     {
         $apiKey = str_replace("api-key=", "", request()->getHeader("HTTP_AUTHORIZATION"));
 
-        if (!User::where("api_token", "=", $apiKey)->first()) {
-            http_response_code(401);
-            echo json_encode(["message" => "Invalid api-key"]);
-            exit();
-        }
+        // if (!User::where("api_token", "=", $apiKey)->first()) {
+        //     http_response_code(401);
+        //     echo json_encode(["message" => "Invalid api-key"]);
+        //     exit();
+        // }
     }
 
     /**
@@ -57,9 +57,9 @@ class UserController extends Controller
      */
     public function index(Request $request): Response
     {
-        // not the best of implementations here... this would be better behind it's own 
-        // middleware for the request... if the bearer exists within the headers then we 
-        // can map it to the request object instead of doing this dance. 
+        // not the best of implementations here... this would be better behind it's own
+        // middleware for the request... if the bearer exists within the headers then we
+        // can map it to the request object instead of doing this dance.
         // for every single time we're wanting to extract the bearer.
         try {
             $token = $request->getAuthorization("Bearer");
@@ -75,29 +75,9 @@ class UserController extends Controller
             return response()->json(["error" => "token is invalid"]);
         }
 
-        return response()->json(
-            array_map(function ($item) {
-                return $item->getAttributes();
-            }, User::all())
-        );
+        return response()->json(array_map(
+            fn($item) => $item->getAttributes(),
+            User::all()
+        ));
     }
 }
-
-/**
-curl -H "Content-Type: application/json" \
--H "Authorization: Bearer {}" \
--X GET \
-https://framework.test/api/v1/users
-
-curl -H "Content-Type: application/json" \
--d '{ "email": "name@name.email.com", "password": "this is a password" }' \
--X POST \
-https://framework.test/api/v1/login
-
-
-curl -H "Content-Type: application/json" \
--H "Authorization: Bearer eyJ0eXAiOiJUb2tlbiIsImFsZyI6IkhTMjU2In0.eyJhY2Nlc3NfdG9rZW4iOiJhYmNkZTEyMzQ1IiwicmVmcmVzaF90b2tlbiI6ImFiY2RlZjEyMzQ1IiwiZXhwaXJ5Ijo4NjQwMH0.iRKaFskQ0Qa1Zz-hR2zRiYJGrHT6neFmJcwTqvpI4i4" \
--d '{ "email": "name@name.email.com", "password": "this is a password" }' \
--X POST \
-https://framework.test/api/v1/login
- */

@@ -26,7 +26,7 @@ class _Reflect
 
         $name = $type->getName();
 
-        if (! is_null($class = $reflectionParameter->getDeclaringClass())) {
+        if (($class = $reflectionParameter->getDeclaringClass()) !== null) {
             if ($name === 'self') {
                 return $class->getName();
             }
@@ -40,7 +40,7 @@ class _Reflect
     }
 
     /**
-     * A Helper method to get a classes' methods parameter names; which will be utilised for autowiring the necessary
+     * A Helper method to get a classes' method's parameter names, which will be utilised for autowiring the necessary
      * variable names to a particular class upon building.
      *
      * @param object $class

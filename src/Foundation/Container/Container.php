@@ -129,7 +129,7 @@ class Container implements ContainerContract
     {
         // if the concrete had been passed through as null, then we're going to want to make the concrete the same as
         // the abstraction. which will then concrete itself.
-        if (is_null($concrete)) {
+        if ($concrete === null) {
             $concrete = $abstract;
         }
 
@@ -162,17 +162,6 @@ class Container implements ContainerContract
     public function isBound(string $abstract): bool
     {
         return isset($this->bindings[$abstract]);
-    }
-
-    /**
-     * Confirm an abstracted type has not yet been bound to the container.
-     *
-     * @param string $abstract
-     * @return bool
-     */
-    public function isNotBound(string $abstract): bool
-    {
-        return ! $this->isBound($abstract);
     }
 
     /**
@@ -238,7 +227,7 @@ class Container implements ContainerContract
     public function resolve(string $abstract, array $parameters = []): mixed
     {
         // first things first, we are going to check whether the abstraction has already been instantiated and stored
-        // in the containers instances. and if so, we're going to utilise it from there instead. and return early.
+        // in the container's instances. and if so, we're going to utilise it from there instead. and return early.
         if (isset($this->instances[$abstract])) {
             return $this->instances[$abstract];
         }
@@ -248,11 +237,9 @@ class Container implements ContainerContract
         // At this point, upon deciding whether the abstraction/concrete is buildable or not, we're ready to
         // create an instance of the concrete type that's been registered against the binding. This will  instantiate
         // the necessary types and any nested dependencies recursively until all has been resolved.
-        if ($this->isBuildable($abstract, $concrete = $this->getConcrete($abstract))) {
-            $abstraction = $this->build($concrete);
-        } else {
-            $abstraction = $this->make($concrete);
-        }
+        $abstraction = ($this->isBuildable($abstract, $concrete = $this->getConcrete($abstract)))
+            ? $this->build($concrete)
+            : $this->make($concrete);
 
         // if this particular binding had been marked as an item of which wants to be shared, then we're going to need
         // to store this in memory, so that upon requesting this abstraction again, we're going to be able to return it
@@ -298,18 +285,6 @@ class Container implements ContainerContract
     public function isBuildable(string $abstract, string|Closure|null $concrete): bool
     {
         return $abstract === $concrete || $concrete instanceof Closure;
-    }
-
-    /**
-     * Confirm if a given concrete against an abstraction is not buildable.
-     *
-     * @param string $abstract
-     * @param string|Closure $concrete
-     * @return bool
-     */
-    public function isNotBuildable(string $abstract, string|Closure $concrete): bool
-    {
-        return $abstract !== $concrete && ! $concrete instanceof Closure;
     }
 
     /**

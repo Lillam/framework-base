@@ -13,12 +13,13 @@
 |
 */
 
+use Vyui\Support\Facades\Route;
 use Vyui\Services\Routing\Router;
 use App\Http\Controllers\Api\ApiController;
 use App\Http\Controllers\Api\UserController;
 
-/** @var Router $router */
-$router = app(Router::class);
+// /** @var Router $router */
+// $router = app(Router::class);
 
 // $router->group("/api/v1", function (Router $router) {
 //     $router->get("/testing", function () {
@@ -33,3 +34,9 @@ $router = app(Router::class);
 //     $router->get("/users", [UserController::class, "index"]);
 //     $router->post("/login", [UserController::class, "login"]);
 // });
+
+Route::group('/api/v1', function (Router $router) {
+    $router->get("/token", function (Router $router) {
+        dd($router);
+    });
+});

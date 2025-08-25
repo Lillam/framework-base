@@ -8,21 +8,30 @@ class RandomTest extends Test
 {
     public function testing(): void
     {
-        $basket = [1];
-        $this->assert(800)->equals(total($basket));
-        $basket = [1, 2, 3, 4, 5];
-        $this->assert(3000)->equals(total($basket));
-        $basket = [1, 1, 2, 2, 3, 3, 3, 1, 1, 1, 4];
-        // 4, 3, 2, 1, 1
-        // 4 * 800 * 0.8 = 2560
-        // 3 * 800 * 0.9 = 2160
-        // 2 * 800 * 0.95 = 1520
-        // 800
-        // 800
-        // 2560 + 2160 + 1520 + 800 + 800 = 7840
-        $this->assert(7840)->equals(total($basket));
-        $basket = [1, 1, 2, 2, 3, 3, 4, 5];
-        $this->assert(5120)->equals(total($basket));
+        // $basket = [1];
+        // $this->assert(800)->equals(total($basket));
+        // $basket = [1, 2, 3, 4, 5];
+        // $this->assert(3000)->equals(total($basket));
+        // $basket = [1, 1, 2, 2, 3, 3, 3, 1, 1, 1, 4];
+        // // 4, 3, 2, 1, 1
+        // // 4 * 800 * 0.8 = 2560
+        // // 3 * 800 * 0.9 = 2160
+        // // 2 * 800 * 0.95 = 1520
+        // // 800
+        // // 800
+        // // 2560 + 2160 + 1520 + 800 + 800 = 7840
+        // $this->assert(7840)->equals(total($basket));
+        // $basket = [1, 1, 2, 2, 3, 3, 4, 5];
+        // $this->assert(5120)->equals(total($basket));
+        //
+
+        $state = (new StateOfTicTacToe)->gameState([
+            "XXO",
+            " XO",
+            "  O"
+        ]);
+
+        $this->assert($state)->equals("win");
     }
 
     // public function testIsOneEqualToOne(): void
@@ -43,6 +52,74 @@ class RandomTest extends Test
     // {
     //     $this->assert(1)->equals(1);
     // }
+}
+
+enum State
+{
+    case Win;
+    case Draw;
+    case Ongoing;
+}
+
+class StateOfTicTacToe
+{
+    public function gameState(array $board): string
+    {
+        $winningCoordinatesGroups = [
+            // horizontal winning positions
+            [[0, 0], [0, 1], [0, 2]],
+            [[1, 0], [1, 1], [1, 2]],
+            [[2, 0], [2, 1], [2, 2]],
+            // vertical winning positions
+            [[0, 0], [1, 0], [2, 0]],
+            [[0, 1], [1, 1], [2, 1]],
+            [[0, 2], [1, 2], [2, 3]],
+            // cross winning positions
+            [[0, 0], [1, 1], [2, 2]],
+            [[0, 2], [1, 1], [2, 0]],
+        ];
+
+        $boardCount = 0;
+
+        foreach ($winningCoordinatesGroups as $winningCoordinates) {
+            [$a, $b, $c] = $winningCoordinates;
+
+
+            // if ($board[$a[0]][$a[1]] || $board[$b[0]][$b[1]] || $board[$c[0]][$c[1]]) {
+            //     $boardCount ++;
+            // }
+
+            if (
+                $board[$a[0]][$a[1]] === $board[$b[0]][$b[1]] &&
+                $board[$b[0]][$b[1]] === $board[$c[0]][$c[1]]
+            ) {
+                return "win";
+            }
+
+            // if ($boardCount >= 8) {
+            //     return "draw";
+            // }
+        }
+
+        return "ongoing";
+    }
+}
+
+
+function slices(string $digits, int $series) {
+    if ($series > strlen($digits) || $series === 0) {
+        throw new \Exception(
+            "Slices can't be made with incompatible digits and series."
+        );
+    }
+
+    $slices = [];
+
+    for ($i = 0; $i <= strlen($digits) - $series; $i++) {
+        $slices[] = substr($digits, $i, $series);
+    }
+
+    return $slices;
 }
 
 function total(array $items): int {

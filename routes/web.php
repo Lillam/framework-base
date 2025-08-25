@@ -14,29 +14,17 @@
 */
 
 use Vyui\Support\Facades\Route;
-use Vyui\Services\Routing\Router;
 use App\Http\Controllers\Web\WebController;
+use App\Http\Controllers\Api\UserController;
 
 router()->get('/test', fn() => view(
     'home3',
     ['d1' => 1, 'd2' => 2, 'd3' => 3]
 ));
 
-// /** @var Router $router */
-// $router = app(Router::class);
-
-// $router->get("/", [WebController::class, "test"]);
-// $router->post("/", [WebController::class, "index"]);
-
-// $router->get("/yascreem/{test?}", fn($test) => view("home3", ["test" => $test]));
-
-// // Route::get('/yascreem/{test?}', fn ($test) => view('home2', ['test' => $test]));
-// Route::get("/tests/{test}/{testing}", [\App\Http\Controllers\Web\WebController::class, "test"]);
-
-// Route::get("/", [WebController::class, "test"]);
-// Route::get("/tasks/{task?}", [\App\Http\Controllers\Web\WebController::class, "index"]);
-
 Route::get('/', [WebController::class, 'home']);
 
 Route::get("/giveToken", [WebController::class, 'giveToken']);
 Route::get("/parseToken", [WebController::class, "parseToken"]);
+
+Route::get('/random', [UserController::class, 'random']);

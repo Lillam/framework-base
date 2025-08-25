@@ -6,8 +6,12 @@
         "psr-4": {
             "Vyui\\": "src/",
             "App\\": "app/",
-            "Tests\\": "tests/"
+            "Tests\\": "tests/",
+            "Database\\Migrations\\": "database/migrations/"
         },
+        "classmap": [
+            "database/migrations"
+        ],
         "files": [
             "src/helpers.php"
         ]
