@@ -54,113 +54,112 @@ class RandomTest extends Test
     // }
 }
 
-enum State
-{
-    case Win;
-    case Draw;
-    case Ongoing;
-}
+// enum State
+// {
+//     case Win;
+//     case Draw;
+//     case Ongoing;
+// }
 
-class StateOfTicTacToe
-{
-    public function gameState(array $board): string
-    {
-        $winningCoordinatesGroups = [
-            // horizontal winning positions
-            [[0, 0], [0, 1], [0, 2]],
-            [[1, 0], [1, 1], [1, 2]],
-            [[2, 0], [2, 1], [2, 2]],
-            // vertical winning positions
-            [[0, 0], [1, 0], [2, 0]],
-            [[0, 1], [1, 1], [2, 1]],
-            [[0, 2], [1, 2], [2, 3]],
-            // cross winning positions
-            [[0, 0], [1, 1], [2, 2]],
-            [[0, 2], [1, 1], [2, 0]],
-        ];
+// class StateOfTicTacToe
+// {
+//     public function gameState(array $board): string
+//     {
+//         $winningCoordinatesGroups = [
+//             // horizontal winning positions
+//             [[0, 0], [0, 1], [0, 2]],
+//             [[1, 0], [1, 1], [1, 2]],
+//             [[2, 0], [2, 1], [2, 2]],
+//             // vertical winning positions
+//             [[0, 0], [1, 0], [2, 0]],
+//             [[0, 1], [1, 1], [2, 1]],
+//             [[0, 2], [1, 2], [2, 3]],
+//             // cross winning positions
+//             [[0, 0], [1, 1], [2, 2]],
+//             [[0, 2], [1, 1], [2, 0]],
+//         ];
 
-        $boardCount = 0;
+//         $boardCount = 0;
 
-        foreach ($winningCoordinatesGroups as $winningCoordinates) {
-            [$a, $b, $c] = $winningCoordinates;
-
-
-            // if ($board[$a[0]][$a[1]] || $board[$b[0]][$b[1]] || $board[$c[0]][$c[1]]) {
-            //     $boardCount ++;
-            // }
-
-            if (
-                $board[$a[0]][$a[1]] === $board[$b[0]][$b[1]] &&
-                $board[$b[0]][$b[1]] === $board[$c[0]][$c[1]]
-            ) {
-                return "win";
-            }
-
-            // if ($boardCount >= 8) {
-            //     return "draw";
-            // }
-        }
-
-        return "ongoing";
-    }
-}
+//         foreach ($winningCoordinatesGroups as $winningCoordinates) {
+//             [$a, $b, $c] = $winningCoordinates;
 
 
-function slices(string $digits, int $series) {
-    if ($series > strlen($digits) || $series === 0) {
-        throw new \Exception(
-            "Slices can't be made with incompatible digits and series."
-        );
-    }
+//             // if ($board[$a[0]][$a[1]] || $board[$b[0]][$b[1]] || $board[$c[0]][$c[1]]) {
+//             //     $boardCount ++;
+//             // }
 
-    $slices = [];
+//             if (
+//                 $board[$a[0]][$a[1]] === $board[$b[0]][$b[1]] &&
+//                 $board[$b[0]][$b[1]] === $board[$c[0]][$c[1]]
+//             ) {
+//                 return "win";
+//             }
 
-    for ($i = 0; $i <= strlen($digits) - $series; $i++) {
-        $slices[] = substr($digits, $i, $series);
-    }
+//             // if ($boardCount >= 8) {
+//             //     return "draw";
+//             // }
+//         }
 
-    return $slices;
-}
+//         return "ongoing";
+//     }
+// }
 
-function total(array $items): int {
-    $price = 0;
+// function slices(string $digits, int $series) {
+//     if ($series > strlen($digits) || $series === 0) {
+//         throw new \Exception(
+//             "Slices can't be made with incompatible digits and series."
+//         );
+//     }
 
-    foreach (extractBasket($items) as $basket) {
-        $price += match (count($basket)) {
-            1 => (1 * 800),
-            2 => (2 * 800) * 0.95,
-            3 => (3 * 800) * 0.90,
-            4 => (4 * 800) * 0.80,
-            5 => (5 * 800) * 0.75,
-            default => 0,
-        };
-    }
+//     $slices = [];
 
-    return (int) round($price);
-}
+//     for ($i = 0; $i <= strlen($digits) - $series; $i++) {
+//         $slices[] = substr($digits, $i, $series);
+//     }
 
-function extractBasket(array $items): array {
-    if (count($items) === 0) {
-        return [];
-    }
+//     return $slices;
+// }
 
-    $groups = array_values(array_count_values($items));
-    $basket = array_fill(0, max($groups), []);
-    $groupIndex = 0;
-    $currentBasketIndex = 0;
+// function total(array $items): int {
+//     $price = 0;
 
-    while (($groups[$groupIndex] ?? 0) > 0) {
-        if (isset($groups[$groupIndex])) {
-            $basket[$currentBasketIndex][] = 'item';
-            $currentBasketIndex += 1;
-            $groups[$groupIndex] -= 1;
-        }
+//     foreach (extractBasket($items) as $basket) {
+//         $price += match (count($basket)) {
+//             1 => (1 * 800),
+//             2 => (2 * 800) * 0.95,
+//             3 => (3 * 800) * 0.90,
+//             4 => (4 * 800) * 0.80,
+//             5 => (5 * 800) * 0.75,
+//             default => 0,
+//         };
+//     }
 
-        if ($groups[$groupIndex] === 0) {
-            $groupIndex++;
-            $currentBasketIndex = 0;
-        }
-    }
+//     return (int) round($price);
+// }
 
-    return $basket;
-}
+// function extractBasket(array $items): array {
+//     if (count($items) === 0) {
+//         return [];
+//     }
+
+//     $groups = array_values(array_count_values($items));
+//     $basket = array_fill(0, max($groups), []);
+//     $groupIndex = 0;
+//     $currentBasketIndex = 0;
+
+//     while (($groups[$groupIndex] ?? 0) > 0) {
+//         if (isset($groups[$groupIndex])) {
+//             $basket[$currentBasketIndex][] = 'item';
+//             $currentBasketIndex += 1;
+//             $groups[$groupIndex] -= 1;
+//         }
+
+//         if ($groups[$groupIndex] === 0) {
+//             $groupIndex++;
+//             $currentBasketIndex = 0;
+//         }
+//     }
+
+//     return $basket;
+// }

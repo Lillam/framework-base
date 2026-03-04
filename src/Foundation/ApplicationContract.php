@@ -29,7 +29,7 @@ interface ApplicationContract
      * @param string|null $registerAs
      * @return void
      */
-    public function register(Service $service, string $registerAs = null): void;
+    public function register(Service $service, string | null $registerAs = null): void;
 
     /**
      * Give control to the container in order to make the abstraction.

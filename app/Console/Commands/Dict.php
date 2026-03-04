@@ -11,6 +11,8 @@ class Dict extends Command
     protected Application $application;
     protected Dictionary $dictionary;
 
+    protected string $example = "dict anagram word=example min=3 max=7";
+
     protected string $action;
     protected string $anagram;
     protected int $maxLength = 7;
@@ -73,12 +75,11 @@ class Dict extends Command
 
         $words = $this->dictionary->findWordsFromAnagram();
 
-        usort($words, function (string $a, string $b) {
-            return strlen($a) - strlen($b);
-        });
+
+        usort($words, fn(string $a, string $b) => \strlen($a) - \strlen($b));
 
         foreach ($words as $word) {
-            match (strlen($word)) {
+            match (\strlen($word)) {
                 3 => $this->output->printColour("3[$word]", "cyan"),
                 4 => $this->output->printColour("4[$word]", "green"),
                 5 => $this->output->printColour("5[$word]", "orange"),

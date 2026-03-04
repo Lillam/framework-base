@@ -113,7 +113,7 @@ class Application extends Container implements ApplicationContract
      * @param string|null $registerAs
      * @return void
      */
-    public function register(Service $service, string $registerAs = null): void
+    public function register(Service $service, string | null $registerAs = null): void
     {
         $service->register();
 

@@ -307,7 +307,7 @@ class Route
      * @param string|null $action
      * @return array
      */
-    private function buildParameters(object $object, string $action = null): array
+    private function buildParameters(object $object, string | null $action = null): array
     {
         $neededParameters = _Reflect::getClassMethodParameterInfo($object, $action);
 

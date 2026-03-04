@@ -177,6 +177,7 @@ punted
 punts
 pundit
 purse
+purses
 peruse
 pleaser
 pleased

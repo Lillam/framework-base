@@ -21,7 +21,7 @@ class Input
     /**
      * @param array|null $argv
      */
-    public function __construct(array $argv = null)
+    public function __construct(array | null $argv = null)
     {
         $argv = $argv ?? $_SERVER['argv'] ?? [];
 

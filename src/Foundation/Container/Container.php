@@ -59,7 +59,7 @@ class Container implements ContainerContract
      * @param Container|null $container
      * @return Container|static|null
      */
-    public static function setInstance(self $container = null): Container|static|null
+    public static function setInstance(self | null $container = null): Container|static|null
     {
         return static::$instance = $container;
     }
