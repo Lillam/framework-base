@@ -71,7 +71,7 @@ abstract class Controller
      */
     public function respond(mixed $data, int $code = 200): Response
     {
-        $response = match (gettype($data)) {
+        $response = match (\gettype($data)) {
             "array", "object" => json_encode($data),
             "int" => (string) $data,
             default => $data,

@@ -33,7 +33,7 @@ class RouteCollection
     }
 
     /**
-     * @return Route[]
+     * @return array<Route[]>
      */
     public function all(): array
     {
@@ -48,7 +48,7 @@ class RouteCollection
      */
     public function find(Request $request): ?Route
     {
-        foreach ($this->get($request->getMethod()) as $route) {
+        foreach ($this->get($request->method()) as $route) {
             if ($route->isMatching($request)) {
                 return $route;
             }

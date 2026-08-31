@@ -3,6 +3,7 @@
 namespace Vyui\Services\Routing;
 
 use Closure;
+use InvalidArgumentException;
 use Vyui\Foundation\Application;
 use Vyui\Foundation\Http\Request;
 use Vyui\Services\Database\Model;
@@ -21,31 +22,11 @@ class Route
     protected Application $application;
 
     /**
-     * The uri that has been defined.
-     *
-     * @var string
-     */
-    protected string $uri;
-
-    /**
      * The regex rendition of the uri that has been defined.
      *
      * @var RouteUriRegex
      */
     protected RouteUriRegex $uriRegex;
-
-    /**
-     * @var string
-     */
-    protected string $method;
-
-    /**
-     * The handler of which will be called upon being handled.
-     *
-     * [controller, action] (tuple)
-     * @var array
-     */
-    protected array $action;
 
     /**
      * @var array
@@ -57,17 +38,11 @@ class Route
      */
     protected array $optionalParameters = [];
 
-    /**
-     * @param string $method
-     * @param string $uri
-     * @param string|array|Closure $action
-     */
-    public function __construct(string $method, string $uri, string|array|Closure $action)
-    {
-        $this->setMethod($method)
-             ->setUri($uri)
-             ->setAction($action);
-
+    public function __construct(
+        protected string $method,
+        protected string $uri,
+        protected string | array | Closure $handler
+    ) {
         $this->uriRegex = new RouteUriRegex($this);
     }
 
@@ -137,7 +112,7 @@ class Route
      */
     public function getNormalisedUri(): string
     {
-        return preg_replace(
+        return (string) preg_replace(
             '/[\/]{2,}/',
             '',
             '/' . trim($this->getUri(), '/') . '/'
@@ -145,25 +120,20 @@ class Route
     }
 
     /**
-     * Set the action of this particular route.
+     * Create a handler for the route based on the handler that had been provided to the route itself.
+     * This only needs to be created when the route has been dispatched as that's the only point in which
+     * this is needed.
      *
-     * @param string|array|Closure $action
-     * @return $this
+     * @return array{0: string|Closure, 1: string|null}
      */
-    public function setAction(string|array|Closure $action): self
+    private function createHandler(): array
     {
-        $this->action = match (gettype($action)) {
-            'array' => $action,
-            'string' => explode('@', $action),
-            'object' => [$action, null],
-            default => null,
+        return match (\gettype($this->handler)) {
+            'string' => array_pad(explode('@', (string) $this->handler, 2), 2, null),
+            'array' => (array) $this->handler,
+            'object' => [$this->handler, null],
+            default => [null, null]
         };
-
-        if (! $this->action) {
-            // throw an error here... we're needing to break out, that controller is just not going to work
-        }
-
-        return $this;
     }
 
     /**
@@ -195,20 +165,10 @@ class Route
         $this->parameters = array_combine(
             $this->parameters,
             array_values(array_map(fn ($match) => $match, $matches)) +
-            array_fill(0, (count($this->parameters)), null)
+            array_fill(0, (\count($this->parameters)), null)
         );
 
         return true;
-    }
-
-    /**
-     * Get the action of this particular route.
-     *
-     * @return array
-     */
-    public function getAction(): array
-    {
-        return $this->action;
     }
 
     /**
@@ -254,7 +214,7 @@ class Route
      */
     public function matchesMethod(Request $request): bool
     {
-        return $this->getMethod() === $request->getMethod();
+        return $this->getMethod() === $request->method();
     }
 
     /**
@@ -282,13 +242,17 @@ class Route
     {
         $this->application = $application;
 
-        [$controller, $action] = $this->getAction();
+        [$controller, $action] = $this->createHandler();
+
+        if (! $controller) {
+            throw new InvalidArgumentException("Attempted to call null for route.");
+        }
 
         // if we haven't defined a controller for this particular route then it means that
         // we're dealing with a closure meaning that we can just simply return here without
         // needing to do anything else.
         if (! $action) {
-            return $controller(...$this->buildParameters($controller));
+            return $controller(...$this->buildParameters((object) $controller));
         }
 
         // Have the application create the specified controller along with all it's dependencies.
@@ -368,13 +332,13 @@ class Route
         // if we still have any needed parameters left at this point, then we are going to be needing to build them out
         // and look to start auto wiring right there.
         foreach ($neededParameters as $neededKey => $neededParameter) {
-            if (in_array($neededParameter['type'], ['int', 'string', 'boolean'])) {
+            if (\in_array($neededParameter['type'], ['int', 'string', 'boolean'])) {
                 continue;
             }
 
             $neededParameters[$neededKey] = $this->application->make($neededParameter['type']);
         }
 
-        return array_merge($parameters, $neededParameters);
+        return \array_merge($parameters, $neededParameters);
     }
 }

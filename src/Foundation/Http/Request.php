@@ -2,58 +2,49 @@
 
 namespace Vyui\Foundation\Http;
 
-use Vyui\Foundation\Http\Request\{
-    GetParameters,
-    FileParameters,
-    PostParameters,
-    CookieParameters,
-    ServerParameters,
-    AttributeParameters
-};
-
 class Request
 {
     /**
      * The GET parameters of the request.
      *
-     * @var GetParameters
+     * @var ParameterBag
      */
-    protected GetParameters $query;
+    protected ParameterBag $query;
 
     /**
      * The POST parameters of the request.
      *
-     * @var PostParameters
+     * @var ParameterBag
      */
-    protected PostParameters $request;
+    protected ParameterBag $request;
 
     /**
      * The Request attributes (parameters of which are passed from the PATH_INFO...)
      *
-     * @var AttributeParameters
+     * @var ParameterBag
      */
-    protected AttributeParameters $attributes;
+    protected ParameterBag $attributes;
 
     /**
      * The COOKIE parameters for the request.
      *
-     * @var CookieParameters
+     * @var ParameterBag
      */
-    protected CookieParameters $cookies;
+    protected ParameterBag $cookies;
 
     /**
      * The FILES parameters of the request.
      *
-     * @var FileParameters
+     * @var ParameterBag
      */
-    protected FileParameters $files;
+    protected ParameterBag $files;
 
     /**
      * The SERVER parameters of the request.
      *
-     * @var ServerParameters
+     * @var ParameterBag
      */
-    protected ServerParameters $server;
+    protected ParameterBag $server;
 
     /**
     * The request body
@@ -78,13 +69,13 @@ class Request
         array $files = [],
         array $server = []
     ) {
-        $this->query = new GetParameters($query);
-        $this->request = new PostParameters($request);
-        $this->attributes = new AttributeParameters($attributes);
-        $this->cookies = new CookieParameters($cookies);
-        $this->files = new FileParameters($files);
-        $this->server = new ServerParameters($server);
-        $this->content = $this->getContent();
+        $this->query      = new ParameterBag($query);
+        $this->request    = new ParameterBag($request);
+        $this->attributes = new ParameterBag($attributes);
+        $this->cookies    = new ParameterBag($cookies);
+        $this->files      = new ParameterBag($files);
+        $this->server     = new ParameterBag($server);
+        $this->content    = $this->getContent();
     }
 
     /**
@@ -128,7 +119,7 @@ class Request
         $result = [];
 
         foreach ($keys as $key) {
-            $result[$key] = $this->input($key);
+            $result[$key] = $this->input((string) $key);
         }
 
         return $result;
@@ -150,9 +141,9 @@ class Request
      * Get the method that the request is using. this method is going to return one of the following request methods:
      * PUT, POST, PATCH, DELETE, GET as a string.
      *
-     * @return string|null
+     * @return string
      */
-    public function getMethod(): ?string
+    public function method(): string
     {
         return $this->getServer()->get('REQUEST_METHOD');
     }
@@ -177,7 +168,7 @@ class Request
     */
     public function isMethod(string $method): bool
     {
-        return $this->getMethod() === $method;
+        return $this->method() === $method;
     }
 
     /**
@@ -213,7 +204,7 @@ class Request
      */
     public function getNormalisedUri(): string
     {
-        return preg_replace(
+        return (string) preg_replace(
             '/[\/]{2,}/',
             '',
             '/' . trim($this->getUri(), '/') . '/'
@@ -238,7 +229,7 @@ class Request
     */
     public function getAuthorization(?string $type = 'Bearer'): ?string
     {
-        return str_replace("$type ", '', $this->getServer()->get('HTTP_AUTHORIZATION'));
+        return (string) str_replace("$type ", '', $this->getServer()->get('HTTP_AUTHORIZATION'));
     }
 
     /**
@@ -252,49 +243,49 @@ class Request
     }
 
     /**
-     * @return GetParameters
+     * @return ParameterBag
      */
-    public function getQuery(): GetParameters
+    public function getQuery(): ParameterBag
     {
         return $this->query;
     }
 
     /**
-     * @return PostParameters
+     * @return ParameterBag
      */
-    public function getRequest(): PostParameters
+    public function getRequest(): ParameterBag
     {
         return $this->request;
     }
 
     /**
-     * @return CookieParameters
+     * @return ParameterBag
      */
-    public function getCookies(): CookieParameters
+    public function getCookies(): ParameterBag
     {
         return $this->cookies;
     }
 
     /**
-     * @return FileParameters
+     * @return ParameterBag
      */
-    public function getFiles(): FileParameters
+    public function getFiles(): ParameterBag
     {
         return $this->files;
     }
 
     /**
-     * @return ServerParameters
+     * @return ParameterBag
      */
-    public function getServer(): ServerParameters
+    public function getServer(): ParameterBag
     {
         return $this->server;
     }
 
     /**
-     * @return AttributeParameters
+     * @return ParameterBag
      */
-    public function getAttributes(): AttributeParameters
+    public function getAttributes(): ParameterBag
     {
         return $this->attributes;
     }
@@ -325,11 +316,11 @@ class Request
     public function getContent(): string
     {
         if (! $this->content) {
-            $this->content = file_get_contents('php://input');
+            $this->content = (string) \file_get_contents('php://input');
         }
 
         if (! $this->isMethod('GET') && ! $this->isMethod('HEAD')) {
-            $this->request->merge(json_decode($this->content, true));
+            $this->request->merge(\json_decode($this->content, true));
         }
 
         return $this->content;

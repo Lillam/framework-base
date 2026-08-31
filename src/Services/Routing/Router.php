@@ -7,6 +7,7 @@ use Exception;
 use Vyui\Foundation\Application;
 use Vyui\Foundation\Http\Request;
 use Vyui\Foundation\Http\Response;
+use Vyui\Services\Routing\RouteNotFoundException;
 
 class Router
 {
@@ -144,63 +145,26 @@ class Router
     }
 
     /**
-     * Get all routes that are bound to the router.
+     * Get specific method routes or all routes if you omit the method.
+     * omitting the method would return all routes that are bounded to the
+     * router with their method as the key
+     * * GET => [
+     *     '/test' => [controller, method]
+     * ]
+     * ... rest
      *
-     * @return Route[]
+     * passing a method will return all routes for that method.
+     * ['/test' => [controller, method]]
+     *
+     * @return array<Route[]>|Route[]
      */
-    public function allRoutes(): array
+    public function routes(?string $method = null): array
     {
+        if ($method !== null) {
+            return $this->routes->get(strtoupper($method)) ?? [];
+        }
+
         return $this->routes->all();
-    }
-
-    /**
-     * Get all get routes that are bound to the router.
-     *
-     * @return Route[]
-     */
-    public function getRoutes(): array
-    {
-        return $this->routes->get('GET') ?? [];
-    }
-
-    /**
-     * Get all post routes that are bound to the router.
-     *
-     * @return Route[]
-     */
-    public function postRoutes(): array
-    {
-        return $this->routes->get('POST') ?? [];
-    }
-
-    /**
-     * Get all patch routes that are bound to the router.
-     *
-     * @return Route[]
-     */
-    public function patchRoutes(): array
-    {
-        return $this->routes->get('PATCH') ?? [];
-    }
-
-    /**
-     * Get all delete routes that are bound to the router.
-     *
-     * @return Route[]
-     */
-    public function deleteRoutes(): array
-    {
-        return $this->routes->get('DELETE') ?? [];
-    }
-
-    /**
-     * Get all put routes that are bound to the router.
-     *
-     * @return Route[]
-     */
-    public function putRoutes(): array
-    {
-        return $this->routes->get('PUT') ?? [];
     }
 
     /**

@@ -2,6 +2,8 @@
 
 namespace Vyui\Services\Database\Migration;
 
+use Closure;
+
 class Blueprint
 {
     protected string $table;
@@ -11,6 +13,13 @@ class Blueprint
     public function setTable(string $table): static
     {
         $this->table = $table;
+
+        return $this;
+    }
+
+    public function fields(Closure $callback): static
+    {
+        $callback($this);
 
         return $this;
     }

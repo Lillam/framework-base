@@ -1,15 +1,20 @@
 <?php
 
-namespace Vyui\Services\Config;
+namespace Vyui\Services;
 
+use Vyui\Services\Service;
 use Vyui\Support\Helpers\Arrayable;
 
-class Config implements ConfigContract
+class Config extends Service
 {
     /**
+     * The location where you can find the configuration files.
+     *
      * @var string
      */
-    protected string $path;
+    protected string $path {
+        get => $this->application->getBasePath("/config");
+    }
 
     /**
      * Are the configs cached into the application.
@@ -34,27 +39,26 @@ class Config implements ConfigContract
     protected array $configs = [];
 
     /**
-     * Setting the location of the config files.
+     * Register the config instance into the application so that it's possible for the application to interact with all
+     * the configurations of the application via files within a particular directory.
      *
-     * @param string $path
-     * @return $this
+     * @return void
      */
-    public function setPath(string $path): self
+    public function register(): void
     {
-        $this->path = $path;
+        $this->bootstrap();
 
-        return $this;
+        $this->application->instance(self::class, $this);
     }
 
     /**
-     * Getting the location of hte config files.
+     * Bootstrap the provider.
      *
-     * @param string|null $file
-     * @return string
+     * @return void
      */
-    public function getPath(?string $file = null): string
+    public function bootstrap(): void
     {
-        return $this->path . $file;
+        $this->loadConfigurations();
     }
 
     /**
@@ -117,25 +121,12 @@ class Config implements ConfigContract
      */
     public function loadConfigurations(): self
     {
-        // if there is no directory for the configs, then we're going to make the directory, the directory would be an
-        // important part of the system and if it's not present, we're going to need to make it present.
-        if (! is_dir($directory = $this->getPath())) {
-            mkdir($directory);
-        }
+        \is_dir($this->path) || \mkdir($this->path, 0755, true);
 
-        $files = array_diff(scandir($directory), ['.', '..']);
-
-        // todo - check to see whether or not we have already cached the results of the configurations, and if we have
-        //        load that particular file instead of iterating over them. here we are going to overwrite the files
-        //        variable for ease of development without overwriting necessary components.
-
-        // iterate over all the config files. so that we can begin placing them into storage of the application. this
-        // will provide a later ease of access to the necessary configurations without having to keep re-opening files
-        foreach ($files as $file) {
-            $this->set(
-                str_replace('.php', '', $file),
-                require_once $this->getPath($file)
-            );
+        foreach (\glob("{$this->path}/*") as $file) {
+            $parts = explode("/", $file);
+            $filename = end($parts);
+            $this->set(str_replace('.php', '', $filename), require_once $file);
         }
 
         if ($this->isFlattened) {

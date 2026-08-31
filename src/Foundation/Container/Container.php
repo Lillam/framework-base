@@ -136,7 +136,7 @@ class Container implements ContainerContract
         // check to see whether the concrete is of type Closure or not, and if not, we're going to wrap this up into a
         // factory Closure. so that we can later utilise this method for building out the bound type.
         if (! $concrete instanceof Closure) {
-            if (! is_string($concrete) || preg_replace('/\d/', '', $concrete) === '') {
+            if (! \is_string($concrete) || preg_replace('/\d/', '', $concrete) === '') {
                 throw new TypeError(
                     self::class . '::bind() argument #2 ($concrete) is not of type string|Closure|null'
                 );
@@ -199,7 +199,7 @@ class Container implements ContainerContract
         // if the constructor has been returned as null (empty) then no constructor is required for this abstraction
         // also meaning that there are no dependencies for the abstraction; so we're able to just return the concrete
         // as it stands.
-        if (is_null($constructor = $reflector->getConstructor())) {
+        if (\is_null($constructor = $reflector->getConstructor())) {
             return new $concrete;
         }
 
@@ -234,32 +234,38 @@ class Container implements ContainerContract
 
         $this->with[] = $parameters;
 
-        // At this point, upon deciding whether the abstraction/concrete is buildable or not, we're ready to
-        // create an instance of the concrete type that's been registered against the binding. This will  instantiate
-        // the necessary types and any nested dependencies recursively until all has been resolved.
-        $abstraction = ($this->isBuildable($abstract, $concrete = $this->getConcrete($abstract)))
-            ? $this->build($concrete)
-            : $this->make($concrete);
+        try {
+            // At this point, upon deciding whether the abstraction/concrete is buildable or not, we're ready to
+            // create an instance of the concrete type that's been registered against the binding. This will  instantiate
+            // the necessary types and any nested dependencies recursively until all has been resolved.
+            $abstraction = ($this->isBuildable($abstract, $concrete = $this->getConcrete($abstract)))
+                ? $this->build($concrete)
+                : $this->make($concrete);
 
-        // if this particular binding had been marked as an item of which wants to be shared, then we're going to need
-        // to store this in memory, so that upon requesting this abstraction again, we're going to be able to return it
-        // once again, without the need for building out the abstraction again.
-        if ($this->isShared($abstract)) {
-            $this->instances[$abstract] = $abstraction;
+            // if this particular binding had been marked as an item of which wants to be shared, then we're going to need
+            // to store this in memory, so that upon requesting this abstraction again, we're going to be able to return it
+            // once again, without the need for building out the abstraction again.
+            if ($this->isShared($abstract)) {
+                $this->instances[$abstract] = $abstraction;
+            }
+
+            // upon resolving the abstraction, we're going to mark the abstraction as resolved and begin counting how many
+            // times the abstract has been resolved within the container. This is for debugging purposes.
+            $this->markResolved($abstract);
+
+            return $abstraction;
         }
 
-        // upon resolving the abstraction, we're going to mark the abstraction as resolved and begin counting how many
-        // times the abstract has been resolved within the container. This is for debugging purposes.
-        $this->markResolved($abstract);
-
-        array_pop($this->with);
-
-        return $abstraction;
+        // once this has finally resolved, we can pop the current overrides from the stack
+        // cleaning up the container for the next resolution.
+        finally {
+            array_pop($this->with);
+        }
     }
 
     /**
-     * Mark a particular abstraction as resolved, increment a count of how many times an abstraction has been resolved
-     * within the container.
+     * Mark a particular abstraction as resolved, increment a count of how many times an
+     * abstraction has been resolved within the container.
      *
      * @param string $abstract
      * @return int
@@ -322,7 +328,7 @@ class Container implements ContainerContract
      */
     public function getBindings(string|null $abstract = null): array
     {
-        if (! is_null($abstract)) {
+        if (! \is_null($abstract)) {
             return isset($this->bindings[$abstract])
                 ? [$this->bindings[$abstract]]
                 : [];
@@ -365,7 +371,7 @@ class Container implements ContainerContract
             // Run off and acquire the class, if this is null, then the dependency that we're dealing with is of course
             // a primitive type... if it's not a class, then we're not going to be able to resolve it, in which this
             // naturally would error out, to which we're then going to resolve the primitive type instead.
-            $result = is_null(_Reflect::getParameterClassName($dependencyParameter))
+            $result = \is_null(_Reflect::getParameterClassName($dependencyParameter))
                 ? $this->resolvePrimitive($dependencyParameter)
                 : $this->resolveClass($dependencyParameter);
 
@@ -389,7 +395,7 @@ class Container implements ContainerContract
      */
     private function hasParameterOverride(ReflectionParameter $dependencyParameter): bool
     {
-        return array_key_exists($dependencyParameter->name, $this->getLastParameterOverride());
+        return \array_key_exists($dependencyParameter->name, $this->getLastParameterOverride());
     }
 
     /**
@@ -439,7 +445,7 @@ class Container implements ContainerContract
     private function resolveClass(ReflectionParameter $dependency): mixed
     {
         try {
-            return $this->make(_Reflect::getParameterClassName($dependency));
+            return $this->make((string) _Reflect::getParameterClassName($dependency));
         }
 
         // if we're incapable of instantiating the class, we can first find out if the value is optional and if it, we

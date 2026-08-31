@@ -11,12 +11,12 @@ class Route extends Command
 
     /**
      * @param Application $application
-     * @param Router $router
      * @param array $arguments
      */
     public function __construct(Application $application, array $arguments = [])
     {
         parent::__construct($application, $arguments);
+
         $this->router = $application->make(Router::class);
     }
 
@@ -25,7 +25,7 @@ class Route extends Command
      */
     public function execute(): int
     {
-        foreach ($this->router->allRoutes() as $method => $routes) {
+        foreach ($this->router->routes() as $method => $routes) {
             foreach ($routes as $route) {
                 $this->output->print("[$method] -> {$route->getFullUri()}");
             }

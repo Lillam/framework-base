@@ -11,10 +11,9 @@ use Vyui\Services\Database\Migration\Blueprint;
 //
 
 return function (Blueprint $table) {
-    $table->setTable('user');
-    $table->string('first_name', 255)->nullable();
-    $table->string('last_name', 255)->nullable();
-    // $table->string('last_name', function ($column) {
-
-    // });
+    $table->setTable('user')
+        ->fields(function (Blueprint $table) {
+            $table->string('first_name', 255)->nullable();
+            $table->string('last_name', 255)->nullable();
+        });
 };

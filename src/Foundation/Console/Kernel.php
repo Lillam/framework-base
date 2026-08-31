@@ -136,11 +136,12 @@ class Kernel implements KernelContract
             $command = $this->getCommand(
                 $this->getCommandName($input),
                 $this->getCommandTokens($input)
-            )->setOutput($output);
+            )->setOutput($output ?? new Output);
 
             return $command->execute();
         } catch (CommandNotFoundException $e) {
-            $output = (new Output)->printError("Command doesn't exist.");
+            (new Output)->printError("Command doesn't exist.");
+
             return 0;
         }
     }

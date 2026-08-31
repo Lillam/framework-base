@@ -71,10 +71,10 @@ class _String
      * A method designed to make removing particulars from a given string easier.
      *
      * @param string $remove
-     * @param string|null $value
+     * @param string $value
      * @return string
      */
-    public static function remove(string $remove, string|null $value = null): string
+    public static function remove(string $remove, string $value = ""): string
     {
         return str_replace($remove, '', $value);
     }

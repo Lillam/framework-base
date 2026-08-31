@@ -85,13 +85,15 @@ class Application extends Container implements ApplicationContract
     public function registerBaseServices(): void
     {
         foreach ([
-            \Vyui\Services\Environment\EnvironmentService::class,
-            \Vyui\Services\Config\ConfigService::class,
+            \Vyui\Services\Environment::class,
+            \Vyui\Services\Config::class,
             \Vyui\Services\Filesystem\FilesystemService::class,
             \Vyui\Services\Logger\LogService::class,
             \Vyui\Services\Translation\TranslatorService::class,
             \Vyui\Services\Facades\FacadeService::class,
             \Vyui\Services\Exceptions\ExceptionService::class,
+            \Vyui\Services\Events\Dispatcher::class,
+            \Vyui\Services\Broadcasting\Broadcaster::class,
             \Vyui\Services\Routing\RoutingService::class,
             \Vyui\Services\View\ViewService::class,
             \Vyui\Services\Database\DatabaseService::class,
@@ -122,7 +124,6 @@ class Application extends Container implements ApplicationContract
         }
 
         $this->services[$registerAs] = $service;
-        $this->servicesRegistered[$registerAs] = true;
     }
 
     /**

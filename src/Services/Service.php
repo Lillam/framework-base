@@ -14,13 +14,6 @@ abstract class Service
     protected Application $application;
 
     /**
-     * Has this provider been bootstrapped.
-     *
-     * @var bool
-     */
-    protected bool $bootstrapped = false;
-
-    /**
      * Constructor of the Service. This particular Service (abstraction) should never be instantiated. and always
      * containing the Application instance.
      *

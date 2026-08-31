@@ -20,18 +20,20 @@ class _Reflect
      */
     public static function getParameterClassName(ReflectionParameter $reflectionParameter): ?string
     {
-        if (! ($type = $reflectionParameter->getType()) instanceof ReflectionNamedType || $type->isBuiltin()) {
+        $type = $reflectionParameter->getType();
+
+        if (!$type instanceof ReflectionNamedType || $type->isBuiltin()) {
             return null;
         }
 
         $name = $type->getName();
 
         if (($class = $reflectionParameter->getDeclaringClass()) !== null) {
-            if ($name === 'self') {
+            if ($name === "self") {
                 return $class->getName();
             }
 
-            if ($name === 'parent' && ($parent = $class->getParentClass())) {
+            if ($name === "parent" && ($parent = $class->getParentClass())) {
                 return $parent->getName();
             }
         }
@@ -74,8 +76,10 @@ class _Reflect
         $return = [];
 
         foreach ($parameters as $parameter) {
+            $type = $parameter->getType();
+
             $return[$parameter->getName()] = [
-                'type' => $parameter->getType()?->getName() ?? null
+                'type' => $type instanceof ReflectionNamedType ? $type->getName() : null
             ];
         }
 

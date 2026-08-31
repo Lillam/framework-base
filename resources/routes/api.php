@@ -37,6 +37,6 @@ use App\Http\Controllers\Api\UserController;
 
 Route::group('/api/v1', function (Router $router) {
     $router->get("/token", function (Router $router) {
-        dd($router);
+        dd("here");
     });
 });

@@ -5,36 +5,15 @@ namespace Vyui\Foundation\Http;
 class Response implements ResponseContract
 {
     /**
-     * The content that is going to be rendered to the client.
-     *
-     * @var string
+     * @param string $content -> The content that is going to be rendered to the client.
+     * @param int $status     -> The status of the request that had been made.
+     * @param array $headers  -> The headers of the request hat had been made.
      */
-    protected string $content;
-
-    /**
-     * The status of the request that had been made.
-     *
-     * @var int
-     */
-    protected int $status;
-
-    /**
-     * The headers of the request hat had been made.
-     *
-     * @var array
-     */
-    protected array $headers;
-
-    /**
-     * @param string $content
-     * @param int $status
-     * @param array $headers
-     */
-    public function __construct(string $content, int $status = 200, array $headers = [])
-    {
-        $this->content = $content;
-        $this->status = $status;
-        $this->headers = $headers;
+    public function __construct(
+        protected string $content,
+        protected int $status = 200,
+        protected array $headers = []
+    ) {
     }
 
     /**
@@ -93,8 +72,9 @@ class Response implements ResponseContract
     public function json(mixed $data): self
     {
         $this->content = json_encode(
-            !is_array($data) ? ['data' => $data]
-                             : $data
+            !\is_array($data) ? ['data' => $data]
+                             : $data,
+            JSON_THROW_ON_ERROR
         );
 
         return $this;

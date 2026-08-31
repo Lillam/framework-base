@@ -1,9 +1,21 @@
 <?php
 
-namespace Vyui\Services\Environment;
+namespace Vyui\Services;
 
-class Environment implements EnvironmentContract
+use Vyui\Services\Service;
+
+class Environment extends Service
 {
+    /**
+     * The location where you can find the environment file (.env).
+     *
+     * @var string
+     */
+    protected string $path {
+        get => $this->application->getBasePath("/");
+        set => rtrim($value, '/');
+    }
+
     /**
      * The name of the file that will be loaded into memory.
      *
@@ -12,18 +24,38 @@ class Environment implements EnvironmentContract
     protected string $file = '.env';
 
     /**
-     * The path where the environment file will be situated.
-     *
-     * @var string
-     */
-    protected string $path = '/';
-
-    /**
      * The variables of the environment.
      *
      * @var array<string, mixed>
      */
     protected array $variables = [];
+
+    /**
+     * Register the environment Service into the application and bind the functionality there. so that we have
+     * knowledge of all application environment variables with the ability to interact.
+     *
+     * @return void
+     */
+    public function register(): void
+    {
+        $this->bootstrap();
+
+        $this->application->instance(self::class, $this);
+    }
+
+    /**
+     * Bootstrap the provider.
+     *
+     * @return void
+     */
+    public function bootstrap(): void
+    {
+        $this->loadEnvironmentVariables();
+    }
+
+    /**
+    *
+    */
 
     /**
      * Set the name of the environment file which will be loaded into memory.
@@ -120,15 +152,12 @@ class Environment implements EnvironmentContract
      */
     public function loadEnvironmentVariables(): self
     {
-        // check to see whether the environment variables are cached and if they are, we can then return the cached
-        // environment variables instead of loading an entire .env file and parsing through in order to map it into
-        // the object.
-        $fileContents = trim(file_get_contents($this->getPath($this->getFile())), "\n");
+        $fileContents = trim((string) file_get_contents($this->getPath($this->getFile())), "\n");
 
         if (! empty($fileContents)) {
             $environmentEntities = explode(
                 "\n",
-                preg_replace("/\n+/", "\n", $fileContents)
+                (string) preg_replace("/\n+/", "\n", $fileContents)
             );
 
             foreach ($environmentEntities as $environmentEntity) {

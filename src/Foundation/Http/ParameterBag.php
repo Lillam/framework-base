@@ -1,8 +1,8 @@
 <?php
 
-namespace Vyui\Foundation\Http\Request;
+namespace Vyui\Foundation\Http;
 
-class Parameters
+class ParameterBag
 {
     /**
      * The Parameter Storage.
