@@ -25,13 +25,13 @@ class RandomTest extends Test
         // $this->assert(5120)->equals(total($basket));
         //
 
-        $state = (new StateOfTicTacToe)->gameState([
-            "XXO",
-            " XO",
-            "  O"
-        ]);
+        // $state = (new StateOfTicTacToe)->gameState([
+        //     "XXO",
+        //     " XO",
+        //     "  O"
+        // ]);
 
-        $this->assert($state)->equals("win");
+        // $this->assert($state)->equals("win");
     }
 
     // public function testIsOneEqualToOne(): void

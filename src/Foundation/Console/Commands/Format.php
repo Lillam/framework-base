@@ -105,8 +105,7 @@ class Format extends Command
     {
         $this->loadAllProjectFiles();
         $this->sortImportOrder();
-        // $this->fixAllProjectFiles();
-        $this->output->print(count($this->indentationErrors) . ' files have indentation errors fixed');
+        $this->output->print(\count($this->indentationErrors) . ' files have indentation errors fixed');
 
         return 1;
     }
@@ -175,8 +174,6 @@ class Format extends Command
 
         preg_match('/.+[a-zA-Z0-9]/', $file, $isFile);
 
-        dd($isFile);
-
         return !$directoryMatches &&
             !$fileMatches &&
             $isFile;
@@ -215,7 +212,7 @@ class Format extends Command
     private function fixAllProjectFiles(): void
     {
         foreach ($this->files as $file) {
-            $placingBack = preg_replace_callback_array([
+            $placingBack = (string) preg_replace_callback_array([
                 // look for the particular tab indent and replace it for 4 spaces instead; this would fix up the
                 // random spacing caused within github as well as within the project. this particular snippet should be
                 // ignored upon the actual formatter coming to format the formatter; wild.
@@ -231,7 +228,7 @@ class Format extends Command
             // if this particular file has any errors of the sorts then we're going to be able to then decide to save
             // the file, if not then there's no real need to do anything of the sorts; and just skip past this
             // particular segment
-            if (array_key_exists($file, $this->indentationErrors)) {
+            if (\array_key_exists($file, $this->indentationErrors)) {
                 $this->filesystem->put($file, $placingBack);
                 $this->output->printSuccess(
                     "✓ Fixed up indentations for: [$file ({$this->indentationErrors[$file]})]"

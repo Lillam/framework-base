@@ -197,10 +197,10 @@ abstract class Model
     /**
      * Get the connection from the resolver.
      *
-     * @param string|null $connection
+     * @param string $connection
      * @return Connection
      */
-    public static function resolveConnection(?string $connection = null): Connection
+    public static function resolveConnection(string $connection): Connection
     {
         return static::$resolver->connection($connection);
     }

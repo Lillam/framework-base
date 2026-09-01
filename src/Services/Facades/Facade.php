@@ -2,8 +2,8 @@
 
 namespace Vyui\Services\Facades;
 
-use ReflectionException;
 use RuntimeException;
+use ReflectionException;
 use Vyui\Foundation\Application;
 use Vyui\Foundation\Container\ContainerContract;
 use Vyui\Foundation\Container\BindingResolutionException;

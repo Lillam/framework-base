@@ -36,6 +36,6 @@ class DatabaseService extends Service
      */
     public function bootstrap(): void
     {
-        $this->bootstrapped = true;
+
     }
 }

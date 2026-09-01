@@ -4,8 +4,9 @@ use Vyui\Services\Routing\Router;
 use Vyui\Foundation\Http\Request;
 use Vyui\Foundation\Http\Response;
 use Vyui\Services\View\ViewManager;
-use Vyui\Services\{Environment, Config};
 use Vyui\Foundation\Container\Container;
+use Vyui\Services\Config\ConfigService as Config;
+use Vyui\Services\Environment\EnvironmentService as Environment;
 
 if (! function_exists('app')) {
     /**

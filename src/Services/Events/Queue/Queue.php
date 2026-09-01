@@ -3,9 +3,9 @@
 namespace Vyui\Services\Events\Queue;
 
 use Throwable;
-use Vyui\Services\Config;
 use InvalidArgumentException;
 use Vyui\Foundation\Application;
+use Vyui\Services\Config\ConfigService as Config;
 use Vyui\Services\Events\Queue\Drivers\{QueueDriver, SynchronousQueueDriver, FilesystemQueueDriver};
 
 class Queue

@@ -22,13 +22,6 @@ class Application extends Container implements ApplicationContract
     protected array $services = [];
 
     /**
-     * The registered services of the application.
-     *
-     * @var array<string, bool>
-     */
-    protected array $servicesRegistered = [];
-
-    /**
      * The paths that the application uses.
      *
      * @var array<string>
@@ -85,8 +78,8 @@ class Application extends Container implements ApplicationContract
     public function registerBaseServices(): void
     {
         foreach ([
-            \Vyui\Services\Environment::class,
-            \Vyui\Services\Config::class,
+            \Vyui\Services\Environment\EnvironmentService::class,
+            \Vyui\Services\Config\ConfigService::class,
             \Vyui\Services\Filesystem\FilesystemService::class,
             \Vyui\Services\Logger\LogService::class,
             \Vyui\Services\Translation\TranslatorService::class,

@@ -8,6 +8,6 @@ class TestController extends Controller
 {
     public function test(string $slug)
     {
-        dd($slug);
+        
     }
 }

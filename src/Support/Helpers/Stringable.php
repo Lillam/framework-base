@@ -70,7 +70,7 @@ class Stringable
     {
         $this->string = strtolower(implode(
             '_',
-            preg_split('/(?=[A-Z])/', lcfirst($this->string))
+            (array) preg_split('/(?=[A-Z])/', lcfirst($this->string))
         ));
 
         return $this;
@@ -85,7 +85,7 @@ class Stringable
      */
     public function slug(array $replaceDictionary = []): static
     {
-        if (! in_array(' ', $replaceDictionary)) {
+        if (! \in_array(' ', $replaceDictionary)) {
             $replaceDictionary[' '] = '-';
         }
 
@@ -170,7 +170,7 @@ class Stringable
      */
     public function convertCamelCaseToSentence(): static
     {
-        $this->string = preg_replace_callback('/([A-Z0-9])/', function (array $matches) {
+        $this->string = (string) preg_replace_callback('/([A-Z0-9])/', function (array $matches) {
             return " {$matches[0]}";
         }, $this->string);
 
@@ -185,7 +185,7 @@ class Stringable
      */
     public function convertSentenceToCamelCase(): static
     {
-        $this->string = preg_replace_callback('/ +([A-Za-z0-9])/', function (array $matches) {
+        $this->string = (string) preg_replace_callback('/ +([A-Za-z0-9])/', function (array $matches) {
             return trim(mb_strtoupper($matches[0]));
         }, lcfirst($this->string));
 

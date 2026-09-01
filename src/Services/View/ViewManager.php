@@ -111,7 +111,7 @@ class ViewManager
         foreach ($this->engines as $extension => $engine) {
             foreach ($this->paths as $path) {
                 if (is_file($file = "$path$template.$extension")) {
-                    return new Response((string) new View($engine, realpath($file), $data));
+                    return new Response((string) new View($engine, (string) realpath($file), $data));
                 }
             }
         }

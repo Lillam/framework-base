@@ -48,6 +48,6 @@ class TranslatorService extends Service
      */
     public function bootstrap(): void
     {
-        $this->bootstrapped = true;
+
     }
 }

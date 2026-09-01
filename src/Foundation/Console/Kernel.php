@@ -3,7 +3,7 @@
 namespace Vyui\Foundation\Console;
 
 use Vyui\Foundation\Application;
-use Vyui\Foundation\Console\Commands\{File, Help, Make, Migrate, Route, Test, Format, Command};
+use Vyui\Foundation\Console\Commands\{File, Help, Make, Migrate, Route, Test, Format, Command, QueueWorker};
 
 class Kernel implements KernelContract
 {
@@ -20,13 +20,14 @@ class Kernel implements KernelContract
      * @var string[]
      */
     protected array $commands = [
-        'help'    => Help::class,
-        'make'    => Make::class,
-        'test'    => Test::class,
-        'format'  => Format::class,
-        'file'    => File::class,
-        'migrate' => Migrate::class,
-        'routes'  => Route::class
+        'help'         => Help::class,
+        'make'         => Make::class,
+        'test'         => Test::class,
+        'format'       => Format::class,
+        'file'         => File::class,
+        'migrate'      => Migrate::class,
+        'routes'       => Route::class,
+        'queue.worker' => QueueWorker::class,
     ];
 
     /**

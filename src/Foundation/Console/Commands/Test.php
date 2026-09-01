@@ -6,8 +6,7 @@ use Throwable;
 use Vyui\Tests\TestCollection;
 use Vyui\Foundation\Application;
 use Vyui\Tests\Test as TestCase;
-use Vyui\Support\Helpers\_String;
-use Vyui\Support\Helpers\_Reflect;
+use Vyui\Support\Helpers\{_String, _Reflect};
 use Vyui\Services\Filesystem\FilesystemContract as Filesystem;
 
 class Test extends Command

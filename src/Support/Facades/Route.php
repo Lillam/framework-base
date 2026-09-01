@@ -14,12 +14,7 @@ use Vyui\Services\Routing\Router;
  * @method static Router delete(string $uri, array|string|Closure $action): void
  * @method static Router all(string $uri, array|string|Closure $action): void
  * @method static Router group(string $uri, Closure $closure): void
- * @method static Router allRoutes(): Route[]
- * @method static Router getRoutes(): Route[]
- * @method static Router postRoutes(): Route[]
- * @method static Router putRoutes(): Route[]
- * @method static Router patchRoutes(): Route[]
- * @method static Router deleteRoutes(): Route[]
+ * @method static Router routes(?string $method = null): array<Route[]>|Route[]
  * @method static Router redirect(string $uri, bool $replace, int $code): void
  * @see Router
  */

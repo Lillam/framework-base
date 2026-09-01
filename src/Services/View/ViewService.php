@@ -38,6 +38,6 @@ class ViewService extends Service
      */
     public function bootstrap(): void
     {
-        $this->bootstrapped = true;
+
     }
 }
