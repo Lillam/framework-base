@@ -77,7 +77,7 @@ abstract class TestAssertion
 
     /**
      * @param bool $state
-     * @return $this
+     * @return static
      */
     public function setState(bool $state): static
     {

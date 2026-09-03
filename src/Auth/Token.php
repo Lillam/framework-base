@@ -47,7 +47,7 @@ class Token
      * Set the secret token for the Token.
      *
      * @param string $secret
-     * @return $this
+     * @return self
      */
     public function setSecretToken(string $secret): static
     {
@@ -117,7 +117,7 @@ class Token
 
     /**
      * @param array $headers
-     * @return $this
+     * @return self
      */
     private function setHeader(array $headers): static
     {
@@ -136,7 +136,7 @@ class Token
 
     /**
      * @param array $payload
-     * @return $this
+     * @return self
      */
     private function setPayload(array $payload): static
     {
@@ -154,7 +154,7 @@ class Token
     }
 
     /**
-     * @return $this
+     * @return self
      */
     private function setSignature(): static
     {

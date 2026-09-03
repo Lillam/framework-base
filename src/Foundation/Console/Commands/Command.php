@@ -56,7 +56,7 @@ abstract class Command
 
     /**
      * @param Output $output
-     * @return $this
+     * @return self
      */
     public function setOutput(Output $output): static
     {

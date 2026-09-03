@@ -20,7 +20,7 @@ trait Where
      * @param string|Closure $column
      * @param string|null $operator
      * @param mixed|null $value
-     * @return $this
+     * @return static
      */
     public function where(string|Closure $column, ?string $operator = null, mixed $value = null): static
     {
@@ -38,7 +38,7 @@ trait Where
      * @param string|Closure $column
      * @param string|null $operator
      * @param mixed|null $value
-     * @return $this
+     * @return static
      * @throws Exception
      */
     public function orWhere(string|Closure $column, ?string $operator = null, mixed $value = null): static
@@ -57,7 +57,7 @@ trait Where
      *
      * @param Closure $where
      * @param string $boolean
-     * @return $this
+     * @return static
      */
     private function whereNested(Closure $where, string $boolean = ''): static
     {
@@ -88,7 +88,7 @@ trait Where
      * @param string $column
      * @param string $operator
      * @param string|null $boolean
-     * @return $this
+     * @return static
      */
     private function setWhere(string $column, string $operator, ?string $boolean = null): static
     {

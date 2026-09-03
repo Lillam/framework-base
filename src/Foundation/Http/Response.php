@@ -19,7 +19,7 @@ class Response implements ResponseContract
     /**
      * Send both the HTTP Headers and Content and then wrap the request up.
      *
-     * @return $this
+     * @return self
      */
     public function send(): self
     {
@@ -48,7 +48,7 @@ class Response implements ResponseContract
     /**
      * Send the headers of the request had been made.
      *
-     * @return $this
+     * @return self
      */
     public function sendHeaders(): self
     {
@@ -64,7 +64,7 @@ class Response implements ResponseContract
      * Return the response as a json response.
      *
      * @param mixed $data
-     * @return $this
+     * @return self
      * @note -> figure a means in which allows to set the default key for responding from the
      *          api oriented style controllers; 'data' might not always be a desired key.
      *          potential response format as (data.data.any)

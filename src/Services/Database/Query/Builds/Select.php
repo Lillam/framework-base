@@ -15,7 +15,7 @@ trait Select
 
     /**
      * @param string ...$columns
-     * @return $this
+     * @return static
      * @throws Exception
      */
     public function select(...$columns): static

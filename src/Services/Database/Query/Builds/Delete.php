@@ -7,7 +7,7 @@ use Exception;
 trait Delete
 {
     /**
-     * @return $this
+     * @return static
      * @throws Exception
      */
     public function delete(): static

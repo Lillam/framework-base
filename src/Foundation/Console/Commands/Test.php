@@ -66,7 +66,7 @@ class Test extends Command
      * Use the file system and load in all the test files that reside within the tests directory; recursively acquire
      * them all and then dump them into the array for later running.
      *
-     * @return $this
+     * @return static
      */
     private function loadTests(): static
     {

@@ -9,7 +9,7 @@ trait Update
     protected array $updates = [];
 
     /**
-     * @return $this
+     * @return static
      * @throws Exception
      */
     public function update(): static

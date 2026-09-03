@@ -100,7 +100,7 @@ abstract class Builder
      * Set the model of the particular query instance.
      *
      * @param Model $model
-     * @return $this
+     * @return static
      */
     public function forModel(Model $model): static
     {
@@ -114,7 +114,7 @@ abstract class Builder
      *
      * @param string $binding
      * @param mixed $value
-     * @return $this
+     * @return static
      */
     private function withBinding(string $binding, mixed $value): static
     {
@@ -128,7 +128,7 @@ abstract class Builder
      *
      * @param string $binding
      * @param array $values
-     * @return $this
+     * @return static
      */
     private function withBindings(string $binding, array $values): static
     {
@@ -141,7 +141,7 @@ abstract class Builder
      * Set the table from where the data will be selected from.
      *
      * @param string $table
-     * @return $this
+     * @return static
      */
     public function table(string $table): static
     {
@@ -154,7 +154,7 @@ abstract class Builder
      * Alias of "table" which sets the table of where to select data from.
      *
      * @param string $table
-     * @return $this
+     * @return static
      */
     public function from(string $table): static
     {
@@ -209,7 +209,7 @@ abstract class Builder
     }
 
     /**
-     * @return $this
+     * @return static
      */
     public function newQuery(): static
     {
@@ -220,16 +220,16 @@ abstract class Builder
      * Set the current query type that is in progress.
      *
      * @param string $type
-     * @return $this
+     * @return static
      * @throws Exception
      */
     private function setQueryType(string $type): static
     {
-//        if (! in_array($type, $this->queryTypes)) {
-//            throw new InvalidQueryTypeException(
-//                "[$type] does not exist within " . implode(',', $this->queryTypes)
-//            );
-//        }
+        // if (! in_array($type, $this->queryTypes)) {
+        //     throw new InvalidQueryTypeException(
+        //         "[$type] does not exist within " . implode(',', $this->queryTypes)
+        //     );
+        // }
 
         $this->type = $type;
 

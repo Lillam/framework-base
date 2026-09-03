@@ -15,7 +15,7 @@ trait HasViewManager
      * Set the View Manager that belongs to an Engine.
      *
      * @param ViewManager $manager
-     * @return $this
+     * @return static
      */
     public function setViewManager(ViewManager $manager): static
     {

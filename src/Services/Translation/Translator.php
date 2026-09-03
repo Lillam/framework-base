@@ -23,7 +23,7 @@ class Translator implements TranslatorContract
      * Set the file location where all translation files will be found.
      *
      * @param string $fileLocation
-     * @return $this
+     * @return self
      */
     public function setFileLocation(string $fileLocation): self
     {
@@ -36,7 +36,7 @@ class Translator implements TranslatorContract
      * Set the language of the translator.
      *
      * @param string $language
-     * @return $this
+     * @return self
      */
     public function setLanguage(string $language): self
     {

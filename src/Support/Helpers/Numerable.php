@@ -23,7 +23,7 @@ class Numerable
      * Add a certain amount to the number that's stored against the object.
      *
      * @param int|float $number
-     * @return $this
+     * @return static
      */
     public function add(int|float $number): static
     {
@@ -36,7 +36,7 @@ class Numerable
      * Subtract a certain amount from the number that's stored against the object.
      *
      * @param int|float $number
-     * @return $this
+     * @return static
      */
     public function subtract(int|float $number): static
     {
@@ -49,7 +49,7 @@ class Numerable
      * Multiply a certain amount to the number that's stored against the object.
      *
      * @param int|float $number
-     * @return $this
+     * @return static
      */
     public function multiply(int|float $number): static
     {
@@ -62,7 +62,7 @@ class Numerable
      * Divide a certain amount from the number that's stored against the object.
      *
      * @param int|float $number
-     * @return $this
+     * @return static
      */
     public function divide(int|float $number): static
     {

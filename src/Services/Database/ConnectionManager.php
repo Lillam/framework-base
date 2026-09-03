@@ -21,7 +21,7 @@ class ConnectionManager implements ConnectionManagerContract
      *
      * @param string $name
      * @param Closure $factory
-     * @return $this
+     * @return self
      */
     public function registerConnection(string $name, Closure $factory): self
     {

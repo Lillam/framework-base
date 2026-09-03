@@ -22,7 +22,7 @@ class TestAssertionCollection
     /**
      * @param int|string $key
      * @param mixed $value
-     * @return $this
+     * @return static
      */
     public function add(int|string $key, mixed $value): static
     {
@@ -39,7 +39,7 @@ class TestAssertionCollection
 
     /**
      * @param int|string $key
-     * @return $this
+     * @return static
      */
     public function remove(int|string $key): static
     {
@@ -71,7 +71,7 @@ class TestAssertionCollection
      * @param int|string|null $key
      * @return array
      */
-    public function all(int|string $key = null): array
+    public function all(int|string|null $key = null): array
     {
         if ($key && isset($this->items[$key])) {
             return $this->items[$key];

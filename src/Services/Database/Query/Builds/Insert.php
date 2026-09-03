@@ -15,7 +15,7 @@ trait Insert
 
     /**
      * @param array $inserts
-     * @return $this
+     * @return static
      * @throws Exception
      */
     public function insert(array $inserts = []): static
@@ -30,7 +30,7 @@ trait Insert
 
     /**
      * @param string $insert
-     * @return $this
+     * @return static
      */
     public function setInsert(string $insert): static
     {

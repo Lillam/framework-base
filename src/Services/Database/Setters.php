@@ -12,7 +12,7 @@ trait Setters
      *
      * @param string $key
      * @param mixed $value
-     * @return $this
+     * @return static
      * @throws Exception
      */
     public function set(string $key, mixed $value): static
@@ -31,7 +31,7 @@ trait Setters
      *
      * @param string $method
      * @param array $arguments
-     * @return $this
+     * @return static
      * @throws Exception
      */
     public function handlePolymorphicSetter(string $method, array $arguments): static

@@ -65,7 +65,7 @@ trait Anagrams
 
     /**
      * @param int $min
-     * @return $this
+     * @return self
      */
     public function setAnagramMin(int $min): static
     {
@@ -84,7 +84,7 @@ trait Anagrams
 
     /**
      * @param int $max
-     * @return $this
+     * @return self
      */
     public function setAnagramMax(int $max): static
     {

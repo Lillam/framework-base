@@ -48,7 +48,7 @@ class Router
     /**
      * @param string $uri
      * @param Closure $closure
-     * @return $this
+     * @return self
      */
     public function group(string $uri, Closure $closure): self
     {

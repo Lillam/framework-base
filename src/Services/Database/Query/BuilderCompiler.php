@@ -7,7 +7,7 @@ trait BuilderCompiler
     /**
      * Compile the builder query so that we can utilise a finalised form to pass to the PDO.
      *
-     * @return $this
+     * @return static
      */
     private function compile(): static
     {
@@ -32,7 +32,7 @@ trait BuilderCompiler
     }
 
     /**
-     * @return $this
+     * @return static
      */
     private function compileLimit(): static
     {
@@ -46,7 +46,7 @@ trait BuilderCompiler
     }
 
     /**
-     * @return $this
+     * @return static
      */
     private function compileOffset(): static
     {
@@ -60,7 +60,7 @@ trait BuilderCompiler
     }
 
     /**
-     * @return $this
+     * @return static
      */
     private function compileSelect(): static
     {
@@ -80,7 +80,7 @@ trait BuilderCompiler
     }
 
     /**
-     * @return $this
+     * @return static
      */
     private function compileInsert(): static
     {
@@ -92,7 +92,7 @@ trait BuilderCompiler
     }
 
     /**
-     * @return $this
+     * @return static
      */
     private function compileUpdate(): static
     {
@@ -104,7 +104,7 @@ trait BuilderCompiler
     }
 
     /**
-     * @return $this
+     * @return static
      */
     private function compileDelete(): static
     {
@@ -116,7 +116,7 @@ trait BuilderCompiler
     }
 
     /**
-     * @return $this
+     * @return static
      */
     private function compileWheres(): static
     {
@@ -134,7 +134,7 @@ trait BuilderCompiler
     }
 
     /**
-     * @return $this
+     * @return static
      */
     private function compileFinalisedQuery(): static
     {

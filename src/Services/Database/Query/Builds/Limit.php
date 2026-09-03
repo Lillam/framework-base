@@ -15,7 +15,7 @@ trait Limit
      * Set the limit of entities the developer is wanting to retrieve from the database.
      *
      * @param int $limit
-     * @return $this
+     * @return static
      */
     public function limit(int $limit): static
     {
@@ -29,7 +29,7 @@ trait Limit
      * This is an alias of the limit method.
      *
      * @param int $take
-     * @return $this
+     * @return static
      */
     public function take(int $take): static
     {

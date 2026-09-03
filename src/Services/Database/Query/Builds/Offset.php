@@ -16,7 +16,7 @@ trait Offset
      * Set the
      *
      * @param int $offset
-     * @return $this
+     * @return static
      */
     public function offset(int $offset): static
     {
@@ -29,7 +29,7 @@ trait Offset
      * Alias of offset.
      *
      * @param int $skip
-     * @return $this
+     * @return static
      */
     public function skip(int $skip): static
     {

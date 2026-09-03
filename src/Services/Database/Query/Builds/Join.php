@@ -16,7 +16,7 @@ trait Join
      * @param string $first
      * @param string $operator
      * @param string $second
-     * @return $this
+     * @return static
      */
     public function join(string $table, string $first, string $operator, string $second): static
     {

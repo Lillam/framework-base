@@ -70,7 +70,7 @@ class Make extends Command
 
     /**
      * @param string $make
-     * @return $this
+     * @return static
      * @throws Exception
      */
     public function setMaking(string $make): static
@@ -114,7 +114,7 @@ class Make extends Command
      * Set the namespace of the class that the command will be making.
      *
      * @param string $class
-     * @return $this
+     * @return static
      */
     public function setNamespace(string $class): static
     {
@@ -143,7 +143,7 @@ class Make extends Command
      * set the class that the command will be making.
      *
      * @param string $class
-     * @return $this
+     * @return static
      */
     public function setClass(string $class): static
     {

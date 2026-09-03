@@ -7,8 +7,8 @@ use Vyui\Foundation\Http\Request;
 class Authenticate extends Middleware
 {
     /**
-     * Handle the authentication middleware; which will check for a variety of things depending on the type of auth
-     * that we're going for.
+     * Handle the authentication middleware; which will check for a variety of things 
+     * depending on the type of auth that we're going for.
      *
      * @param Request $request
      * @return Request

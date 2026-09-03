@@ -57,7 +57,7 @@ class Dictionary
      * Load all the words in the dictionary and store it against the object. An efficiency gain so that the words don't
      * need to be re-loaded from the file.
      *
-     * @return $this
+     * @return self
      */
     public function load($associatively = false): static
     {
@@ -83,7 +83,7 @@ class Dictionary
      * already.
      *
      * @param string $word
-     * @return $this
+     * @return self
      */
     public function addWord(string $word): static
     {
@@ -100,7 +100,7 @@ class Dictionary
      * dictionary's word set.
      *
      * @param string[] $words
-     * @return $this
+     * @return self
      */
     public function addWords(array $words): static
     {
@@ -118,7 +118,7 @@ class Dictionary
      *
      * @param string $words
      * @param string $separator
-     * @return $this
+     * @return static
      */
     public function addWordsFromString(string $words, string $separator = ' '): static
     {
@@ -180,7 +180,7 @@ class Dictionary
 
     /**
      * @param string|null $path
-     * @return $this
+     * @return self
      */
     public function setPath(?string $path = null): static
     {

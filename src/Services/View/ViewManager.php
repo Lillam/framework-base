@@ -43,7 +43,7 @@ class ViewManager
      * Add a path to the ViewManager, this is where the view manager will know where to look for views in the system.
      *
      * @param string $path
-     * @return $this
+     * @return static
      */
     public function registerPath(string $path): static
     {
@@ -58,7 +58,7 @@ class ViewManager
      *
      * @param string $path
      * @param bool $makeDirectory
-     * @return $this
+     * @return static
      */
     public function registerStoragePath(string $path, bool $makeDirectory = false): static
     {
@@ -89,7 +89,7 @@ class ViewManager
      *
      * @param string $extension
      * @param Engine $engine
-     * @return $this
+     * @return static
      */
     public function registerEngine(string $extension, Engine $engine): static
     {

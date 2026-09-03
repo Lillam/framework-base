@@ -29,7 +29,7 @@ class Progress
     /**
      * Advance the progress bar within the terminal.
      *
-     * @return $this
+     * @return self
      */
     public function advance(): self
     {

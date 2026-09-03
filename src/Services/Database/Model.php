@@ -77,7 +77,7 @@ abstract class Model
 
     /**
      * @param array $attributes
-     * @return $this
+     * @return static
      */
     public function fillAttributes(array $attributes): static
     {

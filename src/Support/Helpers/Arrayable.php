@@ -23,7 +23,7 @@ class Arrayable
      *
      * @param mixed $value
      * @param string|null $key
-     * @return $this
+     * @return static
      */
     public function append(mixed $value, ?string $key = null): static
     {
@@ -37,7 +37,7 @@ class Arrayable
      * Flatten an array, multi dimensional or not into a singular dimensional array.
      *
      * @param bool $associatively
-     * @return $this
+     * @return static
      */
     public function flatten(bool $associatively = false): static
     {
@@ -108,7 +108,7 @@ class Arrayable
      *
      * @param string $key
      * @param mixed $value
-     * @return $this
+     * @return static
      */
     public function set(string $key, mixed $value): static
     {

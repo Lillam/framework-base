@@ -33,7 +33,7 @@ class Reflectable
      * methods where the names contain the passed parameter.
      *
      * @param string $contains
-     * @return $this
+     * @return static
      */
     public function filterMethodsWhereContains(string $contains): static
     {

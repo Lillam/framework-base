@@ -615,7 +615,7 @@ dd($dictionary->findWordsFromAnagram(), 'added words: ', $dictionary->getWordsAd
 //    /**
 //     * Advance the robot's position
 //     *
-//     * @return $this
+//     * @return static
 //     */
 //    public function advance(): static
 //    {
@@ -689,7 +689,7 @@ dd($dictionary->findWordsFromAnagram(), 'added words: ', $dictionary->getWordsAd
 //    }
 //
 //    /**
-//     * @return $this
+//     * @return static
 //     */
 //    public function grow(): static
 //    {
@@ -700,7 +700,7 @@ dd($dictionary->findWordsFromAnagram(), 'added words: ', $dictionary->getWordsAd
 //    }
 //
 //    /**
-//     * @return $this
+//     * @return static
 //     */
 //    public function addInterest(): static
 //    {
@@ -773,7 +773,7 @@ dd($dictionary->findWordsFromAnagram(), 'added words: ', $dictionary->getWordsAd
 //     }
 
 //     /**
-//      * @return $this
+//      * @return static
 //      */
 //     public function process(): self
 //     {

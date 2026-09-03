@@ -27,4 +27,4 @@ Route::get('/', [WebController::class, 'home']);
 Route::get("/giveToken", [WebController::class, 'giveToken']);
 Route::get("/parseToken", [WebController::class, "parseToken"]);
 
-Route::get('/random', [UserController::class, 'random']);
+Route::get('/me', [UserController::class, 'me']);

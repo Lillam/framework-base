@@ -23,7 +23,7 @@ class Stringable
      * Append a chosen string at the end of the currently existing string against the object.
      *
      * @param string $string
-     * @return $this
+     * @return static
      */
     public function append(string $string): static
     {
@@ -36,7 +36,7 @@ class Stringable
      * Prepend a chosen string at the beginning of the currently existing string against the object.
      *
      * @param string $string
-     * @return $this
+     * @return static
      */
     public function prepend(string $string): static
     {
@@ -48,10 +48,10 @@ class Stringable
     /**
      * Concatenate the set strings passed to this method onto the string that's stored against the object.
      *
-     * @param ...$strings
-     * @return $this
+     * @param string ...$strings
+     * @return static
      */
-    public function concat(...$strings): static
+    public function concat(string ...$strings): static
     {
         foreach ($strings as $string) {
             $this->string = "{$this->string} $string";
@@ -64,7 +64,7 @@ class Stringable
      * Turn a string into snake case, ensuring that everything is lowercased for instance:
      * getProject would be malformed into get_project
      *
-     * @return $this
+     * @return static
      */
     public function snakecase(): static
     {
@@ -81,7 +81,7 @@ class Stringable
      * recognised as a uri.
      *
      * @param array $replaceDictionary  a replacement dictionary for what wants to be sluggified in place of.
-     * @return $this
+     * @return static
      */
     public function slug(array $replaceDictionary = []): static
     {
@@ -102,7 +102,7 @@ class Stringable
      * Remove defined from the string content.
      *
      * @param string|array $remove
-     * @return $this
+     * @return static
      */
     public function remove(string|array $remove): static
     {
@@ -116,7 +116,7 @@ class Stringable
      *
      * @param string $target
      * @param string $replace
-     * @return $this
+     * @return static
      */
     public function replace(string $target, string $replace): static
     {
@@ -129,7 +129,7 @@ class Stringable
      * Uppercase the first character within the string, this would uppercase the value at the point where the string
      * was modified up to.
      *
-     * @return $this
+     * @return static
      */
     public function ucFirst(): static
     {
@@ -141,7 +141,7 @@ class Stringable
     /**
      * Turn the current string into a lower case rendition of it.
      *
-     * @return $this
+     * @return static
      */
     public function toLower(): static
     {
@@ -153,7 +153,7 @@ class Stringable
     /**
      * Turn the current string into an upper case rendition of it.
      *
-     * @return $this
+     * @return static
      */
     public function toUpper(): static
     {
@@ -166,7 +166,7 @@ class Stringable
      * Convert a Camel Case (camelCase) string to a sentence structuer such as converting: printHelloWorld would then
      * look more like Print hello world; which will help with programmatical definitions.
      *
-     * @return $this
+     * @return static
      */
     public function convertCamelCaseToSentence(): static
     {
@@ -181,7 +181,7 @@ class Stringable
      * Convert a sentence that has been structured and make it camel case; i.e... take: Print Hello There to -
      * printHelloThere which can help further down the line with programmatical dynamics.
      *
-     * @return $this
+     * @return static
      */
     public function convertSentenceToCamelCase(): static
     {
@@ -196,7 +196,7 @@ class Stringable
      * Repeat the current state, (x) amount of times based on what the developer has decided to pass.
      *
      * @param int $repeating
-     * @return $this
+     * @return static
      */
     public function repeat(int $repeating = 0): static
     {

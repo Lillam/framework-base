@@ -50,7 +50,7 @@ class Route
      * et the method assigned to this particular route.
      *
      * @param string $method
-     * @return $this
+     * @return static
      */
     public function setMethod(string $method): self
     {
@@ -73,7 +73,7 @@ class Route
      * Set the uri of this particular route.
      *
      * @param string $uri
-     * @return $this
+     * @return static
      */
     public function setUri(string $uri): self
     {

@@ -22,7 +22,7 @@ class TestCollection
     /**
      * @param int|string $key
      * @param mixed $value
-     * @return $this
+     * @return static
      */
     public function add(int|string $key, mixed $value): static
     {
@@ -33,7 +33,7 @@ class TestCollection
 
     /**
      * @param int|string $key
-     * @return $this
+     * @return static
      */
     public function remove(int|string $key): static
     {
