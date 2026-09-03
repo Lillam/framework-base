@@ -39,7 +39,7 @@ class _String
      * Check to see if a particular string contains any of the following characters.
      *
      * @param string $string
-     * @param ...$characters
+     * @param string ...$characters
      * @return bool
      */
     public static function contains(string $string, ...$characters): bool
@@ -63,7 +63,7 @@ class _String
     {
         return strtolower(implode(
             '_',
-            preg_split('/(?=[A-Z])/', lcfirst($string))
+            (array) preg_split('/(?=[A-Z])/', lcfirst($string))
         ));
     }
 

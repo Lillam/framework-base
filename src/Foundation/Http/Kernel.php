@@ -43,8 +43,9 @@ class Kernel implements KernelContract
             $response = $this->sendRequestThroughRouter($request);
         }
 
-        // if the router cannot make the request and something has gone wrong through the pipeline then we're going to
-        // error out and then render that exception as a response to the end user.
+        // if the router cannot make the request and something has gone wrong through 
+        // the pipeline then we're going to error out and then render that exception 
+        // as a response to the end user.
         catch (Throwable $exception) {
             $response = $this->renderException($request, $exception);
         }
@@ -65,8 +66,8 @@ class Kernel implements KernelContract
     }
 
     /**
-     * When something has gone wrong within the system then we're going to simply render the exception that will have
-     * been hit.
+     * When something has gone wrong within the system then we're going to simply render
+     * the exception that will have been hit.
      *
      * @param Request $request
      * @param Throwable $exception
@@ -78,7 +79,8 @@ class Kernel implements KernelContract
 
         return view('exceptions', [
             'exception' => $exception,
-            'backtrace' => $backtrace
+            'backtrace' => $backtrace,
+            'request'   => $request
         ]);
     }
 }

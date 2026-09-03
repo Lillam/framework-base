@@ -5,7 +5,7 @@ namespace Vyui\Foundation;
 use Vyui\Services\Service;
 use Vyui\Foundation\Container\Container;
 
-class Application extends Container implements ApplicationContract
+class Application extends Container
 {
     /**
      * The base path for the application's installation.
@@ -123,7 +123,7 @@ class Application extends Container implements ApplicationContract
      * Set the base path for the application.
      *
      * @param string $basePath
-     * @return $this
+     * @return self
      */
     public function setBasePath(string $basePath): self
     {

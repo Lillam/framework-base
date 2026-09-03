@@ -45,7 +45,7 @@ class Kernel implements KernelContract
      * @param string $key
      * @param string $command
      *
-     * @return $this
+     * @return self
      * @throws CommandAlreadyExistsException
      */
     public function addCommand(string $key, string $command): self

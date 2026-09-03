@@ -40,7 +40,7 @@ class UserController extends Controller
      */
     public function random(): void
     {
-        $apiKey = str_replace("api-key=", "", request()->getHeader("HTTP_AUTHORIZATION"));
+        $apiKey = str_replace("api-key=", "", request()->header("HTTP_AUTHORIZATION"));
 
         // if (!User::where("api_token", "=", $apiKey)->first()) {
         //     http_response_code(401);

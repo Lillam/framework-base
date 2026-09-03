@@ -47,6 +47,13 @@ class Request
     protected ParameterBag $server;
 
     /**
+     * The Headers that are extracted from the server.
+     * 
+     * @var ParameterBag
+     */
+    protected ParameterBag $headers;
+
+    /**
     * The request body
     *
     * @var string | null
@@ -75,6 +82,7 @@ class Request
         $this->cookies    = new ParameterBag($cookies);
         $this->files      = new ParameterBag($files);
         $this->server     = new ParameterBag($server);
+        $this->headers    = new ParameterBag($this->getHeadersFromServer());
         $this->content    = $this->getContent();
     }
 
@@ -212,14 +220,24 @@ class Request
     }
 
     /**
-     * Method for acquiring a header from the request
+     * Method for acquiring a header from the request, if this can't be 
+     * found within the built headers parameter bag, then look again but 
+     * this time look within the server parameter bag.
      *
      * @param string $header
      * @return mixed
      */
-    public function getHeader(string $header): mixed
+    public function header(string $header): mixed
     {
-        return $this->getServer()->get($header);
+        return $this->headers->get($header) ?? $this->server->get($header);
+    }
+
+    /**
+     * Method for acquiring all the headers from the request.
+     */
+    public function headers(): array 
+    {
+        return $this->headers->all();
     }
 
     /**
@@ -306,6 +324,11 @@ class Request
             ...$this->getServer()->all(),
             ...$this->getCookies()->all(),
         ];
+    }
+
+    private function getHeadersFromServer(): array
+    {
+        return array_filter($this->server->all(), fn ($key) => \str_starts_with($key, 'HTTP'), mode: ARRAY_FILTER_USE_KEY);
     }
 
     /**

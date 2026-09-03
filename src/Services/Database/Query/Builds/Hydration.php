@@ -7,7 +7,8 @@ use Vyui\Services\Database\Model;
 trait Hydration
 {
     /**
-     * Hydrate the response from the database and transform all the items into modelled entities.
+     * Hydrate the response from the database and transform all the items into modelled 
+     * entities.
      *
      * @return Model[]
      */
@@ -17,8 +18,8 @@ trait Hydration
     }
 
     /**
-     * Check to see if this particular builder instance is possible to be hydrated with the models that's assigned to
-     * this particular query builder instance.
+     * Check to see if this particular builder instance is possible to be hydrated with t
+     * he models that's assigned to this particular query builder instance.
      *
      * @return bool
      */

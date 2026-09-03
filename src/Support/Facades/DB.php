@@ -3,6 +3,7 @@
 namespace Vyui\Support\Facades;
 
 use Vyui\Services\Facades\Facade;
+use Vyui\Services\Database\Connection;
 use Vyui\Services\Database\ConnectionManagerContract as ConnectionManager;
 
 /**

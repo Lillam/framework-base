@@ -4,6 +4,7 @@ use Vyui\Services\Routing\Router;
 use Vyui\Foundation\Http\Request;
 use Vyui\Foundation\Http\Response;
 use Vyui\Services\View\ViewManager;
+use Vyui\Services\Events\Dispatcher;
 use Vyui\Foundation\Container\Container;
 use Vyui\Services\Config\ConfigService as Config;
 use Vyui\Services\Environment\EnvironmentService as Environment;
@@ -26,7 +27,7 @@ if (! function_exists('router')) {
     /**
      * Acquire the router from the application.
      *
-     * @return mixed
+     * @return Router
      */
     function router(): Router {
         return app(Router::class);
@@ -38,10 +39,10 @@ if (! function_exists('dd')) {
      * A method of which will be utilised for dumping variables on the page, as well as dying so that the application
      * will continue no further.
      *
-     * @param ...$variables
+     * @param mixed ...$variables
      * @return void
      */
-    function dd(...$variables): void {
+    function dd(mixed ...$variables): void {
         dump($variables);
         die();
     }
@@ -52,10 +53,10 @@ if (! function_exists('d')) {
      * An alias of "dump" which will be be utilised for dumping variables on the
      * page.
      *
-     * @param ...$variables
+     * @param mixed ...$variables
      * @return void
      */
-    function d(...$variables): void {
+    function d(mixed ...$variables): void {
         dump($variables);
     }
 }
@@ -64,10 +65,10 @@ if (! function_exists('dump')) {
     /**
      * A method which will be utilised for dumping variables on a page.
      *
-     * @param ...$variables
+     * @param mixed ...$variables
      * @return void
      */
-    function dump(...$variables): void {
+    function dump(mixed ...$variables): void {
         echo '<div style="word-break: break-word; word-wrap: break-word">';
         foreach ($variables as $variable) {
             echo '<pre style="padding: 20px; border-radius: 4px; background-color: #f1f1f1;">';
@@ -170,10 +171,20 @@ if (! function_exists('types')) {
      * [integer, string, array] so this method would be a helper function in oder to return the types in the same
      * structure as the array that was provided to it.
      *
-     * @param ...$values
+     * @param mixed ...$values
      * @return array
      */
-    function types(...$values): array {
+    function types(mixed ...$values): array {
         return array_map(fn ($value) => gettype($value), $values);
+    }
+}
+
+if (! function_exists('dispatch')) {    
+    /**
+     * helper method for dispatching jobs in a quick nicer fashion without having to 
+     * invoke the dispatcher itself.
+     */
+    function dispatch(string | object $job, mixed $payload = null): object {
+        return app()->make(Dispatcher::class)->dispatch($job, $payload);
     }
 }

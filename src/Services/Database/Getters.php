@@ -25,6 +25,12 @@ trait Getters
 
     /**
      * Polymorphically get a value from the model that's stored within the attributes.
+     * This is going to transform the following: getFirstName into first_name and pass
+     * first_name into the static::get() method which wants an attribute key (based on
+     * database schema) this would be snakecase. 
+     * 
+     * @todo -> could this potentially be configurable depending on developer preference?
+     *          or are we maintaining an opinionated bias against this? 
      *
      * @param string $method
      * @return mixed

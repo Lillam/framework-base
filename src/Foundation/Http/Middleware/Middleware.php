@@ -13,7 +13,7 @@ abstract class Middleware
      * the client.
      *
      * @param Request $request
-     * @return void
+     * @return Request
      */
     abstract public function handle(Request $request): Request;
 }

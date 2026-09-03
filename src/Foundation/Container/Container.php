@@ -9,7 +9,7 @@ use ReflectionParameter;
 use ReflectionException;
 use Vyui\Support\Helpers\_Reflect;
 
-class Container implements ContainerContract
+class Container
 {
     /**
      * The global access to the available container.

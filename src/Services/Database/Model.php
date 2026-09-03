@@ -90,10 +90,10 @@ abstract class Model
      * Filter out the attributes that aren't in the fillable column; if they don't exist then we don't want to be
      * bringing these particular values back with the model.
      *
-     * @param $attributes
+     * @param array $attributes
      * @return array
      */
-    protected function throughFillable($attributes): array
+    protected function throughFillable(array $attributes): array
     {
         if (! empty($this->except)) {
             return array_filter($attributes, function ($key) {
@@ -109,7 +109,7 @@ abstract class Model
      * model underscore separated. i.e: snake_case.
      *
      * @return string
-     * @throws
+     * @throws Exception
      */
     public function getTable(): string
     {

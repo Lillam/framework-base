@@ -33,7 +33,7 @@ class Markdown
 
     /**
      * @param string $content
-     * @return $this
+     * @return self
      */
     public function setContent(string $content): self
     {

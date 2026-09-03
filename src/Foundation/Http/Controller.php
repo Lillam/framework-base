@@ -28,8 +28,9 @@ abstract class Controller
      */
     public function middleware(array $middleware)
     {
-        foreach ($middleware as $m) {
-            $this->middleware[] = is_object($m) ? $m : new $m();
+        foreach ($middleware as $handler) {
+            $this->middleware[] = \is_string($handler) ? new $handler 
+                                                      : $handler;
         }
     }
 
@@ -45,15 +46,16 @@ abstract class Controller
 
     /**
      * Send the request through the middleware that is currently attached to this particular
-     * controller
+     * controller. 
      *
      * @param Request $request
      * @return static
      */
     public function throughMiddleware(Request $request): static
     {
-        foreach ($this->middleware as $middleware) {
-            (new $middleware())->handle($request);
+        foreach ($this->middleware as $handler) {
+            $handler instanceof Middleware ? $handler->handle($request)
+                                           : (new $handler())->handle($request);
         }
 
         return $this;
