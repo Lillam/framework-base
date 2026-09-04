@@ -45,23 +45,6 @@ abstract class Controller
     }
 
     /**
-     * Send the request through the middleware that is currently attached to this particular
-     * controller. 
-     *
-     * @param Request $request
-     * @return static
-     */
-    public function throughMiddleware(Request $request): static
-    {
-        foreach ($this->middleware as $handler) {
-            $handler instanceof Middleware ? $handler->handle($request)
-                                           : (new $handler())->handle($request);
-        }
-
-        return $this;
-    }
-
-    /**
      * Return a response from the controller as all controllers will want to return some kind of
      * response to the invoker.
      *

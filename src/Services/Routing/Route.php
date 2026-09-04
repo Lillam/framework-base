@@ -256,18 +256,15 @@ class Route
         }
 
         // Have the application create the specified controller along with all it's dependencies.
+        /** @var Controller $controller */
         $controller = $application->make((string) $controller);
-
+        
         return (new Pipeline($this->application))
             ->send($request)
             ->through($controller->getMiddleware())
             ->then(fn (): Response => 
                 $controller->call($action, $this->buildParameters($controller, $action)
             ));
-
-        /** @var Controller $controller */
-        return $controller->throughMiddleware($request)
-                          ->call($action, $this->buildParameters($controller, $action));
     }
 
     /**
