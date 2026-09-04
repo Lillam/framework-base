@@ -49,9 +49,9 @@ class Request
     /**
      * The Headers that are extracted from the server.
      * 
-     * @var ParameterBag
+     * @var HeaderBag
      */
-    protected ParameterBag $headers;
+    protected HeaderBag $headers;
 
     /**
     * The request body
@@ -82,7 +82,7 @@ class Request
         $this->cookies    = new ParameterBag($cookies);
         $this->files      = new ParameterBag($files);
         $this->server     = new ParameterBag($server);
-        $this->headers    = new ParameterBag($this->getHeadersFromServer());
+        $this->headers    = new HeaderBag($this->getHeadersFromServer());
         $this->content    = $this->getContent();
     }
 
@@ -227,9 +227,9 @@ class Request
      * @param string $header
      * @return mixed
      */
-    public function header(string $header): mixed
+    public function header(string $header, mixed $default = null): mixed
     {
-        return $this->headers->get($header) ?? $this->server->get($header);
+        return $this->headers->get($header, $default);
     }
 
     /**
@@ -238,6 +238,14 @@ class Request
     public function headers(): array 
     {
         return $this->headers->all();
+    }
+
+    /**
+     * Check to see if the request has the requested header
+     */
+    public function hasHeader(string $header): bool
+    {
+        return $this->headers->has($header);
     }
 
     /**
@@ -328,7 +336,28 @@ class Request
 
     private function getHeadersFromServer(): array
     {
-        return array_filter($this->server->all(), fn ($key) => \str_starts_with($key, 'HTTP'), mode: ARRAY_FILTER_USE_KEY);
+        $headers = [];
+
+        foreach ($this->server->all() as $header => $value) {
+            if (\str_starts_with($header, "HTTP_")) {
+                $headers[\substr($header, 5)] = $value;
+            }
+        }
+
+        foreach (['CONTENT_TYPE', "CONTENT_LENGTH", "CONTENT_MD5"] as $header) {
+            if (($value = $this->server->get($header)) !== null) {
+                $headers[$header] = $value;
+            }
+        }
+        
+        // Apache strips the Authporisation header out unless it has been 
+        // explicitly passed through, in which case it tends to surface 
+        // under the redirect key.
+        if (! isset($headers['AUTHORIZATION']) && ($auth = $this->server->get('REDIRECT_HTTP_AUTHORIZATION'))) {
+            $headers['AUTHORIZATION'] = $auth;
+        }
+
+        return $headers;
     }
 
     /**

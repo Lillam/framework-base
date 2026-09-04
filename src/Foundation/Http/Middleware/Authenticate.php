@@ -2,7 +2,8 @@
 
 namespace Vyui\Foundation\Http\Middleware;
 
-use Vyui\Foundation\Http\Request;
+use Closure;
+use Vyui\Foundation\Http\{Request, Response};
 
 class Authenticate extends Middleware
 {
@@ -11,10 +12,13 @@ class Authenticate extends Middleware
      * depending on the type of auth that we're going for.
      *
      * @param Request $request
-     * @return Request
+     * @param Closure(Request): Response $next
+     * @return Response
      */
-    public function handle(Request $request): Request
+    public function handle(Request $request, Closure $next): Response
     {    
+        print("authenticate has processed");
+
         // token based authorization
         if ($request->get("token")) {
             
@@ -25,6 +29,6 @@ class Authenticate extends Middleware
             
         }
 
-        return $request;
+        return $next($request);
     }
 }

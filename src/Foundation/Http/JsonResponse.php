@@ -7,14 +7,6 @@ use JsonSerializable;
 class JsonResponse extends Response
 {
     /**
-     * The original (un-encoded) data that this response had been created with, the parent holds
-     * the encoded string against $content, whereas this holds whatever was handed over.
-     *
-     * @var mixed
-     */
-    protected mixed $data;
-
-    /**
      * @param mixed $data    -> Anything that is able to be encoded into json.
      * @param int $status    -> The status of the request that had been made.
      * @param array $headers -> The headers of the request that had been made.
@@ -24,13 +16,14 @@ class JsonResponse extends Response
         int $status = 200,
         array $headers = []
     ) {
-        $this->data = $data;
+        parent::__construct($this->parseContentToJson($data), $status, $headers);
 
-        parent::__construct(
-            $this->parseContentToJson($data),
-            $status,
-            array_merge(['Content-Type: application/json'], $headers)
-        );
+        // i'm not convinced that this should be concerning itself with setting a content
+        // type; and the frontend would be smart enough to know that it's about to get a 
+        // specific content type???
+        if (! $this->headers->has('content-type')) {
+            $this->headers->set('content-type', 'application/json');
+        }
     }
 
     /**

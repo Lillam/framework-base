@@ -7,11 +7,14 @@ use App\Models\Task;
 use Vyui\Foundation\Http\Request;
 use Vyui\Foundation\Http\Response;
 use Vyui\Foundation\Http\Controller;
-use Vyui\Foundation\Http\Middleware\Authenticate;
+use Vyui\Foundation\Http\Middleware\{CORS, Authenticate};
 
 class WebController extends Controller
 {
-    protected array $middleware = [Authenticate::class];
+    protected array $middleware = [
+        Authenticate::class,
+        CORS::class,
+    ];
 
     /**
      * @param Request $request
@@ -20,23 +23,7 @@ class WebController extends Controller
      */
     public function home(Request $request, ?Task $task = null): Response
     {
-        // $tasks = array_map(function ($task) {
-        //     return [
-        //         'name' => $task->getName(),
-        //         'description' => $task->getDescription()
-        //     ];
-        // }, Task::query()->limit(5)->get());
-
-        // return response()->json(['tasks' => $tasks]);
-
         return view('home');
-
-//        return response()->json(array_map(function ($user) use ($task) {
-//            return [
-//                'name' => "{$user->getFirstName()} {$user->getLastName()}",
-//                'task' => $task
-//            ];
-//        }, User::all()));
     }
 
     public function test(Request $request, $test, $testing): Response
@@ -64,9 +51,6 @@ class WebController extends Controller
     /**
      * @param Request $request
      * @return Response
-     * @throws \Vyui\Auth\TokenExpiredException
-     * @throws \Vyui\Auth\TokenInvalidException
-     * @throws \Vyui\Auth\TokenSignatureMatchException
      */
     public function parseToken(Request $request): Response
     {

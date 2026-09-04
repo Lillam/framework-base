@@ -5,6 +5,19 @@ namespace Vyui\Foundation\Http;
 class Response implements ResponseContract
 {
     /**
+     * The headers that will be handed back to the client.
+     * 
+     * @param HeaderBag $headers
+     */
+    protected HeaderBag $headers;
+
+    /**
+     * Cookies held as objects until send time, so that anything further
+     * along the middleware stack is able to add to or rewrite them.
+     */
+    protected array $cookies = [];
+
+    /**
      * @param string $content -> The content that is going to be rendered to the client.
      * @param int $status     -> The status of the request that had been made.
      * @param array $headers  -> The headers of the request hat had been made.
@@ -12,8 +25,50 @@ class Response implements ResponseContract
     public function __construct(
         protected string $content,
         protected int $status = 200,
-        protected array $headers = []
+        array $headers = []
     ) {
+        $this->headers = new HeaderBag($headers);
+    }
+
+    /**
+     * Attach a header to the response to the requesting user.
+     * 
+     * @param string $name
+     * @param string $value
+     * 
+     * @return self
+     */
+    public function withHeader(string $name, string $value): self
+    {
+        $this->headers->set($name, $value);
+
+        return $this;
+    }
+
+    /**
+     * Attach a cookie to the response to be shipped back to 
+     * the requesting user.
+     * 
+     * @param Cookie $cookie
+     */
+    public function withCookie(Cookie $cookie): self
+    {
+        $this->cookies[$cookie->getName()] = $cookie;
+
+        return $this;
+    }
+
+    /**
+     * Set the status of the response.
+     * 
+     * @param int $status
+     * @return self 
+     */
+    public function setStatus(int $status): self
+    {
+        $this->status = $status;
+        
+        return $this;
     }
 
     /**
@@ -52,10 +107,19 @@ class Response implements ResponseContract
      */
     public function sendHeaders(): self
     {
-        if (!headers_sent()) {
-            header('Access-Control-Allow-Origin: *');
-            array_map(fn ($header) => header($header), $this->headers);
+        if (\headers_sent()) {
+            return $this;
         }
+
+        foreach ($this->headers->all() as $header => $value) {
+            header("$header: $value");
+        }
+
+        foreach ($this->cookies as $cookie) {
+            \header("Set-Cookie: $cookie", false);
+        }
+
+        \http_response_code($this->status);
 
         return $this;
     }
@@ -70,7 +134,7 @@ class Response implements ResponseContract
      *          potential response format as (data.data.any)
      */
     public function json(mixed $data): self
-    {
+    {                
         $this->content = json_encode(
             !\is_array($data) ? ['data' => $data]
                              : $data,

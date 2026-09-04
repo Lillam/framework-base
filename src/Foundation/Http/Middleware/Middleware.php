@@ -2,7 +2,8 @@
 
 namespace Vyui\Foundation\Http\Middleware;
 
-use Vyui\Foundation\Http\Request;
+use Closure;
+use Vyui\Foundation\Http\{Request, Response};
 
 abstract class Middleware
 {
@@ -13,7 +14,7 @@ abstract class Middleware
      * the client.
      *
      * @param Request $request
-     * @return Request
+     * @return Response
      */
-    abstract public function handle(Request $request): Request;
+    abstract public function handle(Request $request, Closure $next): Response;
 }

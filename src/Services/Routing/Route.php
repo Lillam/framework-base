@@ -50,7 +50,7 @@ class Route
      * et the method assigned to this particular route.
      *
      * @param string $method
-     * @return static
+     * @return self
      */
     public function setMethod(string $method): self
     {
@@ -73,7 +73,7 @@ class Route
      * Set the uri of this particular route.
      *
      * @param string $uri
-     * @return static
+     * @return self
      */
     public function setUri(string $uri): self
     {
@@ -257,6 +257,13 @@ class Route
 
         // Have the application create the specified controller along with all it's dependencies.
         $controller = $application->make((string) $controller);
+
+        return (new Pipeline($this->application))
+            ->send($request)
+            ->through($controller->getMiddleware())
+            ->then(fn (): Response => 
+                $controller->call($action, $this->buildParameters($controller, $action)
+            ));
 
         /** @var Controller $controller */
         return $controller->throughMiddleware($request)
