@@ -55,10 +55,20 @@ abstract class Command
     }
 
     /**
+     * Get an argument at a specific position
+     * 
+     * @return string
+     */
+    public function getArgument(int $position): ?string
+    {
+        return $this->arguments[$position];
+    }
+
+    /**
      * @param Output $output
      * @return self
      */
-    public function setOutput(Output $output): static
+    public function setOutput(Output $output): self
     {
         $this->output = $output;
 

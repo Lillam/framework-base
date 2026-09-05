@@ -3,7 +3,7 @@
 namespace Vyui\Foundation\Console;
 
 use Vyui\Foundation\Application;
-use Vyui\Foundation\Console\Commands\{File, Help, Make, Migrate, Route, Test, Format, Command, QueueWorker};
+use Vyui\Foundation\Console\Commands\{File, Help, Make, Migrate, Route, Test, Format, Command, Playground, QueueWorker};
 
 class Kernel implements KernelContract
 {
@@ -28,6 +28,7 @@ class Kernel implements KernelContract
         'migrate'      => Migrate::class,
         'routes'       => Route::class,
         'queue.worker' => QueueWorker::class,
+        'play'         => Playground::class
     ];
 
     /**
